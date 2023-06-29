@@ -21,3 +21,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.idea/
+ .idea/modules.xml
+  .idea/senzagro.iml
+ .idea/vcs.xml
+debug.log
+.vscode/
+
