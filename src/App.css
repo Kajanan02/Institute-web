@@ -28,7 +28,9 @@
     text-decoration: none;
     border-radius: 4px;
     margin-bottom: 20px;
+    display: block;
 }
+
 
 .side-menu-item:hover, .side-menu-active {
     color: #00AB55 !important;
@@ -42,3 +44,30 @@
 .cursor-pointer {
     cursor: pointer;
 }
+
+.close-btn-container {
+    border-radius: 6px 0px 0px 6px;
+    border: 1px solid #D1D1D1;
+    justify-content: end;
+    margin-left: auto;
+    display: flex;
+    width: fit-content;
+    padding: 10px 0 10px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-right-width: 0;
+}
+
+.w-100px {
+    width: 100px !important;
+
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+.trans {
+    transition: width 100ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, margin 200ms cubic-bezier(0.4, 0, 0.6, 1) 0ms
+}
+

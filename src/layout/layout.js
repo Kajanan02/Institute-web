@@ -2,108 +2,150 @@ import React from 'react';
 import Bell from "../assets/bell-icon.svg";
 import Msg from "../assets/msg-icon.svg";
 import Profile from "../assets/profile-img.svg";
+import SideClose from "../assets/carbon_side-panel-close.svg";
 import FeatherIcon from 'feather-icons-react';
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from 'react-redux'
+import {changeToggle} from "../redux/actions";
 
 function Layout({children}) {
+
+    const dispatch = useDispatch()
+    const open = useSelector(state => {
+        return state.setting.toggle
+    });
+
+    function toggleDrawer() {
+        dispatch(changeToggle(!open));
+        // setOpen(!open)
+    }
+
+    console.log(open);
+
     return (
         <div className="container-fluid">
             <div className="row flex-nowrap">
-                <div className="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white border-right">
+                <div
+                    className={(open ? " col-xl-2" : " w-100px") + " col-auto col-md-1 px-0 bg-white border-right min-vh-100 trans"}>
+                    <div className={"close-btn-container"} onClick={toggleDrawer}>
+                        <img src={SideClose} alt="SideClose" className={!open && "rotate-180"}/>
+                    </div>
                     <div
-                        className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white min-vh-100  pt-5">
+                        className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-5">
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active mt-5" : "side-menu-item mt-5"}
-                            to={"/"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="home" className={'me-2'}/>
-                                <div className={''}>Home</div>
-                            </div>
-                        </NavLink>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/student"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="users" className={'me-2'}/>
-                                <div className={''}>Student</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active " : "side-menu-item "}
+                                to={"/"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="home" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Home</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/calendar"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="calendar" className={'me-2'}/>
-                                <div className={''}>Calendar</div>
-                            </div>
-                        </NavLink>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/marks"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="file-text" className={'me-2'}/>
-                                <div className={''}>Marks</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/student"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="users" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Student</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/broadcast"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="globe" className={'me-2'}/>
-                                <div className={''}>Broadcast</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/calendar"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="calendar" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Calendar</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/qr-scanner"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="users" className={'me-2'}/>
-                                <div className={''}>QR Scanner</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/marks"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="file-text" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Marks</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/appointment"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="clock" className={'me-2'}/>
-                                <div className={''}>Appointment</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/broadcast"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="globe" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Broadcast</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/payment"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="credit-card" className={'me-2'}/>
-                                <div className={''}>Payment & Invoice</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/qr-scanner"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="users" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>QR Scanner</div>}
+                                </div>
+                            </NavLink>
+                        </div>
+
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/appointment"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="clock" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Appointment</div>}
+                                </div>
+                            </NavLink>
+                        </div>
+
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/payment"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="credit-card" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Payment & Invoice</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
                         <div className={'w-100 border-bottom-d1d1d1 mb-3'}/>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/settings"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="settings" className={'me-2'}/>
-                                <div className={''}>Settings</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/settings"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="settings" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Settings</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
-                        <NavLink
-                            className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                            to={"/logout"}>
-                            <div className={'d-flex'}>
-                                <FeatherIcon icon="log-out" className={'me-2'}/>
-                                <div className={''}>Logout</div>
-                            </div>
-                        </NavLink>
+                        <div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/logout"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="log-out" className={open ? 'me-2' : "ms-1"}/>
+                                    {open && <div className={''}>Logout</div>}
+                                </div>
+                            </NavLink>
+                        </div>
 
 
                     </div>
