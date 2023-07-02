@@ -40,7 +40,7 @@ function Layout({children}) {
                                 to={"/"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="home" className={open ? 'me-2' : "ms-1"}/>
-                                    {open && <div className={''}>Home</div>}
+                                    {open && <div className={'trans-1'}>Home</div>}
                                 </div>
                             </NavLink>
                         </div>
