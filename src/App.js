@@ -9,12 +9,11 @@ import QrScanner from "./components/qr-scanner/qr-scanner";
 import Appointment from "./components/appointment/appointment";
 import PaymentInvoice from "./components/payment-invoice/payment-invoice";
 import Settings from "./components/settings/settings";
+import Login from "./components/login/login";
 
 function App() {
     return (
         <div className="">
-
-            {/*<Layout/>*/}
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/student" element={<Student/>}/>
@@ -25,6 +24,7 @@ function App() {
                 <Route path="/appointment" element={<Appointment/>}/>
                 <Route path="/payment" element={<PaymentInvoice/>}/>
                 <Route path="/settings" element={<Settings/>}/>
+                <Route path="/logout" element={<Login/>}/>
                 <Route path="/logout" element={<Settings/>}/>
 
             </Routes>
