@@ -10,10 +10,12 @@ import Appointment from "./components/appointment/appointment";
 import PaymentInvoice from "./components/payment-invoice/payment-invoice";
 import Settings from "./components/settings/settings";
 import Login from "./components/login/login";
+import Loader from "./components/loader";
 
 function App() {
     return (
         <div className="">
+            <Loader/>
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/student" element={<Student/>}/>

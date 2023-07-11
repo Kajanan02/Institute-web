@@ -4,3 +4,10 @@ export const changeToggle = (toggle) => {
         payload: toggle
     };
 };
+
+export const toggleLoader = (view) => {
+    return {
+        type: "TOGGLE_LOADER",
+        payload: view
+    };
+};
