@@ -9,9 +9,18 @@ const settingReducer = (state = {toggle: false}, action) => {
             return state;
     }
 }
+const loaderReducer = (state = {toggle: false}, action) => {
+    switch (action.type) {
+        case 'TOGGLE_LOADER':
+            return {...state, isLoading: action.payload};
+        default:
+            return state;
+    }
+}
 
 const reducers = combineReducers({
     setting: settingReducer,
+    loader: loaderReducer,
 });
 
 export default reducers;

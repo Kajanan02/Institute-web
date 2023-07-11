@@ -75,3 +75,64 @@
     transition: 1000ms
 }
 
+.loader-model-bg-hidden {
+    position: fixed;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -999;
+}
+
+.loader-model-bg-visible {
+    position: fixed;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999;
+}
+
+.sa-modal-bg-inner {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.loader-model {
+    padding: 45px;
+    max-width: 674px;
+    margin: 0 auto;
+}
+
+.sa-modal-bg-inner {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.loader-model {
+    padding: 45px;
+    max-width: 674px;
+    margin: 0 auto;
+}
+
+.sa-modal-bg {
+    position: fixed;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+@media (max-width: 767px) {
+    .sa-modal-bg-inner {
+        display: block;
+    }
+}
+

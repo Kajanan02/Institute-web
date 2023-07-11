@@ -5,4 +5,7 @@ export const store = createStore(reducer, {
     setting: {
         toggle: false,
     },
+    loader: {
+        isLoading: false,
+    }
 })
