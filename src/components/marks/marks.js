@@ -88,9 +88,9 @@ function Marks(props) {
               </div>
             </div>
           </div>
-          <div className={"table-container p-2"}>
-            <table className={"table table-hover"} >
-              <thead>
+          <div className={"table-container "}>
+            <table className={"table table-hover table-striped "} >
+              <thead className={"top-0 position-sticky h-45"}>
                 <tr>
                   <th scope="col">No</th>
                   <th scope="col">Reg.No</th>
