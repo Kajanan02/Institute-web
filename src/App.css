@@ -76,6 +76,215 @@
     transition: 1000ms
 }
 
+.loader-model-bg-hidden {
+    position: fixed;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -999;
+}
+
+.loader-model-bg-visible {
+    position: fixed;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999999;
+}
+
+.sa-modal-bg-inner {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.loader-model {
+    padding: 45px;
+    max-width: 674px;
+    margin: 0 auto;
+}
+
+.sa-modal-bg-inner {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.loader-model {
+    padding: 45px;
+    max-width: 674px;
+    margin: 0 auto;
+}
+
+.sa-modal-bg {
+    position: fixed;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+.sa-popup-bg{
+    position: fixed;
+    display: table;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 999;
+}
+
+.hide {
+    visibility: hidden;
+}
+.sa-popup {
+    display: table-cell;
+    vertical-align: middle;
+}
+.sa-modal-box-style {
+    background: #fff 0% 0% no-repeat padding-box !important;
+    box-shadow: 0px 0px 8px #0000000A;
+    border: 0.23999999463558197px solid #EDEDED;
+    opacity: 1;
+    padding-bottom: 16px;
+    max-width: 841px;
+    max-height: calc(100vh - 100px);
+    margin: 0px auto;
+    overflow: auto;
+}
+.sa-popup-header {
+    margin-bottom: 24px;
+    padding-top: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    box-shadow: 0px 4px 30px #00000008;
+    background: #fff 0% 0% no-repeat padding-box;
+    opacity: 1;
+    height: 60px;
+}
+.sa-model-heading {
+    font: normal normal normal 20px/30px Poppins;
+    font-weight: 600;
+    color: #1D283D;
+    margin-top: 16px;
+    margin-left: 16px;
+}
+.sa-popup-close-icon {
+    float: right;
+    text-align: center;
+    color: rgb(119, 110, 110);
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    margin-right: 16px;
+}
+.p-l-16 {
+    padding-left: 16px !important;
+}
+.warning-heading {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+.text-red {
+    color: #FF4343 !important;
+}
+.warning-text {
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #757575;
+}
+.m-b-16 {
+    margin-bottom: 16px !important;
+}
+.sa-popup-btn {
+    text-align: right !important;
+    margin-right: 16px;
+}
+.sa-popup-secondary-btn-style {
+    top: 518px;
+    left: 920px;
+    width: 160px;
+    height: 40px;
+    background: #4ED19F 0 0 no-repeat padding-box;
+    color: #fff;
+    border-radius: 4px;
+    opacity: 1;
+    text-transform: uppercase;
+    border: none;
+}
+.sa-popup-cancel-btn-style {
+    background:#fff;
+    color: #707070;
+}
+.btn-sa-danger {
+    background: #FF4343 0% 0% no-repeat padding-box !important;
+    border-radius: 4px !important;
+    opacity: 1;
+    height: 44px;
+    color: #fff !important;
+    font-size: 14px !important;
+}
+.m-t-40 {
+    margin-top: 40px !important;
+}
+.deleteReason {
+    margin-left: -8px;
+    margin-top: -20px;
+}
+.warning-input {
+    border: solid 1px #FF4343 !important;
+}
+
+.sa-popup-btn {
+    text-align: right !important;
+    margin-right: 16px;
+}
+.sa-popup-cancel-btn-style {
+    background: #fff;
+    color: #707070;
+}
+.w-120p {
+    width: 120px;
+}
+
+
+
+
+@media (max-width: 767px) {
+    .sa-modal-bg-inner {
+        display: block;
+    }
+    .sa-modal-box-style {
+        width: calc(100% - 24px);
+    }
+}
+
+@media(max-width: 320px) {
+    .sa-popup-btn {
+        text-align: center;
+        display: flex;
+        flex-direction: column-reverse;
+        margin-left: 16px !important;
+    }
+    .sa-popup-secondary-btn-style {
+        width: 100%;
+    }
+    .sa-popup-btn {
+        text-align: center;
+        display: flex;
+        flex-direction: column-reverse;
+        margin-left: 16px !important;
+    }
+}
+
 .action-icons {
     color: #aaa;
     width: 20px;
