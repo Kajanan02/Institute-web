@@ -11,3 +11,17 @@ export const toggleLoader = (view) => {
         payload: view
     };
 };
+
+export const toggleConfirmationDialog = (view) => {
+    return {
+        type: "CONFIRMATION_DIALOG",
+        payload: view
+    };
+};
+export const resetConfirmationDialog = () => {
+    return {
+        type: "CONFIRMATION_DIALOG",
+        payload: null
+    };
+};
+
