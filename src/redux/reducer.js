@@ -5,6 +5,12 @@ const settingReducer = (state = {toggle: false}, action) => {
     switch (action.type) {
         case 'TOGGLE':
             return {...state, toggle: action.payload};
+        case "CONFIRMATION_DIALOG": {
+            return {
+                ...state,
+                confirmationDialog: action.payload
+            };
+        }
         default:
             return state;
     }
