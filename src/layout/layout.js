@@ -31,7 +31,7 @@ function Layout({children}) {
                         <img src={SideClose} alt="SideClose" className={!!open && "rotate-180"}/>
                     </div>
                     <div
-                        className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-5">
+                        className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-4">
 
 
                         <div className={"w-100 px-sm-2"}>
