@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Bell from "../assets/bell-icon.svg";
 import Msg from "../assets/msg-icon.svg";
 import Profile from "../assets/profile-img.svg";
@@ -10,7 +10,8 @@ import {changeToggle} from "../redux/actions";
 
 function Layout({children}) {
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const [show, setShow] = useState(false);
     const open = useSelector(state => {
         return state.setting.toggle
     });
@@ -21,13 +22,14 @@ function Layout({children}) {
     }
 
     console.log(open);
+    console.log(show);
 
     return (
         <div className="container-fluid">
             <div className="row flex-nowrap">
                 <div
-                    className={(!open ? " col-xl-2" : " w-100px") + " col-auto col-md-1 px-0 bg-white border-right min-vh-100 trans"}>
-                    <div className={"close-btn-container"} onClick={toggleDrawer}>
+                    className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-white border-right min-vh-100 trans"}>
+                    <div className={"close-btn-container mobile-hide"} onClick={toggleDrawer}>
                         <img src={SideClose} alt="SideClose" className={!!open && "rotate-180"}/>
                     </div>
                     <div
@@ -152,15 +154,13 @@ function Layout({children}) {
                 </div>
                 <div className="col p-0">
                     <nav className="navbar navbar-expand-lg bg-white border-bottom-d1d1d1 px-4">
-                        <div className="container-fluid">
-                            {/*<a className="navbar-brand" href="#">Navbar</a>*/}
-                            <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                                    aria-label="Toggle navigation">
+                        <div className="container-fluid nav-iconset flex-nowrap">
+                            <button className="navbar-toggler " type="button" onClick={()=>setShow(!show)}>
                                 <span className="navbar-toggler-icon"></span>
                             </button>
-                            <div className="collapse navbar-collapse" id="navbarNav">
-                                <ul className="navbar-nav ms-auto align-items-center">
+                            
+                            <div className="collapse navbar-collapse " id="">
+                                <ul className="navbar-nav ms-auto align-items-center flex-row">
                                     <li className="nav-item">
                                         <a className="nav-link active position-relative px-2" aria-current="page"
                                            href="#">
@@ -185,6 +185,7 @@ function Layout({children}) {
                         </div>
                     </nav>
                     <div>
+                        <div className={ show ? "nav-shadow opacity-100" : "invisible opacity-0"} onClick={()=>setShow(!show)}/>
                         {children}
                     </div>
                 </div>
