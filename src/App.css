@@ -321,9 +321,10 @@
     color: #00AB55;
 }
 
-.marks-dropdown-container {
+.table-btn-container {
     display: flex;
     gap: 20px;
+    flex-flow: wrap;
 }
 
 .dropdown {
@@ -363,7 +364,12 @@
 @media (max-width: 768px) {
     .table-container {
         overflow: scroll;
-        min-width: 500px;
+    }
+    .table-container table {
+        min-width: 700px !important;
+    }
+    .table-btn-container{
+        margin-top: 24px;
     }
 }
 
