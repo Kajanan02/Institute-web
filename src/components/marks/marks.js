@@ -29,7 +29,7 @@ function Marks(props) {
         <div className={"p-5"}>
           <div className={"students_marks_container"}>
             <div><h3 className={"content-heading"}>Students Marks</h3></div>
-            <div className={"marks-dropdown-container d-flex justify-content-end pb-3"}>
+            <div className={"table-btn-container d-flex justify-content-end pb-3"}>
               <div className={"dropdown"}>
                 <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Stream

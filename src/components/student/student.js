@@ -50,11 +50,11 @@ function Students(props) {
     return (
         <Layout>
             <div className={"container"}>
-                <div className={"p-5"}>
+                <div className={"container-widget"}>
                     <div className={"students_container"}>
                         <div><h3 className={"content-heading"}>Students Details</h3></div>
                         <div className={"students-dropdown-container d-flex justify-content-end pb-3"}>
-                            <div className={"marks-dropdown-container"}>
+                            <div className={"table-btn-container"}>
 
 
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}
@@ -77,8 +77,8 @@ function Students(props) {
                             </div>
                         </div>
                     </div>
-                    <div className={"table-container p-2 pt-0"}>
-                        <table className={"table table-hover table-striped"}>
+                    <div className={"table-container p-2 pt-0 "}>
+                        <table className={"table table-hover table-striped sa-table-width"}>
                             <thead>
                                 <tr className={"position-sticky top-0 pt-1 h-45"}>
                                     <th scope="col">No</th>
@@ -90,13 +90,13 @@ function Students(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {studentsList.map((data, index) => (<tr key={index + "asd"}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{data.Reg}</td>
-                                    <td>{data.name}</td>
-                                    <td>{data.stream}</td>
-                                    <td>{data.joindate}</td>
-                                    <td>
+                            {studentsList.map((data, index) => (<tr key={index + "asd"}>
+                                <th scope="row">{index + 1}</th>
+                                <td>{data.Reg}</td>
+                                <td>{data.name}</td>
+                                <td>{data.stream}</td>
+                                <td>{data.joindate}</td>
+                                <td className={"table-action"}>
 
 
                                         <FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"

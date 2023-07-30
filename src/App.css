@@ -321,9 +321,10 @@
     color: #00AB55;
 }
 
-.marks-dropdown-container {
+.table-btn-container {
     display: flex;
     gap: 20px;
+    flex-flow: wrap;
 }
 
 .dropdown {
@@ -363,7 +364,12 @@
 @media (max-width: 768px) {
     .table-container {
         overflow: scroll;
-        min-width: 500px;
+    }
+    .table-container table {
+        min-width: 700px !important;
+    }
+    .table-btn-container{
+        margin-top: 24px;
     }
 }
 
@@ -450,7 +456,62 @@
 .h-45 {
     height: 45px !important;
 }
+.nav-shadow{
+    position: fixed;
+    display: none;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    inset: 0px;
+    margin-left: auto;
+    opacity:0;
+    transition:visibility 0.1s linear,opacity 0.1s linear;
+    -webkit-tap-highlight-color: transparent;
+    background-color: #181818ab;
+    z-index: 9;
+}
 
+@media (max-width: 1024px) {
+    .mobile-navbar-hide {
+        /*display: none !important;*/
+        width: 0 !important;
+        overflow: hidden !important;
+    }
+    .nav-shadow{
+        display: flex !important;;
+    }
+    .mobile-hide{
+        display: none !important;
+    }
+    .mobile-show{
+        display: block !important;
+        width: 280px !important;
+        z-index: 999;
+        transition: width 0.1s linear;
+        /*transition: 0.5s !important;*/
+    }
+}
+
+.nav-iconset .collapse:not(.show){
+    display: flex !important;
+}
+.container-widget{
+    padding: 3rem;
+}
+.table-action{
+    min-width: 110px;
+}
+@media (max-width: 992px){
+    .container-widget {
+        padding:  3rem 0;
+       width: 100%;
+    }
+}
+@media (max-width: 767px)
+.sa-table-width {
+    width: 600px!important;
+}
 .view-div {
     background-color: #fff;
 }
