@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import MultiSelect from "@khanacademy/react-multi-select";
-import {FileUploader} from "react-drag-drop-files";
+import { FileUploader } from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
-import {studentData, subjectData} from "./damiData";
+import { studentData, subjectData } from "./damiData";
 import formHandler from "../../utils/FormHandler";
-import {validateStudent} from "../../utils/validation";
-import {mapObject} from "underscore";
+import { validateStudent } from "../../utils/validation";
+import { mapObject } from "underscore";
 
 function Students(props) {
 
@@ -32,16 +32,16 @@ function Students(props) {
 
     function multiSelectOnChangeBuyer(selected) {
         setSelectedBuyer(selected);
-        // setValue({previousBuyer: selected});
+        setValue({ subjects: selected });
     }
 
     const handleChangeProfile = (file) => {
         setProfilePic(file);
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         // setValue({name:"oppai"})
-    },[])
+    }, [])
 
     console.log(values)
     console.log(errors)
@@ -58,20 +58,20 @@ function Students(props) {
 
 
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                        onClick={() => setModalType("Add")}>
-                                    <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                    onClick={() => setModalType("Add")}>
+                                    <FeatherIcon className={"action-icons text-white"} icon={"plus"} />
                                     Add
                                 </button>
 
 
                                 <button className={"btn btn-secondary students-dropdown-btn"} type="button"
-                                        aria-expanded="false">
-                                    <FeatherIcon className={"action-icons text-white"} icon={"download"}/>
+                                    aria-expanded="false">
+                                    <FeatherIcon className={"action-icons text-white"} icon={"download"} />
                                     Import Data
                                 </button>
                                 <button className={"btn btn-secondary students-dropdown-btn"} type="button"
-                                        aria-expanded="false">
+                                    aria-expanded="false">
                                     Export Data
                                 </button>
                             </div>
@@ -80,32 +80,32 @@ function Students(props) {
                     <div className={"table-container p-2 pt-0"}>
                         <table className={"table table-hover table-striped"}>
                             <thead>
-                            <tr className={"position-sticky top-0 pt-1 h-45"}>
-                                <th scope="col">No</th>
-                                <th scope="col">Reg.No</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Stream</th>
-                                <th scope="col">Join Date</th>
-                                <th scope="col"></th>
-                            </tr>
+                                <tr className={"position-sticky top-0 pt-1 h-45"}>
+                                    <th scope="col">No</th>
+                                    <th scope="col">Reg.No</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Stream</th>
+                                    <th scope="col">Join Date</th>
+                                    <th scope="col"></th>
+                                </tr>
                             </thead>
                             <tbody>
-                            {studentsList.map((data, index) => (<tr key={index + "asd"}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{data.Reg}</td>
-                                <td>{data.name}</td>
-                                <td>{data.stream}</td>
-                                <td>{data.joindate}</td>
-                                <td>
+                                {studentsList.map((data, index) => (<tr key={index + "asd"}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{data.Reg}</td>
+                                    <td>{data.name}</td>
+                                    <td>{data.stream}</td>
+                                    <td>{data.joindate}</td>
+                                    <td>
 
 
-                                    <FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"
-                                                 data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>
-                                    <FeatherIcon className={"action-icons"} icon={"edit"} data-bs-toggle="modal"
-                                                 data-bs-target="#exampleModal" onClick={() => setModalType("Edit")}/>
-                                    <FeatherIcon className={"action-icons text-red"} icon={"trash-2"}/>
-                                </td>
-                            </tr>))}
+                                        <FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal" onClick={() => setModalType("View")} />
+                                        <FeatherIcon className={"action-icons"} icon={"edit"} data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal" onClick={() => setModalType("Edit")} />
+                                        <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} />
+                                    </td>
+                                </tr>))}
                             </tbody>
                         </table>
                     </div>
@@ -114,17 +114,17 @@ function Students(props) {
 
 
             <div className={"modal fade"} id="exampleModal" aria-labelledby="exampleModalLabel"
-                 aria-hidden="true">
+                aria-hidden="true">
                 <div className={"modal-dialog modal-dialog-centered box-popup modal-lg modal-dialog-scrollable"}>
                     <div className={"modal-content"}>
                         <div className={"modal-header"}>
                             <h1 className={"modal-title fs-5"} id="exampleModalLabel">{modalType} Students Details</h1>
                             <button type="button" className={"btn-close"} onClick={() => {
-                               setValue(mapObject(values, function(val, key) {
+                                setValue(mapObject(values, function (val, key) {
                                     return val = '';
                                 }))
                             }} data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
+                                aria-label="Close"></button>
                         </div>
                         <form className="modal-body" onSubmit={handleSubmit}>
                             <div>
@@ -135,101 +135,121 @@ function Students(props) {
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label">Name</label>
                                                 <input name={"name"} placeholder={"Enter Name"}
-                                                       className={`form-control ${errors.name ? "border-red" : ""}`}
-                                                       id="exampleInputEmail1"
-                                                       onChange={handleChange}
-                                                       value={values.name}
-                                                    />
+                                                    className={`form-control ${errors.name ? "border-red" : ""}`}
+                                                    id="exampleInputEmail1"
+                                                    onChange={handleChange}
+                                                    value={values.name}
+                                                />
                                                 {errors.name && <p className={"warning-text"}>{errors.name}</p>}
 
                                             </div>
                                         </div>
                                         <div className={"col-md-6"}>
                                             <div className="mb-3">
-                                                <label htmlFor="exampleInputEmail1" className="form-label">Nic
+                                                <label htmlFor="exampleInputEmail1" className="form-label">NIC
                                                     No</label>
-                                                <input type="email" name={"nicNo"} placeholder={"Enter Nic No"}
-                                                       className="form-control" id="exampleInputEmail1"
-
-                                                       aria-describedby="emailHelp"/>
+                                                <input name={"nicNo"} placeholder={"Enter NIC No"}
+                                                    className={`form-control ${errors.nicNo ? "border-red" : ""}`} id="exampleInputEmail1"
+                                                    onChange={handleChange}
+                                                    value={values.nicNo}
+                                                    aria-describedby="emailHelp" />
+                                                {errors.nicNo && <p className={"warning-text"}>{errors.nicNo}</p>}
                                             </div>
                                         </div>
                                         <div className={"col-md-6"}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1"
-                                                       className="form-label">Address</label>
-                                                <input type="email" name={"address"} placeholder={"Enter Address"}
-                                                       className="form-control" id="exampleInputEmail1"
-                                                       aria-describedby="emailHelp"/>
+                                                    className="form-label">Address</label>
+                                                <input name={"address"} placeholder={"Enter Address"}
+                                                    className={`form-control ${errors.address ? "border-red" : ""}`}
+                                                    id="exampleInputEmail1"
+                                                    onChange={handleChange}
+                                                    value={values.address}
+                                                    aria-describedby="emailHelp" />
+                                                {errors.address && <p className={"warning-text"}>{errors.address}</p>}
                                             </div>
                                         </div>
                                         <div className={"col-md-6"}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label">Contact
                                                     No</label>
-                                                <input type="email" name={"phoneNumber"}
-                                                       placeholder={"Enter Contact No"}
-                                                       className="form-control" id="exampleInputEmail1"
-                                                       aria-describedby="emailHelp"/>
+                                                <input name={"phoneNumber"}
+                                                    placeholder={"Enter Contact No"}
+                                                    className={`form-control ${errors.phoneNumber ? "border-red" : ""}`} id="exampleInputEmail1"
+                                                    onChange={handleChange}
+                                                    value={values.phoneNumber}
+                                                    aria-describedby="emailHelp" />
+                                                {errors.phoneNumber && <p className={"warning-text"}>{errors.phoneNumber}</p>}
                                             </div>
                                         </div>
                                         <div className={"col-md-6"}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
                                                 <input type="email" name={"email"} placeholder={"Enter Email"}
-                                                       className="form-control" id="exampleInputEmail1"
-                                                       aria-describedby="emailHelp"/>
+                                                    className="form-control" id="exampleInputEmail1"
+                                                    aria-describedby="emailHelp" />
                                             </div>
                                         </div>
                                         <div className={"col-md-6"}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1"
-                                                       className="form-label">Gender</label>
-                                                <select className="form-select" placeholder={"Enter Contact No"}
-                                                        aria-label="Default select example">
+                                                    className="form-label">Gender</label>
+                                                <select className={`form-control ${errors.gender ? "border-red" : ""}`}
+                                                    onChange={handleChange}
+                                                    value={values.gender}
+                                                    name={"gender"}
+                                                    aria-label="Default select example">
                                                     <option>Gender</option>
                                                     <option value="Male">Male</option>
                                                     <option value="Female">Female</option>
                                                     <option value="Not Specified">Not Specified</option>
                                                 </select>
+                                                {errors.gender && <p className={"warning-text"}>{errors.gender}</p>}
                                             </div>
                                         </div>
                                         <div className={"col-md-6"}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label">Date of
                                                     Birth</label>
-                                                <input id="startDate" className="form-control" type="date"/>
+                                                <input id="startDate" className={`form-control ${errors.dob ? "border-red" : ""}`}
+                                                    onChange={handleChange}
+                                                    name={"dob"}
+                                                    type="date" />
+                                                {errors.dob && <p className={"warning-text"}>{errors.dob}</p>}
                                             </div>
                                         </div>
                                         <div className={"col-md-6"}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1"
-                                                       className="form-label">Subjects</label>
-                                                <div className={`form-control p-0`}>
+                                                    className="form-label">Subjects</label>
+                                                <div className={`form-control ${errors.subjects ? "border-red" : ""} p-0`}>
                                                     <MultiSelect
-                                                        className={"multi-select"}
+                                                        // className={`form-control`}
+                                                        // onChange={handleChange}
+                                                        value={values.subjects}
                                                         options={buyerOption}
                                                         selected={selectedBuyer}
                                                         onSelectedChanged={multiSelectOnChangeBuyer}
                                                     />
                                                 </div>
+                                                {errors.subjects && <p className={"warning-text"}>{errors.subjects}</p>}
                                             </div>
                                         </div>
                                         <div className={"col-md-12"}>
                                             <div className="mb-3">
                                                 <label htmlFor="exampleInputEmail1" className="form-label d-block">Profile
-                                                    pic</label>
+                                                    Picture</label>
                                                 <FileUploader handleChange={handleChangeProfile}>
                                                     <div className={"file-uploader-container"}>
-                                                        <img src={uploadIcon} width={"27%"}/>
+                                                        <img src={uploadIcon} width={"27%"} />
                                                         {!profilePic?.name ? <div>
-                                                                <div className={"fw-semibold my-2"}>Drop or Select file
-                                                                </div>
-                                                                <div className={""}>Drop files here or click <span
-                                                                    className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                                    your machine
-                                                                </div>
-                                                            </div> :
+                                                            <div className={"fw-semibold my-2"}>Drop or Select file
+                                                            </div>
+                                                            <div className={""}>Drop files here or click <span
+                                                                className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                                your machine
+                                                            </div>
+                                                        </div> :
                                                             <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
                                                         }
                                                     </div>
@@ -243,15 +263,15 @@ function Students(props) {
                                                     Front</label>
                                                 <FileUploader handleChange={handleChangeProfile}>
                                                     <div className={"file-uploader-container"}>
-                                                        <img src={uploadIcon} width={"27%"}/>
+                                                        <img src={uploadIcon} width={"27%"} />
                                                         {!profilePic?.name ? <div>
-                                                                <div className={"fw-semibold my-2"}>Drop or Select file
-                                                                </div>
-                                                                <div className={""}>Drop files here or click <span
-                                                                    className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                                    your machine
-                                                                </div>
-                                                            </div> :
+                                                            <div className={"fw-semibold my-2"}>Drop or Select file
+                                                            </div>
+                                                            <div className={""}>Drop files here or click <span
+                                                                className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                                your machine
+                                                            </div>
+                                                        </div> :
                                                             <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
                                                         }
                                                     </div>
@@ -265,15 +285,15 @@ function Students(props) {
                                                     Back</label>
                                                 <FileUploader handleChange={handleChangeProfile}>
                                                     <div className={"file-uploader-container"}>
-                                                        <img src={uploadIcon} width={"27%"}/>
+                                                        <img src={uploadIcon} width={"27%"} />
                                                         {!profilePic?.name ? <div>
-                                                                <div className={"fw-semibold my-2"}>Drop or Select file
-                                                                </div>
-                                                                <div className={""}>Drop files here or click <span
-                                                                    className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                                    your machine
-                                                                </div>
-                                                            </div> :
+                                                            <div className={"fw-semibold my-2"}>Drop or Select file
+                                                            </div>
+                                                            <div className={""}>Drop files here or click <span
+                                                                className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                                your machine
+                                                            </div>
+                                                        </div> :
                                                             <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
                                                         }
                                                     </div>
@@ -287,7 +307,7 @@ function Students(props) {
                             <div className={"modal-footer"}>
                                 <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel
                                 </button>
-                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Add
                                 </button>
                             </div>
                         </form>
@@ -302,3 +322,4 @@ function Students(props) {
 }
 
 export default Students;
+

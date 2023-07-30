@@ -13,6 +13,7 @@ import Login from "./components/login/login";
 import Loader from "./components/utils-components/loader";
 import Usage from "./components/usage";
 import ConfirmationDialog from "./components/utils-components/confirmation-dialog";
+import StudentProfile from "./components/student/studentProfile";
 
 function App() {
     return (
@@ -32,6 +33,7 @@ function App() {
                 <Route path="/logout" element={<Login/>}/>
                 <Route path="/logout" element={<Settings/>}/>
                 <Route path="/usage" element={<Usage/>}/>
+                <Route path="/profile" element={<StudentProfile/>}/>
 
             </Routes>
         </div>
