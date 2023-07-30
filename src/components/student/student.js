@@ -90,13 +90,13 @@ function Students(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                            {studentsList.map((data, index) => (<tr key={index + "asd"}>
-                                <th scope="row">{index + 1}</th>
-                                <td>{data.Reg}</td>
-                                <td>{data.name}</td>
-                                <td>{data.stream}</td>
-                                <td>{data.joindate}</td>
-                                <td className={"table-action"}>
+                                {studentsList.map((data, index) => (<tr key={index + "asd"}>
+                                    <th scope="row">{index + 1}</th>
+                                    <td>{data.Reg}</td>
+                                    <td>{data.name}</td>
+                                    <td>{data.stream}</td>
+                                    <td>{data.joindate}</td>
+                                    <td className={"table-action"}>
 
 
                                         <FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"

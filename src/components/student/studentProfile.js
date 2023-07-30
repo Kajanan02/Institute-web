@@ -25,83 +25,84 @@ function StudentProfile() {
             <div className="container text-left pt-5">
                 <div><h3 className={"content-heading pb-3"}>View Students Details</h3></div>
                 <div className="row">
-                    <div className="col-md-auto view-div shadow-sm p-3 mb-5 bg-white rounded text-center p-4 col-s">
-                        <div className="flex flex-column justify-content-center align-items-center">
-                            <img
-                                className="avatar proImg"
-                                src={user.imageUrl}
-                                alt={'Photo of ' + user.name}
-                                style={{
-                                    width: user.imageSize,
-                                    height: user.imageSize
-                                }}
-                            />
-                            <h4>{user.name}</h4>
+                    <div className="col-md-auto shadow-sm p-3 mb-5 bg-white rounded text-center p-4">
+                        <div className={"row"}>
+                            <div className="flex flex-column">
+                                <img
+                                    className="avatar profile-img float-start"
+                                    src={user.imageUrl}
+                                    alt={'Photo of ' + user.name}
+                                    style={{
+                                        width: user.imageSize,
+                                        height: user.imageSize
+                                    }}
+                                />
+                                <h4 className={"profile-name text-indent"}>{user.name}</h4>
+                                <h4 className={"profile-name text-indent profile-view-text"}>Student</h4>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="col-8 view-div shadow-sm p-3 mb-5 bg-white rounded">
                         <div>
                             <div className={"pop-up-form-container"}>
-                                <div className={"row"}>
+                                <div className={"row label-align mt-3"}>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Name:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail2" className="form-label tx1">V. Janushankan</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">Name:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail2" className="form-label">V. Janushankan</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">NIC No:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label tx1">200028000530</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">NIC No:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">200028000530</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Address:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label tx1">No. 132/ 141, Nilaveli Road, Alesgarden, Trincomalee.</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">Address:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">No. 132/ 141, Nilaveli Road, Alesgarden, Trincomalee.</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Contact No:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label tx1">0711439088</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">Contact No:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">0711439088</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Email:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label tx1">janushankan1006@gmail.com</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">Email:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">janushankan1006@gmail.com</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Gender:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label tx1">Male</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">Gender:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">Male</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Date of Birth:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label tx1">10/06/2000</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">Date of Birth:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">10/06/2000</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Subjects:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label tx1">Combined Mathematics, Physics</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">Subjects:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">Combined Mathematics, Physics</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1" className="form-label">NIC Front:&nbsp;</label>
                                             <img
-                                                className="avatar"
+                                                className="avatar profile-img-display"
                                                 src={user.imageUrl}
                                                 alt={'Photo of ' + user.nicFront}
                                                 style={{
-                                                    width: 150,
-                                                    height: 100,
+                                                    width: 300,
+                                                    height: 200,
                                                     borderRadius: 12,
                                                 }}
                                             />
@@ -111,12 +112,12 @@ function StudentProfile() {
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1" className="form-label">NIC Back:&nbsp;</label>
                                             <img
-                                                className="avatar"
+                                                className="avatar profile-img-display"
                                                 src={user.imageUrl}
                                                 alt={'Photo of ' + user.nicBack}
                                                 style={{
-                                                    width: 150,
-                                                    height: 100,
+                                                    width: 300,
+                                                    height: 200,
                                                     borderRadius: 12,
                                                 }}
                                             />

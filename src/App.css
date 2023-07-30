@@ -365,10 +365,12 @@
     .table-container {
         overflow: scroll;
     }
+
     .table-container table {
         min-width: 700px !important;
     }
-    .table-btn-container{
+
+    .table-btn-container {
         margin-top: 24px;
     }
 }
@@ -456,7 +458,8 @@
 .h-45 {
     height: 45px !important;
 }
-.nav-shadow{
+
+.nav-shadow {
     position: fixed;
     display: none;
     -webkit-box-align: center;
@@ -465,8 +468,8 @@
     justify-content: center;
     inset: 0px;
     margin-left: auto;
-    opacity:0;
-    transition:visibility 0.1s linear,opacity 0.1s linear;
+    opacity: 0;
+    transition: visibility 0.1s linear, opacity 0.1s linear;
     -webkit-tap-highlight-color: transparent;
     background-color: #181818ab;
     z-index: 9;
@@ -478,13 +481,17 @@
         width: 0 !important;
         overflow: hidden !important;
     }
-    .nav-shadow{
-        display: flex !important;;
+
+    .nav-shadow {
+        display: flex !important;
+        ;
     }
-    .mobile-hide{
+
+    .mobile-hide {
         display: none !important;
     }
-    .mobile-show{
+
+    .mobile-show {
         display: block !important;
         width: 280px !important;
         z-index: 999;
@@ -493,32 +500,34 @@
     }
 }
 
-.nav-iconset .collapse:not(.show){
+.nav-iconset .collapse:not(.show) {
     display: flex !important;
 }
-.container-widget{
+
+.container-widget {
     padding: 3rem;
 }
-.table-action{
+
+.table-action {
     min-width: 110px;
 }
-@media (max-width: 992px){
+
+@media (max-width: 992px) {
     .container-widget {
-        padding:  3rem 0;
-       width: 100%;
+        padding: 3rem 0;
+        width: 100%;
     }
 }
-@media (max-width: 767px)
-.sa-table-width {
-    width: 600px!important;
-}
-.view-div {
-    background-color: #fff;
+
+@media (max-width: 767px) {
+    .sa-table-width {
+        width: 600px !important;
+    }
 }
 
-.col-s {
+/* .margin-right-gap {
     margin-right: 2.5rem !important;
-}
+} */
 
 .modal-footer {
     position: sticky;
@@ -526,10 +535,27 @@
     background-color: #fff !important;
 }
 
-.proImg {
+.profile-img {
     border-radius: 50%;
+    padding: auto;
 }
 
-.tx1 {
+.profile-view-text {
     color: #7C7C7C;
-} 
+}
+
+.profile-name {
+    text-align: left;
+}
+
+.text-indent {
+    text-indent: 50px;
+}
+
+.label-align {
+    text-align: start;
+}
+
+.profile-img-display {
+    display: flex;
+}
