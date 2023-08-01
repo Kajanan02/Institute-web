@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import MultiSelect from "@khanacademy/react-multi-select";
 import { subjectData } from "./damiData";
 
 function StudentProfile() {
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
+
     const user = {
         name: 'V. Janushankan',
         imageUrl: 'https://i.imgur.com/yXOvdOSs.jpg',
@@ -15,10 +19,22 @@ function StudentProfile() {
         mail: "janushankan1006@gmail.com",
         gender: "Male",
         dob: "10/06/2023",
-        subjects: ["Combined Mathematics", "Physics"]
+        subjects: ["Combined Mathematics", "Physics"],
+        nicFront: 'https://i.imgur.com/yXOvdOSs.jpg',
+        nicBack: 'https://i.imgur.com/yXOvdOSs.jpg',
     };
 
+
     const buyerOption = subjectData;
+
+    const openModal = (imageUrl, imageCaption) => {
+        setSelectedImage({ url: imageUrl, caption: imageCaption });
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     return (
         <Layout>
@@ -95,32 +111,56 @@ function StudentProfile() {
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">NIC Front:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">NIC Front:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display"
-                                                src={user.imageUrl}
-                                                alt={'Photo of ' + user.nicFront}
+                                                src={user.nicFront}
+                                                alt={'Photo of ' + user.name + ' (NIC Front)'}
                                                 style={{
-                                                    width: 300,
-                                                    height: 200,
+                                                    width: 90,
+                                                    height: 90,
                                                     borderRadius: 12,
+                                                    cursor: 'pointer',
                                                 }}
+                                                onClick={() => openModal(user.nicFront, 'NIC Front Image')}
                                             />
+                                            {modalOpen && (
+                                                <div className="nic-expand-modal" onClick={closeModal}>
+                                                    <div className="nic-modal-content" onClick={(e) => e.stopPropagation()}>
+                                                        <span className="nic-close" onClick={closeModal}>
+                                                            &times;
+                                                        </span>
+                                                        <img src={'https://i.imgur.com/yXOvdOSs.jpg'} alt={`NIC Front`} className="nic-enlarged-image" />
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1" className="form-label">NIC Back:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">NIC Back:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display"
-                                                src={user.imageUrl}
-                                                alt={'Photo of ' + user.nicBack}
+                                                src={user.nicFront}
+                                                alt={'Photo of ' + user.name + ' (NIC Front)'}
                                                 style={{
-                                                    width: 300,
-                                                    height: 200,
+                                                    width: 90,
+                                                    height: 90,
                                                     borderRadius: 12,
+                                                    cursor: 'pointer',
                                                 }}
+                                                onClick={() => openModal(user.nicBack, 'NIC Back Image')}
                                             />
+                                            {modalOpen && (
+                                                <div className="nic-expand-modal" onClick={closeModal}>
+                                                    <div className="nic-modal-content" onClick={(e) => e.stopPropagation()}>
+                                                        <span className="nic-close" onClick={closeModal}>
+                                                            &times;
+                                                        </span>
+                                                        <img src={'https://i.imgur.com/yXOvdOSs.jpg'} alt={`NIC Back`} className="nic-enlarged-image" />
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 
