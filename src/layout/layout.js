@@ -21,14 +21,11 @@ function Layout({children}) {
         // setOpen(!open)
     }
 
-    console.log(open);
-    console.log(show);
-
     return (
         <div className="container-fluid">
             <div className="row flex-nowrap overflow-auto">
                 <div
-                    className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-white border-right min-vh-100 trans"}>
+                    className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-default border-right min-vh-100 trans"}>
                     <div className={"close-btn-container mobile-hide"} onClick={toggleDrawer}>
                         <img src={SideClose} alt="SideClose" className={!!open && "rotate-180"}/>
                     </div>
