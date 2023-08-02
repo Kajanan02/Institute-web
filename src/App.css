@@ -616,8 +616,8 @@ body {
 }
 
 .nic-enlarged-image {
-    /* width: 450px;
-    height: 300px; */
+    width: 100%;
+    max-height: none;
     max-height: 90%;
     border-radius: 8px;
 }

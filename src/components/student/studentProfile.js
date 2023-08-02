@@ -20,8 +20,8 @@ function StudentProfile() {
         gender: "Male",
         dob: "10/06/2023",
         subjects: ["Combined Mathematics", "Physics"],
-        nicFront: 'https://i.imgur.com/yXOvdOSs.jpg',
-        nicBack: 'https://i.imgur.com/yXOvdOSs.jpg',
+        nicFront: 'https://www.w3schools.com/bootstrap5/cinqueterre.jpg',
+        nicBack: 'https://www.w3schools.com/bootstrap5/cinqueterre.jpg',
     };
 
 
@@ -130,7 +130,7 @@ function StudentProfile() {
                                                         <span className="nic-close" onClick={closeModal}>
                                                             &times;
                                                         </span>
-                                                        <img src={'https://i.imgur.com/yXOvdOSs.jpg'} alt={`NIC Front`} className="nic-enlarged-image" />
+                                                        <img src={user.nicFront} alt={`NIC Front`} className="nic-enlarged-image" />
                                                     </div>
                                                 </div>
                                             )}
@@ -140,8 +140,8 @@ function StudentProfile() {
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1" className="form-label profile-view-text">NIC Back:&nbsp;</label>
                                             <img
-                                                className="avatar profile-img-display"
-                                                src={user.nicFront}
+                                                className="avatar profile-img-display img-fluid"
+                                                src={user.nicBack}
                                                 alt={'Photo of ' + user.name + ' (NIC Front)'}
                                                 style={{
                                                     width: 90,
@@ -157,7 +157,7 @@ function StudentProfile() {
                                                         <span className="nic-close" onClick={closeModal}>
                                                             &times;
                                                         </span>
-                                                        <img src={'https://i.imgur.com/yXOvdOSs.jpg'} alt={`NIC Back`} className="nic-enlarged-image" />
+                                                        <img src={user.nicBack} alt={`NIC Back`} className="nic-enlarged-image" />
                                                     </div>
                                                 </div>
                                             )}
