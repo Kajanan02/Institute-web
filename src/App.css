@@ -9,6 +9,12 @@
 .bg-f3f3f3 {
     background-color: #f3f3f3 !important;
 }
+body{
+    background-color: rgb(249, 250, 251) !important;
+}
+.bg-default {
+    background-color:rgb(249, 250, 251)!important;
+}
 
 .red-dot {
     position: absolute;
@@ -156,11 +162,18 @@
     box-shadow: 0px 0px 8px #0000000A;
     border: 0.23999999463558197px solid #EDEDED;
     opacity: 1;
-    padding-bottom: 16px;
+    /*padding-bottom: 16px;*/
+    border-radius:9px ;
     max-width: 841px;
     max-height: calc(100vh - 100px);
     margin: 0px auto;
     overflow: auto;
+}
+.sa-popup-content {
+    width: calc(100% - 16px);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .sa-popup-header {
@@ -178,7 +191,7 @@
     font: normal normal normal 20px/30px Poppins;
     font-weight: 600;
     color: #1D283D;
-    margin-top: 16px;
+    /*margin-top: 16px;*/
     margin-left: 16px;
 }
 
@@ -397,13 +410,12 @@
     font-family: "Poppins", sans-serif;
 }
 
-.pop-up-form-container .form-control::placeholder {
+.pop-up-form-container .form-control::placeholder ,.sa-popup-content .form-control::placeholder{
     color: #868daa;
     /*font-style: italic;*/
 }
 
-.pop-up-form-container .form-control,
-.pop-up-form-container .form-select {
+.pop-up-form-container .form-control, .pop-up-form-container .form-select , .sa-popup-content .form-select {
     background: #fff !important;
     border: 0.75px solid rgba(63, 68, 81, .12156862745098039);
     border-radius: 4px !important;
@@ -603,3 +615,83 @@
     max-height: 90%;
     border-radius: 8px;
 }
+.calender-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    color: rgb(33, 43, 54);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-image: none;
+    position: relative;
+    padding: 20px;
+    margin: 24px 0;
+    box-shadow: rgba(145, 158, 171, 0.16) 0px 4px 8px 0px;
+    border-radius: 16px;
+    z-index: 0;
+}
+.react-calendar-datetime-picker .input-picker .input-picker--input{
+    background: #fff !important;
+    border: 0.75px solid rgba(63, 68, 81, .12156862745098039);
+    border-radius: 4px !important;
+    opacity: 1 !important;
+    color: #868daa !important;
+    height: 36px !important;
+    text-align: left !important;
+}
+
+.modal-header{
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #e5e5e5 !important;
+}
+.sa-popup-footer{
+    position: sticky;
+    bottom:0;
+    padding: 16px;
+    /*float: right;*/
+    border-top: 1px solid #e5e5e5 !important;
+}
+.select-round{
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid rgba(145, 158, 171, 0.16);
+}
+.selected-round{
+    transform: scale(1.3);
+    box-shadow: rgba(136, 136, 136, 0.48) 4px 4px 8px 0px;
+}
+.green-round{
+    background-color: rgb(0, 167, 111);
+}
+.purple-round{
+    background-color: rgb(142, 51, 255);
+}
+.darkBlue-round{
+    background-color: rgb(0, 55, 104);
+}
+.lightGreen-round{
+    background-color: rgb(34, 197, 94);
+}
+.yellow-round{
+    background-color: rgb(255, 171, 0);
+}
+.orange-round{
+    background-color: rgb(255, 112, 0);
+}
+.red-round{
+    background-color: rgb(255, 0, 0);
+}
+.lightBlue-round{
+    background-color: rgb(0, 184, 217);
+}
+/*.ov*/
