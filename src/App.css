@@ -710,4 +710,6 @@ body {
     background-color: rgb(0, 184, 217);
 }
 
-/*.ov*/
+.border-radious-top-9{
+    border-radius: 9px 9px 0 0 !important;
+}
