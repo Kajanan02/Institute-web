@@ -146,7 +146,7 @@ function Calender(props) {
                 {isModelVisible && <div className="sa-popup-bg">
                     <div className="sa-popup">
                         <form onSubmit={handleSubmit} className={'sa-modal-box-style overflow-visible   '}>
-                            <div className="sa-popup-header modal-header ">
+                            <div className="sa-popup-header modal-header border-radious-top-9">
                                 <span className={'sa-model-heading'}>
 
                                     {!isUpdateAvailable ? "Add Event" : "Edit Event"} </span>
