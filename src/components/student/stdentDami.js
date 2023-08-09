@@ -1,25 +1,13 @@
 import React, {useCallback, useState} from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
-import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
 import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
-import {
-    Checkbox,
-    FormControl,
-    Grid,
-    InputLabel,
-    ListItemText,
-    OutlinedInput,
-    Select,
-    Stack,
-    useTheme
-} from "@mui/material";
-import Students from "./student";
+import {Checkbox, FormControl, Grid, InputLabel, ListItemText, OutlinedInput, Select, useTheme} from "@mui/material";
 // import Stack from '@mui/material/Stack';
 // import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
 
@@ -64,7 +52,7 @@ export default function StdentDami(props) {
 
     const handleChange = useCallback((event) => {
         const {
-            target: { value },
+            target: {value},
         } = event;
         setPersonName(
             typeof value === 'string' ? value.split(',') : value,
@@ -347,7 +335,7 @@ export default function StdentDami(props) {
                                 </LocalizationProvider>
                             </Grid>
                             <Grid item xs={12} sm={4}>
-                                <FormControl fullWidth={true} >
+                                <FormControl fullWidth={true}>
                                     <InputLabel id="demo-multiple-checkbox-label" sx={{m: 1}}>Subjects</InputLabel>
                                     <Select
                                         labelId="demo-multiple-checkbox-label"
@@ -357,14 +345,14 @@ export default function StdentDami(props) {
                                         disablePortal
                                         value={personName}
                                         onChange={handleChange}
-                                        input={<OutlinedInput disablePortal label="Tag" />}
+                                        input={<OutlinedInput disablePortal label="Tag"/>}
                                         renderValue={(selected) => selected.join(', ')}
                                         MenuProps={MenuProps}
                                     >
                                         {names.map((name) => (
                                             <MenuItem disablePortal key={name} value={name}>
-                                                <Checkbox checked={personName.indexOf(name) > -1} />
-                                                <ListItemText primary={name} />
+                                                <Checkbox checked={personName.indexOf(name) > -1}/>
+                                                <ListItemText primary={name}/>
                                             </MenuItem>
                                         ))}
                                     </Select>

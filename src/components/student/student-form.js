@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Modal} from "react-bootstrap";
+import {Modal} from "react-bootstrap";
 import MultiSelect from "@khanacademy/react-multi-select";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
 import formHandler from "../../utils/FormHandler";
 import {validateStudent} from "../../utils/validation";
-import {studentData, subjectData} from "./damiData";
+import {subjectData} from "./damiData";
 
 function StudentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
@@ -33,9 +33,9 @@ function StudentForm(props) {
         setProfilePic(file);
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         // setValue({name:"oppai"})
-    },[])
+    }, [])
     return (
         <Modal
             {...props}
@@ -45,13 +45,13 @@ function StudentForm(props) {
             backdrop="static"
             scrollable={true}
         >
-            <Modal.Header closeButton onHide={()=>initForm({})}>
+            <Modal.Header closeButton onHide={() => initForm({})}>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {props.type === "Add" ? "Add Student Details" : "Edit Student Details"}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body scrollable>
-                <form  onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <div>
 
                         <div className={"pop-up-form-container"}>
@@ -74,10 +74,11 @@ function StudentForm(props) {
                                         <label htmlFor="exampleInputEmail1" className="form-label">NIC
                                             No</label>
                                         <input name={"nicNo"} placeholder={"Enter NIC No"}
-                                               className={`form-control ${errors.nicNo ? "border-red" : ""}`} id="exampleInputEmail1"
+                                               className={`form-control ${errors.nicNo ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
                                                onChange={handleChange}
                                                value={values.nicNo}
-                                               aria-describedby="emailHelp" />
+                                               aria-describedby="emailHelp"/>
                                         {errors.nicNo && <p className={"text-red"}>{errors.nicNo}</p>}
                                     </div>
                                 </div>
@@ -90,7 +91,7 @@ function StudentForm(props) {
                                                id="exampleInputEmail1"
                                                onChange={handleChange}
                                                value={values.address}
-                                               aria-describedby="emailHelp" />
+                                               aria-describedby="emailHelp"/>
                                         {errors.address && <p className={"text-red"}>{errors.address}</p>}
                                     </div>
                                 </div>
@@ -100,10 +101,11 @@ function StudentForm(props) {
                                             No</label>
                                         <input name={"phoneNumber"}
                                                placeholder={"Enter Contact No"}
-                                               className={`form-control ${errors.phoneNumber ? "border-red" : ""}`} id="exampleInputEmail1"
+                                               className={`form-control ${errors.phoneNumber ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
                                                onChange={handleChange}
                                                value={values.phoneNumber}
-                                               aria-describedby="emailHelp" />
+                                               aria-describedby="emailHelp"/>
                                         {errors.phoneNumber && <p className={"text-red"}>{errors.phoneNumber}</p>}
                                     </div>
                                 </div>
@@ -112,7 +114,7 @@ function StudentForm(props) {
                                         <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
                                         <input type="email" name={"email"} placeholder={"Enter Email"}
                                                className="form-control" id="exampleInputEmail1"
-                                               aria-describedby="emailHelp" />
+                                               aria-describedby="emailHelp"/>
                                     </div>
                                 </div>
                                 <div className={"col-md-6"}>
@@ -136,10 +138,11 @@ function StudentForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Date of
                                             Birth</label>
-                                        <input id="startDate" className={`form-control ${errors.dob ? "border-red" : ""}`}
+                                        <input id="startDate"
+                                               className={`form-control ${errors.dob ? "border-red" : ""}`}
                                                onChange={handleChange}
                                                name={"dob"}
-                                               type="date" />
+                                               type="date"/>
                                         {errors.dob && <p className={"text-red"}>{errors.dob}</p>}
                                     </div>
                                 </div>
@@ -166,7 +169,7 @@ function StudentForm(props) {
                                             Picture</label>
                                         <FileUploader handleChange={handleChangeProfile}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"} />
+                                                <img src={uploadIcon} width={"27%"}/>
                                                 {!profilePic?.name ? <div>
                                                         <div className={"fw-semibold my-2"}>Drop or Select file
                                                         </div>
@@ -188,7 +191,7 @@ function StudentForm(props) {
                                             Front</label>
                                         <FileUploader handleChange={handleChangeProfile}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"} />
+                                                <img src={uploadIcon} width={"27%"}/>
                                                 {!profilePic?.name ? <div>
                                                         <div className={"fw-semibold my-2"}>Drop or Select file
                                                         </div>
@@ -210,7 +213,7 @@ function StudentForm(props) {
                                             Back</label>
                                         <FileUploader handleChange={handleChangeProfile}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"} />
+                                                <img src={uploadIcon} width={"27%"}/>
                                                 {!profilePic?.name ? <div>
                                                         <div className={"fw-semibold my-2"}>Drop or Select file
                                                         </div>
@@ -233,7 +236,7 @@ function StudentForm(props) {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" className={"btn btn-secondary"} onClick={()=> {
+                <button type="button" className={"btn btn-secondary"} onClick={() => {
                     props.onHide();
                     initForm({});
                 }}>Cancel
