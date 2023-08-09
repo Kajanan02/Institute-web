@@ -168,7 +168,7 @@ function Calender(props) {
                                             onChange={handleChange}
                                             value={values.title || ""}
                                         />
-                                        {errors.title && <p className={"warning-text"}>{errors.title}</p>}
+                                        {errors.title && <p className={"text-red"}>{errors.title}</p>}
 
                                     </div>
                                 </div>
@@ -184,7 +184,7 @@ function Calender(props) {
                                             initValue={values.start}
                                             showTimeInput
                                         />
-                                        {errors.start && <p className={"warning-text"}>{errors.start}</p>}
+                                        {errors.start && <p className={"text-red"}>{errors.start}</p>}
 
                                     </div>
                                 </div>
@@ -200,7 +200,7 @@ function Calender(props) {
                                             withTime
                                             showTimeInput
                                         />
-                                        {errors.end && <p className={"warning-text"}>{errors.end}</p>}
+                                        {errors.end && <p className={"text-red"}>{errors.end}</p>}
 
                                     </div>
                                 </div>

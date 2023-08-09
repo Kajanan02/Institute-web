@@ -35,7 +35,7 @@ function App() {
                 <Route path="/logout" element={<Login />} />
                 <Route path="/logout" element={<Settings />} />
                 <Route path="/usage" element={<Usage />} />
-                <Route path="/profile" element={<StudentProfile />} />
+                <Route path="/profile/:studentId" element={<StudentProfile />} />
 
             </Routes>
         </div>

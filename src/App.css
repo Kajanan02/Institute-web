@@ -326,6 +326,7 @@ body {
     color: #aaa;
     width: 20px;
     margin-right: 10px;
+    cursor: pointer;
 }
 
 .text-red {
@@ -463,11 +464,6 @@ body {
     width: 100% !important;
 }
 
-.warning-text {
-    margin-bottom: 8px;
-    font-size: 14px;
-    color: #FF4343 !important;
-}
 
 .border-red {
     border: 1px solid #FF4343 !important;
