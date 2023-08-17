@@ -216,7 +216,7 @@ export default function StdentDami(props) {
                     <div className={"students_container"}>
                         <div><h3 className={"content-heading"}>Students Details</h3></div>
                         <div className={"students-dropdown-container d-flex justify-content-end pb-3"}>
-                            <div className={"marks-dropdown-container"}>
+                            <div className={"table-btn-container"}>
 
 
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}

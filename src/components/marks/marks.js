@@ -8,6 +8,8 @@ import uploadIcon from "../../assets/uplod-icon.svg";
 import {studentData, subjectData} from "../student/damiData";
 import formHandler from "../../utils/FormHandler";
 import {validateStudent} from "../../utils/validation";
+import {useDispatch, useSelector} from "react-redux";
+import {toggleConfirmationDialog} from "../../redux/actions";
 
 function Marks(props) {
   const [selectedBuyer, setSelectedBuyer] = useState([]);
@@ -55,12 +57,29 @@ function Marks(props) {
   { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
   { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
   { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
+  { No: 4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
   { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
   { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 }])
   console.log(marksList)
   console.log(marksList[0])
   const [modalType, setModalType] = useState("view")
+  const dispatch = useDispatch();
+
+  const confirmationDialog = useSelector(state => {
+    return state.setting.confirmationDialog
+  });
+
+  console.log(confirmationDialog)
+
+  function handleDelete() {
+    dispatch(toggleConfirmationDialog({
+      isVisible: true,
+      confirmationHeading: ('ARE YOU SURE YOU WANT TO DELETE THIS DETAILS'),
+      confirmationDescription: ('THE DELETE ACTION WILL REMOVE THE THIS DETAILS')
+    }));
+  }
+
+  console.log()
 
 
 
@@ -68,10 +87,10 @@ function Marks(props) {
   return (
     <Layout>
       <div className={"container"}>
-        <div className={"p-5"}>
+        <div className={"ncontainer-widget"}>
           <div className={"students_marks_container"}>
             <div><h3 className={"content-heading"}>Students Marks</h3></div>
-            <div className={"marks-dropdown-container d-flex justify-content-end pb-3"}>
+            <div className={"table-btn-container d-flex justify-content-end pb-3"}>
               <div className={"dropdown"}>
                 <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Stream
@@ -118,7 +137,7 @@ function Marks(props) {
               </thead>
               <tbody>
                 {marksList.map((data, index) => (<tr>
-                  <th scope="row">{data.No}</th>
+                  <th scope="row">{index + 1}</th>
                   <td>{data.Reg}</td>
                   <td>{data.name}</td>
                   <td>{data.subject}</td>
@@ -129,7 +148,7 @@ function Marks(props) {
                                    data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>
                     <FeatherIcon className={"action-icons"} icon={"edit"} data-bs-toggle="modal"
                                  data-bs-target="#exampleModal" onClick={() => setModalType("Edit")}/>
-                    <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} /></td>
+                    <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={handleDelete}/></td>
                 </tr>))}
               </tbody>
             </table>
@@ -169,59 +188,11 @@ function Marks(props) {
                     </div>
                     <div className={"col-md-6"}>
                       <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label">Nic
-                          No</label>
-                        <input type="email" name={"nicNo"} placeholder={"Enter Nic No"}
-                               className="form-control" id="exampleInputEmail1"
-
-                               aria-describedby="emailHelp"/>
-                      </div>
-                    </div>
-                    <div className={"col-md-6"}>
-                      <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1"
-                               className="form-label">Address</label>
-                        <input type="email" name={"address"} placeholder={"Enter Address"}
+                        <label htmlFor="exampleInputEmail1" className="form-label">Reg.No</label>
+                        <input type="number" name={"RegisterNumber"}
+                               placeholder={"Enter Registration No"}
                                className="form-control" id="exampleInputEmail1"
                                aria-describedby="emailHelp"/>
-                      </div>
-                    </div>
-                    <div className={"col-md-6"}>
-                      <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label">Contact
-                          No</label>
-                        <input type="email" name={"phoneNumber"}
-                               placeholder={"Enter Contact No"}
-                               className="form-control" id="exampleInputEmail1"
-                               aria-describedby="emailHelp"/>
-                      </div>
-                    </div>
-                    <div className={"col-md-6"}>
-                      <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
-                        <input type="email" name={"email"} placeholder={"Enter Email"}
-                               className="form-control" id="exampleInputEmail1"
-                               aria-describedby="emailHelp"/>
-                      </div>
-                    </div>
-                    <div className={"col-md-6"}>
-                      <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1"
-                               className="form-label">Gender</label>
-                        <select className="form-select" placeholder={"Enter Contact No"}
-                                aria-label="Default select example">
-                          <option>Gender</option>
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                          <option value="Not Specified">Not Specified</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className={"col-md-6"}>
-                      <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label">Date of
-                          Birth</label>
-                        <input id="startDate" className="form-control" type="date"/>
                       </div>
                     </div>
                     <div className={"col-md-6"}>
@@ -238,71 +209,19 @@ function Marks(props) {
                         </div>
                       </div>
                     </div>
-                    <div className={"col-md-12"}>
+                    <div className={"col-md-6"}>
                       <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label d-block">Profile
-                          pic</label>
-                        <FileUploader handleChange={handleChangeProfile}>
-                          <div className={"file-uploader-container"}>
-                            <img src={uploadIcon} width={"27%"}/>
-                            {!profilePic?.name ? <div>
-                                  <div className={"fw-semibold my-2"}>Drop or Select file
-                                  </div>
-                                  <div className={""}>Drop files here or click <span
-                                      className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                    your machine
-                                  </div>
-                                </div> :
-                                <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
-                            }
-                          </div>
-                        </FileUploader>
+                        <label htmlFor="exampleInputEmail1" className="form-label">Marks</label>
+                        <input type="number" name={"marks"}
+                               placeholder={"Enter Marks"}
+                               className="form-control" id="exampleInputEmail1"
+                               aria-describedby="emailHelp"/>
                       </div>
                     </div>
 
-                    <div className={"col-md-12"}>
-                      <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label d-block">NIC
-                          Front</label>
-                        <FileUploader handleChange={handleChangeProfile}>
-                          <div className={"file-uploader-container"}>
-                            <img src={uploadIcon} width={"27%"}/>
-                            {!profilePic?.name ? <div>
-                                  <div className={"fw-semibold my-2"}>Drop or Select file
-                                  </div>
-                                  <div className={""}>Drop files here or click <span
-                                      className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                    your machine
-                                  </div>
-                                </div> :
-                                <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
-                            }
-                          </div>
-                        </FileUploader>
-                      </div>
-                    </div>
 
-                    <div className={"col-md-12"}>
-                      <div className="mb-3">
-                        <label htmlFor="exampleInputEmail1" className="form-label d-block">NIC
-                          Back</label>
-                        <FileUploader handleChange={handleChangeProfile}>
-                          <div className={"file-uploader-container"}>
-                            <img src={uploadIcon} width={"27%"}/>
-                            {!profilePic?.name ? <div>
-                                  <div className={"fw-semibold my-2"}>Drop or Select file
-                                  </div>
-                                  <div className={""}>Drop files here or click <span
-                                      className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                    your machine
-                                  </div>
-                                </div> :
-                                <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
-                            }
-                          </div>
-                        </FileUploader>
-                      </div>
-                    </div>
+
+
                   </div>
                 </div>
               </div>
