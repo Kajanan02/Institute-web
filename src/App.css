@@ -709,10 +709,12 @@ body {
 .lightBlue-round {
     background-color: rgb(0, 184, 217);
 }
-.border-radious-top-9{
+
+.border-radious-top-9 {
     border-radius: 9px 9px 0 0 !important;
 }
-.default-container{
+
+.default-container {
     max-height: calc(100vh - 270px);
     border: 0.75px solid rgba(63, 68, 81, .12156862745098039);
     background-color: #fff;
@@ -721,4 +723,44 @@ body {
     box-shadow: rgba(145, 158, 171, 0.16) 0px 4px 8px 0px;
     border-radius: 7px;
     padding: 16px;
+}
+
+/* Example CSS for FormStepper component */
+.form-stepper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stepper-circle {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+}
+
+.stepper-circle.active {
+    border-color: #00AB55;
+    color: #00AB55;
+}
+
+.stepper-line {
+    width: 140px;
+    height: 2px;
+    background-color: #ccc;
+    margin: 0 10px;
+}
+
+/* Example CSS for step text */
+.step-text {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
 }

@@ -1,16 +1,22 @@
-import React, {useEffect, useState} from 'react';
-import {Modal} from "react-bootstrap";
+import React, { useEffect, useState } from 'react';
+import { Modal } from "react-bootstrap";
 import MultiSelect from "@khanacademy/react-multi-select";
-import {FileUploader} from "react-drag-drop-files";
+import { FileUploader } from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
 import formHandler from "../../utils/FormHandler";
-import {validateStudent} from "../../utils/validation";
-import {subjectData} from "./damiData";
+import { validateStudent } from "../../utils/validation";
+import { validateParent } from "../../utils/validation";
+import { subjectData } from "./damiData";
+import FormStepper from "./FormStepper";
 
 function StudentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const buyerOption = subjectData;
     const [profilePic, setProfilePic] = useState(null);
+    const [nicFront, setNicFront] = useState(null);
+    const [nicBack, setNicBack] = useState(null);
+    const [currentStep, setCurrentStep] = useState(1);
+    const [formSubmitted, setFormSubmitted] = useState(false);
     const {
         handleChange,
         handleSubmit,
@@ -18,7 +24,7 @@ function StudentForm(props) {
         initForm,
         values,
         errors,
-    } = formHandler(isLoading, validateStudent);
+    } = formHandler(isLoading, currentStep === 1 ? validateStudent : validateParent);
 
     function isLoading() {
         console.log("All are done")
@@ -33,9 +39,48 @@ function StudentForm(props) {
         setProfilePic(file);
     };
 
+    const handleChangeNicFront = (file) => {
+        setNicFront(file);
+    };
+
+    const handleChangeNicBack = (file) => {
+        setNicBack(file);
+    };
+
+    const handleNextStep = () => {
+        if (currentStep === 1) {
+            handleSubmit()
+            // Validate student details form before moving to the next step
+            if (validateStudent(values)) {
+                setCurrentStep(2);
+            }
+        }
+    };
+
+    const handleFormSubmit = () => {
+        handleSubmit()
+        // Handle form submission logic here
+        if (currentStep === 1) {
+            if (validateStudent(values)) {
+                setFormSubmitted(true);
+            }
+        } else if (currentStep === 2) {
+            // Handle parent details form submission logic here
+            if (validateParent(values)) {
+                setFormSubmitted(true);
+            }
+        }
+    };
+
     useEffect(() => {
-        // setValue({name:"oppai"})
-    }, [])
+        // Initialize the form values when the modal is shown
+        if (props.show) {
+            initForm({});
+            setCurrentStep(1); // Reset step to 1
+            setFormSubmitted(false);
+        }
+    }, [props.show]);
+
     return (
         <Modal
             {...props}
@@ -45,25 +90,32 @@ function StudentForm(props) {
             backdrop="static"
             scrollable={true}
         >
-            <Modal.Header closeButton onHide={() => initForm({})}>
+            <Modal.Header closeButton onHide={() => {
+                if (!formSubmitted) {
+                    initForm({});
+                }
+            }}>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {props.type === "Add" ? "Add Student Details" : "Edit Student Details"}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body scrollable>
-                <form onSubmit={handleSubmit}>
-                    <div>
 
+                <FormStepper currentStep={currentStep} />
+
+                <form>
+                    <div>
+                        <div className="step-text">Step {currentStep}: {currentStep === 1 ? "Student" : "Parent"} Details</div>
                         <div className={"pop-up-form-container"}>
                             <div className={"row"}>
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Name</label>
                                         <input name={"name"} placeholder={"Enter Name"}
-                                               className={`form-control ${errors.name ? "border-red" : ""}`}
-                                               id="exampleInputEmail1"
-                                               onChange={handleChange}
-                                               value={values.name}
+                                            className={`form-control ${errors.name ? "border-red" : ""}`}
+                                            id="exampleInputEmail1"
+                                            onChange={handleChange}
+                                            value={values.name}
                                         />
                                         {errors.name && <p className={"text-red"}>{errors.name}</p>}
 
@@ -74,24 +126,24 @@ function StudentForm(props) {
                                         <label htmlFor="exampleInputEmail1" className="form-label">NIC
                                             No</label>
                                         <input name={"nicNo"} placeholder={"Enter NIC No"}
-                                               className={`form-control ${errors.nicNo ? "border-red" : ""}`}
-                                               id="exampleInputEmail1"
-                                               onChange={handleChange}
-                                               value={values.nicNo}
-                                               aria-describedby="emailHelp"/>
+                                            className={`form-control ${errors.nicNo ? "border-red" : ""}`}
+                                            id="exampleInputEmail1"
+                                            onChange={handleChange}
+                                            value={values.nicNo}
+                                            aria-describedby="emailHelp" />
                                         {errors.nicNo && <p className={"text-red"}>{errors.nicNo}</p>}
                                     </div>
                                 </div>
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
-                                               className="form-label">Address</label>
+                                            className="form-label">Address</label>
                                         <input name={"address"} placeholder={"Enter Address"}
-                                               className={`form-control ${errors.address ? "border-red" : ""}`}
-                                               id="exampleInputEmail1"
-                                               onChange={handleChange}
-                                               value={values.address}
-                                               aria-describedby="emailHelp"/>
+                                            className={`form-control ${errors.address ? "border-red" : ""}`}
+                                            id="exampleInputEmail1"
+                                            onChange={handleChange}
+                                            value={values.address}
+                                            aria-describedby="emailHelp" />
                                         {errors.address && <p className={"text-red"}>{errors.address}</p>}
                                     </div>
                                 </div>
@@ -100,12 +152,12 @@ function StudentForm(props) {
                                         <label htmlFor="exampleInputEmail1" className="form-label">Contact
                                             No</label>
                                         <input name={"phoneNumber"}
-                                               placeholder={"Enter Contact No"}
-                                               className={`form-control ${errors.phoneNumber ? "border-red" : ""}`}
-                                               id="exampleInputEmail1"
-                                               onChange={handleChange}
-                                               value={values.phoneNumber}
-                                               aria-describedby="emailHelp"/>
+                                            placeholder={"Enter Contact No"}
+                                            className={`form-control ${errors.phoneNumber ? "border-red" : ""}`}
+                                            id="exampleInputEmail1"
+                                            onChange={handleChange}
+                                            value={values.phoneNumber}
+                                            aria-describedby="emailHelp" />
                                         {errors.phoneNumber && <p className={"text-red"}>{errors.phoneNumber}</p>}
                                     </div>
                                 </div>
@@ -113,19 +165,19 @@ function StudentForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Email</label>
                                         <input type="email" name={"email"} placeholder={"Enter Email"}
-                                               className="form-control" id="exampleInputEmail1"
-                                               aria-describedby="emailHelp"/>
+                                            className="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" />
                                     </div>
                                 </div>
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
-                                               className="form-label">Gender</label>
+                                            className="form-label">Gender</label>
                                         <select className={`form-control ${errors.gender ? "border-red" : ""}`}
-                                                onChange={handleChange}
-                                                value={values.gender}
-                                                name={"gender"}
-                                                aria-label="Default select example">
+                                            onChange={handleChange}
+                                            value={values.gender}
+                                            name={"gender"}
+                                            aria-label="Default select example">
                                             <option>Gender</option>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
@@ -139,45 +191,66 @@ function StudentForm(props) {
                                         <label htmlFor="exampleInputEmail1" className="form-label">Date of
                                             Birth</label>
                                         <input id="startDate"
-                                               className={`form-control ${errors.dob ? "border-red" : ""}`}
-                                               onChange={handleChange}
-                                               name={"dob"}
-                                               type="date"/>
+                                            className={`form-control ${errors.dob ? "border-red" : ""}`}
+                                            onChange={handleChange}
+                                            name={"dob"}
+                                            type="date" />
                                         {errors.dob && <p className={"text-red"}>{errors.dob}</p>}
                                     </div>
                                 </div>
-                                <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1"
-                                               className="form-label">Subjects</label>
-                                        <div className={`form-control ${errors.subjects ? "border-red" : ""} p-0`}>
-                                            <MultiSelect
-                                                // className={`form-control`}
-                                                // onChange={handleChange}
-                                                value={values.subjects}
-                                                options={buyerOption}
-                                                selected={selectedBuyer}
-                                                onSelectedChanged={multiSelectOnChangeBuyer}
-                                            />
+                                {currentStep === 1 &&
+                                    <div className={"col-md-6"}>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail1"
+                                                className="form-label">Subjects</label>
+                                            <div className={`form-control ${errors.subjects ? "border-red" : ""} p-0`}>
+                                                <MultiSelect
+                                                    // className={`form-control`}
+                                                    // onChange={handleChange}
+                                                    value={values.subjects}
+                                                    options={buyerOption}
+                                                    selected={selectedBuyer}
+                                                    onSelectedChanged={multiSelectOnChangeBuyer}
+                                                />
+                                            </div>
+                                            {errors.subjects && <p className={"text-red"}>{errors.subjects}</p>}
                                         </div>
-                                        {errors.subjects && <p className={"text-red"}>{errors.subjects}</p>}
                                     </div>
-                                </div>
+                                }
+                                {currentStep === 2 &&
+                                    <div className={"col-md-6"}>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail1"
+                                                className="form-label">Relationship to Student</label>
+                                            <select className={`form-control ${errors.relationship ? "border-red" : ""}`}
+                                                onChange={handleChange}
+                                                value={values.relationship}
+                                                name={"relationship"}
+                                                aria-label="Default select example">
+                                                <option>Relationship to Student</option>
+                                                <option value="Male">Father</option>
+                                                <option value="Female">Mother</option>
+                                                <option value="Not Specified">Guardian</option>
+                                            </select>
+                                            {errors.relationship && <p className={"text-red"}>{errors.relationship}</p>}
+                                        </div>
+                                    </div>
+                                }
                                 <div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label d-block">Profile
                                             Picture</label>
                                         <FileUploader handleChange={handleChangeProfile}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
+                                                <img src={uploadIcon} width={"27%"} />
                                                 {!profilePic?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
+                                                    <div className={"fw-semibold my-2"}>Drop or Select file
+                                                    </div>
+                                                    <div className={""}>Drop files here or click <span
+                                                        className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                        your machine
+                                                    </div>
+                                                </div> :
                                                     <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
                                                 }
                                             </div>
@@ -189,18 +262,18 @@ function StudentForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label d-block">NIC
                                             Front</label>
-                                        <FileUploader handleChange={handleChangeProfile}>
+                                        <FileUploader handleChange={handleChangeNicFront}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
-                                                {!profilePic?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
-                                                    <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
+                                                <img src={uploadIcon} width={"27%"} />
+                                                {!nicFront?.name ? <div>
+                                                    <div className={"fw-semibold my-2"}>Drop or Select file
+                                                    </div>
+                                                    <div className={""}>Drop files here or click <span
+                                                        className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                        your machine
+                                                    </div>
+                                                </div> :
+                                                    <div className={"fw-semibold my-2"}>{nicFront?.name}</div>
                                                 }
                                             </div>
                                         </FileUploader>
@@ -211,18 +284,18 @@ function StudentForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label d-block">NIC
                                             Back</label>
-                                        <FileUploader handleChange={handleChangeProfile}>
+                                        <FileUploader handleChange={handleChangeNicBack}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
-                                                {!profilePic?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
-                                                    <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
+                                                <img src={uploadIcon} width={"27%"} />
+                                                {!nicBack?.name ? <div>
+                                                    <div className={"fw-semibold my-2"}>Drop or Select file
+                                                    </div>
+                                                    <div className={""}>Drop files here or click <span
+                                                        className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                        your machine
+                                                    </div>
+                                                </div> :
+                                                    <div className={"fw-semibold my-2"}>{nicBack?.name}</div>
                                                 }
                                             </div>
                                         </FileUploader>
@@ -231,17 +304,40 @@ function StudentForm(props) {
                             </div>
                         </div>
                     </div>
-
-
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <button type="button" className={"btn btn-secondary"} onClick={() => {
-                    props.onHide();
-                    initForm({});
-                }}>Cancel
-                </button>
-                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update
+
+
+                {currentStep === 1 && (
+                    <button
+                        type="button"
+                        className={"btn btn-secondary"}
+                        onClick={() => {
+                            if (!formSubmitted) { // Prevent hiding the modal if the form is submitted
+                                props.onHide();
+                                initForm({});
+                            }
+                        }}
+                    >
+                        Cancel
+                    </button>
+                )}
+                {currentStep === 2 && (
+                    <button
+                        type="button"
+                        className={"btn btn-secondary"}
+                        onClick={() => setCurrentStep(1)}
+                    >
+                        Back
+                    </button>
+                )}
+                <button
+                    type="button"
+                    className={"btn btn-secondary students-dropdown-btn"}
+                    onClick={currentStep === 1 ? handleNextStep : handleFormSubmit}
+                >
+                    {currentStep === 1 ? "Next" : "Update"}
                 </button>
             </Modal.Footer>
         </Modal>
