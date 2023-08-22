@@ -6,11 +6,13 @@ export function validateConfirmationDialog(values) {
 
     return errors;
 }
+
 export function validateConfirmationDialogNoValidation(values) {
     let errors = {};
 
     return errors;
 }
+
 export function validateStudent(values) {
     console.log(values)
     let errors = {};
@@ -24,7 +26,7 @@ export function validateStudent(values) {
     if (!values.address) {
         errors.address = "Address is Required"
     }
-    if (!/\S+@\S+\.\S+/.test(values.email)) {
+    if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
         errors.email = 'Email is not valid';
     }
     if (!values.phoneNumber) {
@@ -44,6 +46,7 @@ export function validateStudent(values) {
 
     return errors;
 }
+
 export function validateParent(values) {
     console.log(values)
     let errors = {};
@@ -57,7 +60,7 @@ export function validateParent(values) {
     if (!values.address) {
         errors.address = "Address is Required"
     }
-    if (!/\S+@\S+\.\S+/.test(values.email)) {
+    if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
         errors.email = 'Email is not valid';
     }
     if (!values.phoneNumber) {
@@ -77,6 +80,7 @@ export function validateParent(values) {
 
     return errors;
 }
+
 export function validateEvent(values) {
     console.log(values)
     let errors = {};
