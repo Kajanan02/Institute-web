@@ -764,3 +764,50 @@ body {
     margin-bottom: 10px;
     font-weight: bold;
 }
+
+/* Accordion styles */
+.accordion-section {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 45px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.dropdown-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    transition: transform 0.3s;
+    margin-left: auto;
+}
+
+.accordion-content {
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.accordion-header .dropdown-icon {
+    transition: transform 0.3s;
+}
+
+.accordion-section.open .accordion-header .dropdown-icon {
+    transform: rotate(180deg);
+}
