@@ -150,7 +150,7 @@ function Layout({children}) {
                     </div>
                 </div>
                 <div className="col p-0">
-                    <nav className="navbar navbar-expand-lg bg-white border-bottom-d1d1d1 px-4">
+                    <nav className="navbar navbar-expand-lg bg-default border-bottom-d1d1d1 px-4">
                         <div className="container-fluid nav-iconset flex-nowrap">
                             <button className="navbar-toggler " type="button" onClick={()=>setShow(!show)}>
                                 <span className="navbar-toggler-icon"></span>

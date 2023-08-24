@@ -777,37 +777,74 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 45px;
-    background-color: #f5f5f5;
+    height: 64px;
+    padding: 0 16px;
+    border-bottom: 1px solid #f2f2f2;
+    background-color: #fff;
     cursor: pointer;
     transition: background-color 0.3s;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
 }
 
+
 .dropdown-icon {
-    display: inline-flex;
-    align-items: center;
+    width: 24px;
+    height: 24px;
+    background: #f5f5f5 0 0 no-repeat padding-box;
+    box-shadow: 0 3px 6px rgba(0,0,0,.1607843137254902);
+    border: 2px solid #f5f5f5;
+    border-radius: 100%;
+    display: flex;
     justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
-    transition: transform 0.3s;
-    margin-left: auto;
+    align-items: center;
+    cursor: pointer;
 }
 
 .accordion-content {
     padding: 10px 20px;
     background-color: #fff;
     border-bottom-left-radius: 10px;
+    transition: height ease-in 0.3s;
     border-bottom-right-radius: 10px;
 }
 
-.accordion-header .dropdown-icon {
+.accordion-header .dropdown-icon svg {
     transition: transform 0.3s;
 }
 
-.accordion-section.open .accordion-header .dropdown-icon {
+.accordion-section.open .accordion-header .dropdown-icon svg {
     transform: rotate(180deg);
+}
+
+.toggleLayout-heading{
+    font: normal normal 600 16px/25px Poppins;
+    letter-spacing: 0;
+    color: #22c674;
+    transition: color 0.3s;
+}
+.image-container-toggle{
+    text-align: center;
+    height: 48px;
+    width: 48px;
+    background: #f5f5f5 0 0 no-repeat padding-box;
+    border: 1px solid #f5f5f5;
+    border-radius: 4px;
+    padding: 11px;
+    display: inline-block;
+}
+.text-dark-gray {
+    color: #757575;
+}
+
+.toggle-text-green {
+    font: normal normal 600 16px/25px Poppins;
+    letter-spacing: 0px;
+    color: #22C674;
+}
+.toggle-icon-active{
+    filter: invert(59%) sepia(93%) saturate(376%) hue-rotate(98deg) brightness(84%) contrast(100%);
+}
+.toggle-active-feather{
+    color: #22C674;
 }
