@@ -792,7 +792,7 @@ body {
     width: 24px;
     height: 24px;
     background: #f5f5f5 0 0 no-repeat padding-box;
-    box-shadow: 0 3px 6px rgba(0,0,0,.1607843137254902);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, .1607843137254902);
     border: 2px solid #f5f5f5;
     border-radius: 100%;
     display: flex;
@@ -817,13 +817,14 @@ body {
     transform: rotate(180deg);
 }
 
-.toggleLayout-heading{
+.toggleLayout-heading {
     font: normal normal 600 16px/25px Poppins;
     letter-spacing: 0;
     color: #22c674;
     transition: color 0.3s;
 }
-.image-container-toggle{
+
+.image-container-toggle {
     text-align: center;
     height: 48px;
     width: 48px;
@@ -833,6 +834,7 @@ body {
     padding: 11px;
     display: inline-block;
 }
+
 .text-dark-gray {
     color: #757575;
 }
@@ -842,9 +844,41 @@ body {
     letter-spacing: 0px;
     color: #22C674;
 }
-.toggle-icon-active{
+
+.toggle-icon-active {
     filter: invert(59%) sepia(93%) saturate(376%) hue-rotate(98deg) brightness(84%) contrast(100%);
 }
-.toggle-active-feather{
+
+.toggle-active-feather {
     color: #22C674;
+}
+
+
+@media (max-width: 768px) {
+    .flex.flex-column {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profile-name {
+        margin-top: 10px;
+        text-align: center;
+        margin-bottom: 4px;
+    }
+
+    .profile-view-text {
+        font-weight: bold;
+    }
+
+    .label-align {
+        flex-direction: column;
+    }
+
+    .form-label {
+        text-align: left;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+    
+
 }
