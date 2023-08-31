@@ -5,7 +5,7 @@ import {mapObject} from "underscore";
 import MultiSelect from "@khanacademy/react-multi-select";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
-import {studentData, subjectData} from "../student/damiData";
+import {studentData, subjectData} from "../student-list/damiData";
 import formHandler from "../../utils/FormHandler";
 import {validateStudent} from "../../utils/validation";
 import {useDispatch, useSelector} from "react-redux";
