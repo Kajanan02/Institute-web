@@ -87,32 +87,32 @@ function Marks(props) {
   return (
     <Layout>
       <div className={"container"}>
-        <div className={"ncontainer-widget"}>
+        <div className={"container-widget"}>
           <div className={"students_marks_container"}>
             <div><h3 className={"content-heading"}>Students Marks</h3></div>
             <div className={"table-btn-container d-flex justify-content-end pb-3"}>
               <div className={"dropdown"}>
-                <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Stream
-                </button>
-                <ul className="dropdown-menu dropdown-menu-dark">
-                  <li><a className={"dropdown-item active"} href="#">Biology</a></li>
-                  <li><a className={"dropdown-item"} href="#">Physical Science</a></li>
-                  <li><a className={"dropdown-item"} href="#">Commerce</a></li>
-                  <li><a className={"dropdown-item"} href="#">Arts</a></li>
-                  <li><a className={"dropdown-item"} href="#">Technology</a></li>
-                </ul>
+                {/*<button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">*/}
+                {/*  Stream*/}
+                {/*</button>*/}
+                {/*<ul className="dropdown-menu dropdown-menu-dark">*/}
+                {/*  <li><a className={"dropdown-item active"} href="#">Biology</a></li>*/}
+                {/*  <li><a className={"dropdown-item"} href="#">Physical Science</a></li>*/}
+                {/*  <li><a className={"dropdown-item"} href="#">Commerce</a></li>*/}
+                {/*  <li><a className={"dropdown-item"} href="#">Arts</a></li>*/}
+                {/*  <li><a className={"dropdown-item"} href="#">Technology</a></li>*/}
+                {/*</ul>*/}
               </div>
               <div className={"dropdown"}>
-                <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Subject
-                </button>
-                <ul class={"dropdown-menu dropdown-menu-dark"}>
-                  <li><a className={"}dropdown-item active"} href="#">Action</a></li>
-                  <li><a className={"dropdown-item"} href="#">Another action</a></li>
-                  <li><a className={"dropdown-item"} href="#">Something else here</a></li>
-                  <li><a className={"dropdown-item"} href="#">Separated link</a></li>
-                </ul>
+                {/*<button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">*/}
+                {/*  Subject*/}
+                {/*</button>*/}
+                {/*<ul class={"dropdown-menu dropdown-menu-dark"}>*/}
+                {/*  <li><a className={"}dropdown-item active"} href="#">Action</a></li>*/}
+                {/*  <li><a className={"dropdown-item"} href="#">Another action</a></li>*/}
+                {/*  <li><a className={"dropdown-item"} href="#">Something else here</a></li>*/}
+                {/*  <li><a className={"dropdown-item"} href="#">Separated link</a></li>*/}
+                {/*</ul>*/}
               </div>
               <button type="button" className={"btn btn-secondary students-dropdown-btn"}
                 data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -144,8 +144,8 @@ function Marks(props) {
                   <td>{data.marks}</td>
                   <td>{data.rank}</td>
                   <td>
-                    <FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"
-                                   data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>
+                    {/*<FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"*/}
+                    {/*               data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>*/}
                     <FeatherIcon className={"action-icons"} icon={"edit"} data-bs-toggle="modal"
                                  data-bs-target="#exampleModal" onClick={() => setModalType("Edit")}/>
                     <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={handleDelete}/></td>

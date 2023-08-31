@@ -771,27 +771,51 @@ body {
     align-self: flex-end;
 }
 .home_card{
+
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
 
-    border-radius: 3px;
-    box-shadow: rgba(145, 158, 171, 0.16) 0px 4px 8px 3px;
+    border-radius: 7px !important;
+    box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
     border: none !important;
+    margin: 6px;
+}
+.card-container{
+    display: flex;
+    justify-content: space-around;
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    width: 100%;
+    padding: 30px;
+    border-radius: 7px !important;
+    box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+    border: none !important;
+    margin: 10px;
+    color: rgb(0, 75, 80);
+    background: linear-gradient(135deg, rgba(91, 228, 155, 0.2), rgba(0, 167, 111, 0.2)) rgb(255, 255, 255) !important;
+}
+
+.card-image{
+    width: 90%;
+
 }
 .card-body{
+    margin: 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
+
 }
 .seeInfo{
     display: flex;
     justify-content: space-between;
 }
 .card-text_total{
-    color: #00AB55;
-    font-size: 25px;
+    color: #000000;
+    font-size: 30px;
+    font-weight: bold;
 }
 .card-text{
-    color: #7C7C7C;
+    color: #000000;
+    opacity: 0.9;
 }
 .card-text_text {
     color: #7C7C7C;
@@ -799,8 +823,26 @@ body {
     font-size: 12px;
 }
 .home-action-icons{
-    color: #aaa;
+    color: #00AB55;
     width: 20px;
     margin-left: 30px;
 }
+.image-slide{
+    width: 50%;
+    height: 50%;
+    margin: 0px 0px 0px 50px;
+}
+.slide-container{
+    display: flex;
+}
+.slider{
+    border-radius: 7px !important;
+}
+.slide-text{
+    color: #000000;
 
+}
+.card-container-body{
+    padding-left: 50px;
+
+}
