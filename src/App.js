@@ -1,7 +1,7 @@
 import './App.css';
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/Home/home";
-import Student from "./components/student/student";
+import Student from "./components/student-list/student";
 import Calender from "./components/calender/calender";
 import Marks from "./components/marks/marks";
 import Broadcast from "./components/broadcast/brodcast";
@@ -15,7 +15,7 @@ import Usage from "./components/usage";
 import ConfirmationDialog from "./components/utils-components/confirmation-dialog";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar-datetime-picker/dist/index.css'
-import StudentProfile from "./components/student/studentProfile";
+import StudentProfile from "./components/student-list/studentProfile";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
