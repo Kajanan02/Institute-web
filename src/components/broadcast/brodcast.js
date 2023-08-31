@@ -4,7 +4,7 @@ import broadcasting from "../../assets/broadcasting.png";
 import FeatherIcon from "feather-icons-react";
 import {mapObject} from "underscore";
 import MultiSelect from "@khanacademy/react-multi-select";
-import {studentData, subjectData} from "../student/damiData";
+import {studentData, subjectData} from "../student-list/damiData";
 import formHandler from "../../utils/FormHandler";
 import {validateStudent} from "../../utils/validation";
 
