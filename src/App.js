@@ -18,6 +18,8 @@ import 'react-calendar-datetime-picker/dist/index.css'
 import StudentProfile from "./components/student-list/studentProfile";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import Report from "./components/student/reports/report";
+import StudentDashboard from "./components/student/student Dashboard/studentDashboard";
 
 function App() {
     return (
@@ -35,6 +37,8 @@ function App() {
                 <Route path="/payment" element={<PaymentInvoice />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/report" element={<Report />} />
+                <Route path="/dashboard" element={<StudentDashboard />} />
                 <Route path="/usage" element={<Usage />} />
                 <Route path="/profile/:studentId" element={<StudentProfile />} />
 
