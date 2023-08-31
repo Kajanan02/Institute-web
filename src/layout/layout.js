@@ -138,7 +138,7 @@ function Layout({children}) {
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/logout"}>
+                                to={"/login"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="log-out" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Logout</div>}
@@ -150,7 +150,7 @@ function Layout({children}) {
                     </div>
                 </div>
                 <div className="col p-0">
-                    <nav className="navbar navbar-expand-lg bg-white border-bottom-d1d1d1 px-4">
+                    <nav className="navbar navbar-expand-lg bg-default border-bottom-d1d1d1 px-4">
                         <div className="container-fluid nav-iconset flex-nowrap">
                             <button className="navbar-toggler " type="button" onClick={()=>setShow(!show)}>
                                 <span className="navbar-toggler-icon"></span>

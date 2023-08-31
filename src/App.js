@@ -16,6 +16,8 @@ import ConfirmationDialog from "./components/utils-components/confirmation-dialo
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar-datetime-picker/dist/index.css'
 import StudentProfile from "./components/student/studentProfile";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
     return (
@@ -32,12 +34,12 @@ function App() {
                 <Route path="/appointment" element={<Appointment />} />
                 <Route path="/payment" element={<PaymentInvoice />} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/logout" element={<Login />} />
-                <Route path="/logout" element={<Settings />} />
+                <Route path="/login" element={<Login />} />
                 <Route path="/usage" element={<Usage />} />
                 <Route path="/profile/:studentId" element={<StudentProfile />} />
 
             </Routes>
+            <ToastContainer />
         </div>
     );
 }
