@@ -213,7 +213,7 @@ function StudentProfile() {
 
                                             <div>
                                             <QRCode className="qr-profile-center"
-                                                    value={window.location.protocol + '//' + window.location.host + '/farmer/' + studentId}/>
+                                                    value={window.location.protocol + '//' + window.location.host + '/profile/' + studentId}/>
                                             </div>
 
                                         </div>
