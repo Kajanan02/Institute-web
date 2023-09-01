@@ -82,7 +82,7 @@ function Layout({ children }) {
                                 className={({ isActive }) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/report"}>
                                 <div className={'d-flex'}>
-                                    <FeatherIcon icon="settings" className={!open ? 'me-2' : "ms-1"} />
+                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Report</div>}
                                 </div>
                             </NavLink>
@@ -93,7 +93,7 @@ function Layout({ children }) {
                                 className={({ isActive }) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/dashboard"}>
                                 <div className={'d-flex'}>
-                                    <FeatherIcon icon="settings" className={!open ? 'me-2' : "ms-1"} />
+                                    <FeatherIcon icon="home" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Dashboard</div>}
                                 </div>
                             </NavLink>
