@@ -114,12 +114,23 @@ function Marks(props) {
                 {/*  <li><a className={"dropdown-item"} href="#">Separated link</a></li>*/}
                 {/*</ul>*/}
               </div>
+
               <button type="button" className={"btn btn-secondary students-dropdown-btn"}
                 data-bs-toggle="modal" data-bs-target="#exampleModal"
                 onClick={() => setModalType("Add")}>
               <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                 Add
             </button>
+              <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+                      aria-expanded="false">
+                <FeatherIcon className={"action-icons text-white"} icon={"download"} />
+                Import Data
+              </button>
+              <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+                      aria-expanded="false">
+                Export Data
+              </button>
+
             </div>
           </div>
           <div className={"table-container"}>
