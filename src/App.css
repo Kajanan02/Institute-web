@@ -1569,3 +1569,24 @@ body {
     padding: 2px;
     border: 2px solid #00AB55;
 }
+.settings-form-text{
+    font-family: "Public Sans", sans-serif;
+    /*margin-bottom: 0.5rem;*/
+}
+.form-container{
+    /*border: 1px solid;*/
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+
+
+}
+.student-settings-form{
+    padding: 24px;
+}
+.student-settings-btn{
+    gap: 5px;
+}
+/*.form-input{*/
+
+/*}*/
