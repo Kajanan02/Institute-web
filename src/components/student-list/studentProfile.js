@@ -3,12 +3,15 @@ import Layout from "../../layout/layout";
 import User from "../../assets/BasicDetails.svg";
 import ToggleLayout from "../utils-components/toggle-layout";
 import {without} from "underscore";
+import QRCode from "qrcode.react";
+import {useParams} from "react-router-dom";
 
 function StudentProfile() {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
     const [visibleToggleIndex, setVisibleToggleIndex] = useState([1]);
+    const {studentId} = useParams()
 
 
     const user = {
@@ -170,6 +173,8 @@ function StudentProfile() {
                                             )}
                                         </div>
                                     </div>
+
+
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
@@ -199,6 +204,18 @@ function StudentProfile() {
                                                     </div>
                                                 </div>
                                             )}
+                                        </div>
+                                    </div>
+                                    <div className={"col-6"}>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail1"
+                                                   className="form-label profile-view-text">QR :</label>
+
+                                            <div>
+                                            <QRCode className="qr-profile-center"
+                                                    value={window.location.protocol + '//' + window.location.host + '/farmer/' + studentId}/>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
