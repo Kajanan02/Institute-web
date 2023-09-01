@@ -1,7 +1,7 @@
 import './App.css';
 import { Route, Routes } from "react-router-dom";
 import Home from "./components/Home/home";
-import Student from "./components/student/student";
+import Student from "./components/student-list/student";
 import Calender from "./components/calender/calender";
 import Marks from "./components/marks/marks";
 import Broadcast from "./components/broadcast/brodcast";
@@ -15,7 +15,11 @@ import Usage from "./components/usage";
 import ConfirmationDialog from "./components/utils-components/confirmation-dialog";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar-datetime-picker/dist/index.css'
-import StudentProfile from "./components/student/studentProfile";
+import StudentProfile from "./components/student-list/studentProfile";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import Report from "./components/student/reports/report";
+import StudentDashboard from "./components/student/student Dashboard/studentDashboard";
 
 function App() {
     return (
@@ -32,12 +36,14 @@ function App() {
                 <Route path="/appointment" element={<Appointment />} />
                 <Route path="/payment" element={<PaymentInvoice />} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/logout" element={<Login />} />
-                <Route path="/logout" element={<Settings />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/report" element={<Report />} />
+                <Route path="/dashboard" element={<StudentDashboard />} />
                 <Route path="/usage" element={<Usage />} />
                 <Route path="/profile/:studentId" element={<StudentProfile />} />
 
             </Routes>
+            <ToastContainer />
         </div>
     );
 }
