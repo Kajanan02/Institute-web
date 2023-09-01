@@ -20,6 +20,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import Report from "./components/student/reports/report";
 import StudentDashboard from "./components/student/student Dashboard/studentDashboard";
+import StudentSetting from "./components/student/settings/student-setting";
 
 function App() {
     return (
@@ -41,6 +42,8 @@ function App() {
                 <Route path="/dashboard" element={<StudentDashboard />} />
                 <Route path="/usage" element={<Usage />} />
                 <Route path="/profile/:studentId" element={<StudentProfile />} />
+                <Route path="/profile/setting" element={<StudentSetting />} />
+
 
             </Routes>
             <ToastContainer />
