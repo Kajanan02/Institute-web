@@ -20,6 +20,7 @@ function QrScanner(props) {
                     </div> :
                     <div className={"w-45 m-auto"}>
                     <QrReader
+                        constraints={{facingMode:"environment"}}
                         onResult={(result, error) => {
                             console.log(result);
                             if (!!result) {
