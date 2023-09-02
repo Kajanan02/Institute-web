@@ -40,7 +40,7 @@ function MarksForm(props) {
             aria-labelledby="contained-modal-title-vcenter"
             centered
             backdrop="static"
-            scrollable={true}
+
         >
             <Modal.Header closeButton onHide={() => {
                 if (!formSubmitted) {
@@ -90,10 +90,11 @@ function MarksForm(props) {
                                                    className="form-label">Subjects</label>
                                             <div className={`form-control p-0`}>
                                                 <MultiSelect
-                                                    className={"multi-select"}
+                                                    className={"multi-select test"}
                                                     options={buyerOption}
                                                     selected={selectedBuyer}
                                                     onSelectedChanged={multiSelectOnChangeBuyer}
+
                                                 />
                                             </div>
                                         </div>
