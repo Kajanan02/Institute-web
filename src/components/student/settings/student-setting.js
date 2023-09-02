@@ -4,9 +4,13 @@ import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../../assets/uplod-icon.svg";
 import {subjectData} from "../../student-list/damiData";
 import formHandler from "../../../utils/FormHandler";
-import {validateParent, validateStudent} from "../../../utils/validation";
+import {validateStudentSettings} from "../../../utils/validation";
+import {validateStudentPasswordSettings} from "../../../utils/validation";
+import PasswordSetting from "../../password-setting/password-setting";
 
 function StudentSetting(props) {
+    const [modalType, setModalType] = useState("view")
+    const [modalShow, setModalShow] = useState(false);
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const buyerOption = subjectData;
     const [profilePic, setProfilePic] = useState(null);
@@ -17,32 +21,32 @@ function StudentSetting(props) {
     const {
         handleChange,
         handleSubmit,
+        handlePasswordSubmit,
         setValue,
         initForm,
         values,
         errors,
-    } = formHandler(isLoading, currentStep === 1 ? validateStudent : validateParent);
+    } = formHandler(isStudentSetting, validateStudentSettings);
 
-    function isLoading() {
-        if (currentStep === 1) {
-            resetForm()
-            setCurrentStep(2)
-            console.log("student Done")
-        }
-        if (currentStep === 2) {
-            console.log("parent Done")
-        }
+    function isStudentSetting() {
+        // if (currentStep === 1) {
+        //     resetForm()
+        //     setCurrentStep(2)
+        //     console.log("student Done")
+        // }
+        // if (currentStep === 2) {
+        //     console.log("parent Done")
+        // }
     }
 
-    function resetForm() {
-        initForm({})
-        setProfilePic(null)
-        setNicFront(null)
-        setNicBack(null)
-    }
 
-    console.log(errors)
-    console.log(values)
+    // function resetForm() {
+    //     initForm({})
+    //     setProfilePic(null)
+    //     setNicFront(null)
+    //     setNicBack(null)
+    // }
+
 
     function multiSelectOnChangeSubjects(selected) {
         setSelectedBuyer(selected);
@@ -61,66 +65,112 @@ function StudentSetting(props) {
         setNicBack(file);
     };
 
+    console.log(errors)
+    console.log(values)
+
     return (
         <Layout>
             <div className={"container"}>
                 <div className={"container-widget"}>
                     <div><h3 className={"content-heading pb-4"}>Students Settings</h3></div>
                     <div className={"form-container"}>
-                        <form className={"row student-settings-form"}>
+                        <form className={"row student-settings-form"} onSubmit={handleSubmit}>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
-                                    <div><h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
-                                        Name</label></h6></div>
-                                    <div className={"pt-0"}><input type="text" className="form-control form-input" id="exampleInputfName" placeholder={"Enter First name"}/></div>
-                                </div>
-                            </div>
-                            <div className={"col-md-6"}>
-                                <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text" >Last
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
                                         Name</label></h6>
-                                    <input type="text" className="form-control" id="exampleInputlName" placeholder={"Enter Last name"}/>
+                                    <input type="text" name={"firstname"}
+                                           className={`form-control form-input ${errors.firstname ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                           id="exampleInputfName"
+                                           placeholder={"Enter First name"}
+                                    />
+                                    {errors.firstname && <p className={"text-red"}>{errors.firstname}</p>}
                                 </div>
                             </div>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Gender</label></h6>
-                                    <input type="text" className="form-control" id="exampleInputGender" placeholder={"Enter Gender"}/>
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Last
+                                        Name</label></h6>
+                                    <input type="text" name={"lastname"}
+                                           id="exampleInputlName"
+                                           placeholder={"Enter Last name"}
+                                           className={`form-control ${errors.lastname ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                    />
+                                    {errors.lastname && <p className={"text-red"}>{errors.lastname}</p>}
                                 </div>
                             </div>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text" >Date
+                                    <h6><label htmlFor="exampleInputEmail1"
+                                               className="settings-form-text">Gender</label></h6>
+                                    <input type="text" name={"gender"} id="exampleInputGender"
+                                           placeholder={"Enter Gender"}
+                                           className={`form-control ${errors.gender ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                    />
+                                    {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
+                                </div>
+                            </div>
+                            <div className={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Date
                                         of Birth</label></h6>
-                                    <input type="date" className="form-control" id="exampleInputdate" placeholder={"Enter Date of birth"}/>
+                                    <input type="date" name={"dob"} id="exampleInputdate"
+                                           placeholder={"Enter Date of birth"}
+                                           className={`form-control ${errors.dob ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                    />
+                                    {errors.dob && <p className={"text-red"}>{errors.dob}</p>}
                                 </div>
                             </div>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text" >NIC
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">NIC
                                         No</label></h6>
-                                    <input type="text" className="form-control" id="exampleInputNicNo" placeholder={"Enter NIC No"}/>
+                                    <input type="text" name={"nicNo"} id="exampleInputNicNo"
+                                           placeholder={"Enter NIC No"}
+                                           className={`form-control ${errors.nicNo ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                    />
+                                    {errors.nicNo && <p className={"text-red"}>{errors.nicNo}</p>}
                                 </div>
                             </div>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Contact
                                         No</label></h6>
-                                    <input type="number" className="form-control" id="exampleInputContactNo" placeholder={"Enter Contact No"}/>
+                                    <input type="number" name={"phoneNumber"} id="exampleInputContactNo"
+                                           placeholder={"Enter Contact No"}
+                                           className={`form-control ${errors.phoneNumber ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                    />
+                                    {errors.phoneNumber && <p className={"text-red"}>{errors.phoneNumber}</p>}
                                 </div>
                             </div>
                             <div class={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1"
                                                className="settings-form-text">Address</label></h6>
-                                    <input type="text" className={"form-control"} id="exampleInputAddress" placeholder={"Enter Address"}/>
+                                    <input type="text" name={"address"} id="exampleInputAddress"
+                                           placeholder={"Enter Address"}
+                                           className={`form-control ${errors.address ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                    />
+                                    {errors.address && <p className={"text-red"}>{errors.address}</p>}
                                 </div>
                             </div>
                             <div class={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1"
                                                className="settings-form-text">Email</label></h6>
-                                    <input type="email" className="form-control" id="exampleInputEmail" placeholder={"Enter Email"}/>
+                                    <input type="email" name={"email"} id="exampleInputEmail"
+                                           placeholder={"Enter Email"}
+                                           className={`form-control ${errors.email ? "border-red" : ""}`}
+                                           onChange={handleChange}
+                                    />
+                                    {errors.email && <p className={"text-red"}>{errors.email}</p>}
                                 </div>
                             </div>
                             <div className={"col-md-12"}>
@@ -147,7 +197,8 @@ function StudentSetting(props) {
                             </div>
                             <div className={"col-md-12"}>
                                 <div className="mb-3">
-                                    <h6><label htmlFor="exampleInputEmail1" className="form-label d-block settings-form-text">NIC
+                                    <h6><label htmlFor="exampleInputEmail1"
+                                               className="form-label d-block settings-form-text">NIC
                                         Front</label></h6>
                                     <FileUploader handleChange={handleChangeNicFront}>
                                         <div className={"file-uploader-container"}>
@@ -168,7 +219,8 @@ function StudentSetting(props) {
                             </div>
                             <div className={"col-md-12"}>
                                 <div className="mb-3">
-                                    <h6><label htmlFor="exampleInputEmail1" className="form-label d-block settings-form-text">NIC
+                                    <h6><label htmlFor="exampleInputEmail1"
+                                               className="form-label d-block settings-form-text">NIC
                                         Back</label></h6>
                                     <FileUploader handleChange={handleChangeNicBack}>
                                         <div className={"file-uploader-container"}>
@@ -189,44 +241,15 @@ function StudentSetting(props) {
                             </div>
                             <div className={"modal-footer student-settings-btn"}>
 
-                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}
+                                        onClick={handleSubmit}>Update
                                 </button>
-                                <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel
-                                </button>
+
                             </div>
 
                         </form>
                     </div>
-                    <div className={"form-container pt-3 mt-5"}>
-                        <form className={"row student-settings-form"}>
-                            <div class={"col-md-6"}>
-                                <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1"
-                                               className="settings-form-text">Current Password</label></h6>
-                                    <input type="password" className={"form-control"} id="exampleInputAddress"
-                                           placeholder={"Enter Current Password"}/>
-                                </div>
-                            </div>
-                            <div class={"col-md-6"}>
-                                <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1"
-                                               className="settings-form-text">New Password</label></h6>
-                                    <input type="password" className="form-control" id="exampleInputEmail"
-                                           placeholder={"Enter New Password"}/>
-                                </div>
-                            </div>
-
-
-                            <div className={"modal-footer student-settings-btn"}>
-
-                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update Password
-                                </button>
-                                <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel
-                                </button>
-                            </div>
-
-                        </form>
-                    </div>
+                    <PasswordSetting/>
                 </div>
             </div>
         </Layout>
