@@ -14,11 +14,11 @@ function Settings(props) {
                         <form className={"row student-settings-form"}>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
-                                    <div><h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
-                                        Name</label></h6></div>
-                                    <div className={"pt-0"}><input type="text" className="form-control form-input"
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
+                                        Name</label></h6>
+                                    <input type="text" className="form-control form-input"
                                                                    id="exampleInputfName"
-                                                                   placeholder={"Enter First name"}/></div>
+                                                                   placeholder={"Enter First name"}/>
                                 </div>
                             </div>
                             <div className={"col-md-6"}>
@@ -61,8 +61,7 @@ function Settings(props) {
 
                                 <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update Profile
                                 </button>
-                                <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel
-                                </button>
+
                             </div>
 
                         </form>
@@ -92,8 +91,7 @@ function Settings(props) {
 
                                 <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update Password
                                 </button>
-                                <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel
-                                </button>
+
                             </div>
 
                         </form>
