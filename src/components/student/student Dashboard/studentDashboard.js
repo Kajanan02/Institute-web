@@ -3,7 +3,10 @@ import Layout from "../../../layout/layout";
 
 function StudentDashboard(props) {
     return (
-        <Layout>Student Dashboard</Layout>
+        <div>
+            Student Dashboard
+
+        </div>
     );
 }
 

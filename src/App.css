@@ -59,6 +59,7 @@ body {
     border: 1px solid #D1D1D1;
     justify-content: end;
     margin-left: auto;
+    height: min-content;
     display: flex;
     width: fit-content;
     padding: 10px 0 10px 10px;
@@ -1345,5 +1346,7 @@ body {
 }
 .card-container-body{
     padding-left: 50px;
-
+}
+.active-nav-img{
+    filter: invert(59%) sepia(93%) saturate(376%) hue-rotate(98deg) brightness(84%) contrast(191%) !important;
 }

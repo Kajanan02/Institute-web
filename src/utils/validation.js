@@ -49,10 +49,8 @@ export function validateStudent(values) {
 export function validateLogin(values) {
     let errors = {};
 
-    if (!values.email) {
-        errors.email = 'Email is is Required';
-    }else  if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
-        errors.email = 'Email is not valid';
+    if (!values.username) {
+        errors.username = 'Username is is Required';
     }
     if (!values.password) {
         errors.password = "Password is Required"
