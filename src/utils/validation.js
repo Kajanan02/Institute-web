@@ -49,10 +49,8 @@ export function validateStudent(values) {
 export function validateLogin(values) {
     let errors = {};
 
-    if (!values.email) {
-        errors.email = 'Email is is Required';
-    }else  if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
-        errors.email = 'Email is not valid';
+    if (!values.username) {
+        errors.username = 'Username is is Required';
     }
     if (!values.password) {
         errors.password = "Password is Required"
@@ -151,8 +149,11 @@ export function validateStatepayment(values) {
         errors.studentNIC = "Student NIC is Required"
     }
     if (!values.amount) {
-        errors.amount = "Amount is Required"
+        errors.amount = 'Amount is required';
+    } else if (isNaN(values.amount) || parseFloat(values.amount) <= 0) {
+        errors.amount = 'Amount must be a valid positive number';
     }
+
     if (!values.parentName) {
         errors.parentName = "Parent Name is Required"
     }
@@ -176,6 +177,61 @@ export function validateStatepayment(values) {
 
     return errors;
 }
+
+export function validateinstitutesetting(values) {
+    console.log(values)
+    let errors = {};
+
+    if (!values.firstname) {
+        errors.firstname = " First Name is Required"
+    }
+    if (!values.lastname) {
+        errors.lastname = "Lastname No is Required"
+    }
+    if (!values.address) {
+        errors.address = "Address is Required"
+    }
+    if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
+        errors.email = 'Email is not valid';
+    }
+    if (!values.phoneNumber) {
+        errors.phoneNumber = 'Contact No is required';
+    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+        errors.phoneNumber = 'Contact No is not valid';
+    }
+
+    if (!values.currentPassword) {
+        errors.currentPassword = "Current Password is Required"
+    }
+    if (!values.newPassword) {
+        errors.newPassword = " New Password is Required"
+    }
+
+
+    return errors;
+}
+
+
+export function validatemarks(values) {
+    console.log(values)
+    let errors = {};
+
+    if (!values.name) {
+        errors.name = "Name is Required"
+    }
+    if (!values.regNo) {
+        errors.regNo = "Reg.No is Required"
+    }
+
+    if (!values.marks) {
+        errors.marks = 'Amount is required';
+    } else if (isNaN(values.marks) || parseFloat(values.marks) <= 0) {
+        errors.marks = 'Amount must be a valid positive number';
+    }
+
+    return errors;
+}
+
 export function validateStudentSettings(values) {
     console.log(values)
     let errors = {};
