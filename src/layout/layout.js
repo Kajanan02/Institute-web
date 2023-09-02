@@ -40,6 +40,8 @@ function Layout({children}) {
         }
     }
 
+    console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID)
+
     return (
         <div className="container-fluid">
             <div className="row flex-nowrap overflow-auto">
