@@ -40,6 +40,9 @@ export function isCareerAccess() {
 export function isReportAccess() {
     return ["3","4"].includes(localStorage.getItem('ROLE'));
 }
+export function isAppointmentAccess() {
+    return ["2","4"].includes(localStorage.getItem('ROLE'));
+}
 
 export function getRoleName() {
     const role = localStorage.getItem("ROLE")
@@ -54,6 +57,19 @@ export function getRoleName() {
             return 'Parent';
         default:
             return 'Unknown Role';
+    }
+}
+
+export function initialNavigate(role) {
+
+    if (role === "2") {
+        return "/"
+    } else if (role === "3") {
+        return "/student"
+    } else if (role === "4") {
+        return "/parent"
+    } else {
+        return "/login"
     }
 }
 

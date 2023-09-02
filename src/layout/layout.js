@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {changeToggle} from "../redux/actions";
 import {
     getName,
-    getRoleName,
+    getRoleName, isAppointmentAccess,
     isCareerAccess,
     isInstituteAccount,
     isParentAccount, isReportAccess, isStudentAccount,
@@ -88,7 +88,7 @@ function Layout({children}) {
                             </NavLink>
                         </div>
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isInstituteAccount()&&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/marks"}>
@@ -97,7 +97,7 @@ function Layout({children}) {
                                     {!open && <div className={''}>Marks</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
                         {isReportAccess() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
@@ -143,7 +143,7 @@ function Layout({children}) {
                             </NavLink>
                         </div>}
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isAppointmentAccess()&&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/appointment"}>
@@ -152,9 +152,9 @@ function Layout({children}) {
                                     {!open && <div className={''}>Appointment</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isAppointmentAccess()&&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/payment"}>
@@ -163,7 +163,7 @@ function Layout({children}) {
                                     {!open && <div className={''}>Payment & Invoice</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
                         <div className={'w-100 border-bottom-d1d1d1 mb-3'}/>
 
