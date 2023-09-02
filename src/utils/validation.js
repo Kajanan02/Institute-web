@@ -50,7 +50,7 @@ export function validateLogin(values) {
     let errors = {};
 
     if (!values.email) {
-        errors.email = 'Email is is Required';
+        errors.email = 'Email is Required';
     }else  if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
         errors.email = 'Email is not valid';
     }
