@@ -1,36 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
-
 import FeatherIcon from 'feather-icons-react';
 import MarksForm from "./marksForm";
-import {marksData} from "../marks/marksDamiData";
-
+import {marksData ,subjectData } from "../marks/marksDamiData";
 import {mapObject} from "underscore";
-
-// import {studentData, subjectData} from "../student-list/damiData";
 import formHandler from "../../utils/FormHandler";
-// import {validateStudent} from "../../utils/validation";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleConfirmationDialog} from "../../redux/actions";
 import {validatemarks} from "../../utils/validation";
-//
-// import MarksForm from "./marksForm";
-// import {marksData} from "./marksDamiData";
+
 
 function Marks(props) {
   const [marksList, setMarksList] = useState(marksData)
   const [modalType, setModalType] = useState("view")
   const [modalShow, setModalShow] = useState(false);
   const [studentsList, setStudentsList] = useState(marksData)
-
-  //
   const [selectedBuyer, setSelectedBuyer] = useState([]);
-  //
-  //
-  // const buyerOption = subjectData;
+  const buyerOption = subjectData;
   const [profilePic, setProfilePic] = useState(null);
-
-  //
   const {
     handleChange,
     handleSubmit,
@@ -42,12 +29,11 @@ function Marks(props) {
   function isLoading() {
     console.log("All are done")
   }
-  //
   function multiSelectOnChangeBuyer(selected) {
     setSelectedBuyer(selected);
-    // setValue({previousBuyer: selected});
+    setValue({previousBuyer: selected});
   }
-  //
+
   const handleChangeProfile = (file) => {
     setProfilePic(file);
   };
@@ -55,7 +41,7 @@ function Marks(props) {
   useEffect(()=>{
     setValue({name:"oppai"})
   },[])
-  //
+
   console.log(values)
   console.log(errors)
 
@@ -82,7 +68,7 @@ function Marks(props) {
   });
 
   console.log(confirmationDialog)
-  //
+
   function handleDelete() {
     dispatch(toggleConfirmationDialog({
       isVisible: true,
@@ -90,11 +76,8 @@ function Marks(props) {
       confirmationDescription: ('THE DELETE ACTION WILL REMOVE THE THIS DETAILS')
     }));
   }
-  //
-  // console.log()
 
-
-
+  console.log()
 
   return (
     <Layout>
@@ -179,7 +162,7 @@ function Marks(props) {
                     {/*               data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>*/}
                     <FeatherIcon className={"action-icons"} icon={"edit"}
                                  onClick={() => {
-                                   setModalType("View");
+                                   setModalType("Edit");
                                    setModalShow(true)
                                  }}/>
 
@@ -207,72 +190,6 @@ function Marks(props) {
               } data-bs-dismiss="modal"
                       aria-label="Close"></button>
             </div>
-            {/*<form className="modal-body" onSubmit={handleSubmit}>*/}
-            {/*  <div>*/}
-
-            {/*    <div className={"pop-up-form-container"}>*/}
-            {/*      <div className={"row"}>*/}
-            {/*        <div className={"col-md-6"}>*/}
-            {/*          <div className="mb-3">*/}
-            {/*            <label htmlFor="exampleInputEmail1" className="form-label">Name</label>*/}
-            {/*            <input name={"name"} placeholder={"Enter Name"}*/}
-            {/*                   className={`form-control ${errors.name ? "border-red" : ""}`}*/}
-            {/*                   id="exampleInputEmail1"*/}
-            {/*                   onChange={handleChange}*/}
-            {/*                   value={values.name}*/}
-            {/*            />*/}
-            {/*            {errors.name && <p className={"warning-text"}>{errors.name}</p>}*/}
-
-            {/*          </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"col-md-6"}>*/}
-            {/*          <div className="mb-3">*/}
-            {/*            <label htmlFor="exampleInputEmail1" className="form-label">Reg.No</label>*/}
-            {/*            <input type="number" name={"RegisterNumber"}*/}
-            {/*                   placeholder={"Enter Registration No"}*/}
-            {/*                   className="form-control" id="exampleInputEmail1"*/}
-            {/*                   aria-describedby="emailHelp"/>*/}
-            {/*          </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"col-md-6"}>*/}
-            {/*          <div className="mb-3">*/}
-            {/*            <label htmlFor="exampleInputEmail1"*/}
-            {/*                   className="form-label">Subjects</label>*/}
-            {/*            <div className={`form-control p-0`}>*/}
-            {/*              <MultiSelect*/}
-            {/*                  className={"multi-select"}*/}
-            {/*                  options={buyerOption}*/}
-            {/*                  selected={selectedBuyer}*/}
-            {/*                  onSelectedChanged={multiSelectOnChangeBuyer}*/}
-            {/*              />*/}
-            {/*            </div>*/}
-            {/*          </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"col-md-6"}>*/}
-            {/*          <div className="mb-3">*/}
-            {/*            <label htmlFor="exampleInputEmail1" className="form-label">Marks</label>*/}
-            {/*            <input type="number" name={"marks"}*/}
-            {/*                   placeholder={"Enter Marks"}*/}
-            {/*                   className="form-control" id="exampleInputEmail1"*/}
-            {/*                   aria-describedby="emailHelp"/>*/}
-            {/*          </div>*/}
-            {/*        </div>*/}
-
-
-
-
-            {/*      </div>*/}
-            {/*    </div>*/}
-            {/*  </div>*/}
-
-            {/*  <div className={"modal-footer"}>*/}
-            {/*    <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel*/}
-            {/*    </button>*/}
-            {/*    <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update*/}
-            {/*    </button>*/}
-            {/*  </div>*/}
-            {/*</form>*/}
-
           </div>
         </div>
       </div>

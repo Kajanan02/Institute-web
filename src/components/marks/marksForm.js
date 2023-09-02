@@ -3,12 +3,13 @@ import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
 import {validatemarks} from "../../utils/validation";
 import MultiSelect from "@khanacademy/react-multi-select";
-import {marksData} from "./marksDamiData";
+import {marksData , subjectData} from "./marksDamiData";
 
 function MarksForm(props) {
+    const buyerOption = subjectData;
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const buyerOption = marksData;
+
     const {
         handleChange,
         handleSubmit,

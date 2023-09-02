@@ -12,3 +12,8 @@ export const marksData = [{ No: 0o1, Reg: 200012345678, name: "Harsh", subject: 
     { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
     { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 }
 ]
+export const subjectData = [{ label: "Combined Mathematics", value: "Combined_Mathematics" }, {
+    label: "Physics",
+    value: "Physics"
+}, { label: "Chemistry", value: "Chemistry" },
+    { label: "ICT", value: "ICT" }, { label: "Bio Science", value: "Bio Science" }]
