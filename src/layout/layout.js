@@ -7,6 +7,8 @@ import FeatherIcon from 'feather-icons-react';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import {changeToggle} from "../redux/actions";
+import {isCareerAccess, isInstituteAccount, signOut} from "../utils/Authentication";
+import Career from "../assets/career-logo.svg";
 
 function Layout({children}) {
 
@@ -18,8 +20,9 @@ function Layout({children}) {
 
     function toggleDrawer() {
         dispatch(changeToggle(!open));
-        // setOpen(!open)
     }
+
+    console.log(isCareerAccess())
 
     return (
         <div className="container-fluid">
@@ -27,7 +30,7 @@ function Layout({children}) {
                 <div
                     className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-default border-right min-vh-100 trans"}>
                     <div className={"close-btn-container mobile-hide"} onClick={toggleDrawer}>
-                        <img src={SideClose} alt="SideClose" className={!!open && "rotate-180"}/>
+                        <img src={SideClose} alt="SideClose" className={!!open ? "rotate-180" :""}/>
                     </div>
                     <div
                         className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-4">
@@ -45,7 +48,7 @@ function Layout({children}) {
                         </div>
 
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isInstituteAccount() && <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/student"}>
@@ -54,7 +57,7 @@ function Layout({children}) {
                                     {!open && <div className={''}>Student</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
@@ -80,25 +83,35 @@ function Layout({children}) {
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/report"}>
+                                to={"/student/sasd/report"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Report</div>}
                                 </div>
                             </NavLink>
                         </div>
+                        {isCareerAccess() &&<div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/student/sasd/career"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="book" className={!open ? 'me-2' : "ms-1"}/>
+                                    {!open && <div className={''}>Career</div>}
+                                </div>
+                            </NavLink>
+                        </div>}
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/dashboard"}>
+                                to={"/student/asdfasdf"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="home" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Dashboard</div>}
                                 </div>
                             </NavLink>
                         </div>
-                        <div className={"w-100 px-sm-2"}>
+                        {isInstituteAccount() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/broadcast"}>
@@ -107,9 +120,9 @@ function Layout({children}) {
                                     {!open && <div className={''}>Broadcast</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isInstituteAccount() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/qr-scanner"}>
@@ -118,7 +131,7 @@ function Layout({children}) {
                                     {!open && <div className={''}>QR Scanner</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
@@ -157,6 +170,7 @@ function Layout({children}) {
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
+                                onClick={signOut}
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/login"}>
                                 <div className={'d-flex'}>
@@ -193,7 +207,7 @@ function Layout({children}) {
                                     <li className="nav-item px-2">
                                         <a className="nav-link  position-relative p-0" aria-current="page" href="#">
 
-                                            <img src={Profile}/>
+                                            <img src={Profile} className="rounded-circle user-profile" />
                                         </a>
                                     </li>
 

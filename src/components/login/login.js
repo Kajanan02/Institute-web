@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {toggleLoader} from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
+import {loadCredential} from "../../utils/Authentication";
 
 function Login(props) {
 
@@ -28,7 +29,9 @@ function Login(props) {
     function isLogin() {
         dispatch(toggleLoader(true))
         axios.post(`${process.env.REACT_APP_HOST}/users/auth`, values)
-            .then(() => {
+            .then((res) => {
+                console.log(res.data)
+                loadCredential(res.data)
                 toast.success("Successfully Login");
                 navigate("/");
             }).catch((err) => {
@@ -63,10 +66,10 @@ function Login(props) {
                     <div class="login-form-inner">
                         <form action="#" class="full-container form-login">
                             <div class="login-field">
-                                <input className={`form-control ${errors.email ? "border-red" : ""}`} type="text"
-                                       name={"email"} onChange={handleChange} placeholder="Email address"/>
+                                <input className={`form-control ${errors.username ? "border-red" : ""}`} type="text"
+                                       name={"username"} onChange={handleChange} placeholder="Username"/>
                             </div>
-                            {errors.email && <p className={"text-red"}>{errors.email}</p>}
+                            {errors.username && <p className={"text-red"}>{errors.username}</p>}
                             <div class="login-field">
                                 <input className={`form-control ${errors.password ? "border-red" : ""}`} type="password"
                                        name={"password"} onChange={handleChange} placeholder="Password"/>

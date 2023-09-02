@@ -56,7 +56,7 @@ function StudentProfile() {
                               onVisibleToggleIndexChange={(index) => toggle(index)}>
                     <div className="accordion-content p-5">
                         <div className="row">
-                            <div className={"row"}>
+                            {/* <div className={"row"}> */}
                                 <div className="flex flex-column">
                                     <img
                                         className="avatar profile-img float-start"
@@ -70,7 +70,7 @@ function StudentProfile() {
                                     <h4 className={"profile-name text-indent"}>{user.name}</h4>
                                     <h4 className={"profile-name text-indent profile-view-text"}>Student</h4>
                                 </div>
-                            </div>
+                            {/* </div> */}
 
                             <div className={"pop-up-form-container"}>
                                 <div className={"row label-align mt-3"}>
@@ -213,7 +213,7 @@ function StudentProfile() {
 
                                             <div>
                                             <QRCode className="qr-profile-center"
-                                                    value={window.location.protocol + '//' + window.location.host + '/farmer/' + studentId}/>
+                                                    value={window.location.protocol + '//' + window.location.host + '/profile/' + studentId}/>
                                             </div>
 
                                         </div>
