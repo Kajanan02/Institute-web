@@ -222,6 +222,9 @@ export function validatemarks(values) {
     if (!values.regNo) {
         errors.regNo = "Reg.No is Required"
     }
+    if (!values.subjects) {
+        errors.subjects = "Subjects is Required"
+    }
 
     if (!values.marks) {
         errors.marks = 'Amount is required';

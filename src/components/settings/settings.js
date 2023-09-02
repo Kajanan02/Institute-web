@@ -109,13 +109,12 @@ function Settings(props) {
                             </div>
 
 
-                            <button
-                                type="button"
-                                className={"btn btn-success"}
-                                onClick={handleSubmit}
-                            >
-                                Update Profile
-                            </button>
+                            <div className={"modal-footer student-settings-btn"}>
+
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"} onClick={handleSubmit}>Update
+                                </button>
+
+                            </div>
 
 
 
@@ -154,14 +153,19 @@ function Settings(props) {
                                 </div>
                             </div>
 
+                            <div className={"modal-footer student-settings-btn"}>
 
-                            {<button
-                                type="button"
-                                className={"btn btn-success"}
-                                onClick={handleSubmit}
-                            >
-                                Update Password
-                            </button>}
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"} onClick={handleSubmit}>Update Password
+                                </button>
+
+                            </div>
+                            {/*{<button*/}
+                            {/*    type="submit"*/}
+                            {/*    className={"btn btn-secondary students-dropdown-btn"}*/}
+                            {/*    onClick={handleSubmit}*/}
+                            {/*>*/}
+                            {/*    Update Password*/}
+                            {/*</button>}*/}
 
 
                         </form>
