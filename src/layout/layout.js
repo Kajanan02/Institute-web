@@ -85,7 +85,7 @@ function Layout({children}) {
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/student/sasd/report"}>
                                 <div className={'d-flex'}>
-                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
+                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"} />
                                     {!open && <div className={''}>Report</div>}
                                 </div>
                             </NavLink>
@@ -106,7 +106,7 @@ function Layout({children}) {
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/student/asdfasdf"}>
                                 <div className={'d-flex'}>
-                                    <FeatherIcon icon="home" className={!open ? 'me-2' : "ms-1"}/>
+                                    <FeatherIcon icon="home" className={!open ? 'me-2' : "ms-1"} />
                                     {!open && <div className={''}>Dashboard</div>}
                                 </div>
                             </NavLink>
@@ -207,8 +207,13 @@ function Layout({children}) {
                                     <li className="nav-item px-2">
                                         <a className="nav-link  position-relative p-0" aria-current="page" href="#">
 
-                                            <img src={Profile} className="rounded-circle user-profile" />
+                                            <img src={Profile} className="rounded-circle user-profile mr-2" />
                                         </a>
+                                    </li>
+                                    <li className="nav-item px-2 flex-column nav-profile">
+                                        <p className="nav-profileName mb-0">Janushankan<br />
+                                            <small className="text-muted mt-0 mb-0 py-0 nav-profileName nav-profileRole">Admin</small>
+                                        </p>
                                     </li>
 
                                 </ul>
