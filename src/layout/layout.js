@@ -7,7 +7,14 @@ import FeatherIcon from 'feather-icons-react';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import {changeToggle} from "../redux/actions";
-import {isCareerAccess, isInstituteAccount, signOut} from "../utils/Authentication";
+import {
+    getName,
+    getRoleName,
+    isCareerAccess,
+    isInstituteAccount,
+    isParentAccount, isReportAccess, isStudentAccount,
+    signOut
+} from "../utils/Authentication";
 import Career from "../assets/career-logo.svg";
 
 function Layout({children}) {
@@ -22,7 +29,18 @@ function Layout({children}) {
         dispatch(changeToggle(!open));
     }
 
-    console.log(isCareerAccess())
+    function homePath() {
+        let id = localStorage.getItem("USER_ID")
+        if (isInstituteAccount()) {
+            return "/"
+        } else if (isStudentAccount()) {
+            return "/student"
+        } else if (isParentAccount()) {
+            return "/parent/"+id
+        } else {
+            return "/login"
+        }
+    }
 
     return (
         <div className="container-fluid">
@@ -39,7 +57,7 @@ function Layout({children}) {
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active " : "side-menu-item "}
-                                to={"/"}>
+                                to={homePath()}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="home" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={'trans-1'}>Home</div>}
@@ -51,7 +69,7 @@ function Layout({children}) {
                         {isInstituteAccount() && <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/student"}>
+                                to={"/students"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="users" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Student</div>}
@@ -80,16 +98,17 @@ function Layout({children}) {
                                 </div>
                             </NavLink>
                         </div>
-                        <div className={"w-100 px-sm-2"}>
+                        {isReportAccess() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/student/sasd/report"}>
                                 <div className={'d-flex'}>
-                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"} />
+                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Report</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
+
                         {isCareerAccess() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
@@ -101,16 +120,7 @@ function Layout({children}) {
                             </NavLink>
                         </div>}
 
-                        <div className={"w-100 px-sm-2"}>
-                            <NavLink
-                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/student/asdfasdf"}>
-                                <div className={'d-flex'}>
-                                    <FeatherIcon icon="home" className={!open ? 'me-2' : "ms-1"} />
-                                    {!open && <div className={''}>Dashboard</div>}
-                                </div>
-                            </NavLink>
-                        </div>
+
                         {isInstituteAccount() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
@@ -210,9 +220,9 @@ function Layout({children}) {
                                             <img src={Profile} className="rounded-circle user-profile mr-2" />
                                         </a>
                                     </li>
-                                    <li className="nav-item px-2 flex-column nav-profile">
-                                        <p className="nav-profileName mb-0">Janushankan<br />
-                                            <small className="text-muted mt-0 mb-0 py-0 nav-profileName nav-profileRole">Admin</small>
+                                    <li className="nav-item pe-2 flex-column nav-profile">
+                                        <p className="nav-profileName mb-0">{getName()}<br />
+                                            <small className="text-muted mt-0 mb-0 py-0 nav-profileName nav-profileRole">{getRoleName()}</small>
                                         </p>
                                     </li>
 

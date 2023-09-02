@@ -131,7 +131,7 @@ function Students(props) {
 
                                     <FeatherIcon className={"action-icons"} icon={"eye"}
                                                  onClick={() => {
-                                                     navigate("/profile/" + data._id)
+                                                     navigate("/students/" + data._id)
                                                  }}/>
                                     <FeatherIcon className={"action-icons"} icon={"edit"}
                                                  onClick={() => {
