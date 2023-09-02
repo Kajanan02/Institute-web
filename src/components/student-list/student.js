@@ -120,7 +120,7 @@ function Students(props) {
                             </tr>
                             </thead>
                             <tbody>
-                            {studentsList.map((data, index) => (<tr key={index + "asd"}>
+                            {studentsList.map((data, index) => (<tr key={data._id}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{data.nicNo}</td>
                                 <td>{data.name}</td>
@@ -131,7 +131,7 @@ function Students(props) {
 
                                     <FeatherIcon className={"action-icons"} icon={"eye"}
                                                  onClick={() => {
-                                                     navigate("/profile/" + data.Reg)
+                                                     navigate("/profile/" + data._id)
                                                  }}/>
                                     <FeatherIcon className={"action-icons"} icon={"edit"}
                                                  onClick={() => {
