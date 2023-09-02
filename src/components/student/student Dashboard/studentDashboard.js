@@ -116,7 +116,7 @@ function StudentDashboard(props) {
     console.log(dataSet)
 
     return (
-        <Layout>
+        <div>
 
             <div className={"container mt-4 mb-4"}>
                 <div className={"row p-2 mb-4"}>
@@ -220,7 +220,7 @@ function StudentDashboard(props) {
                 </div>
             </div>
 
-        </Layout >
+        </div >
     );
 }
 

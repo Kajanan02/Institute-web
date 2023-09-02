@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes } from "react-router-dom";
+import {createBrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./components/Home/home";
 import Student from "./components/student-list/student";
 import Calender from "./components/calender/calender";
@@ -16,37 +16,44 @@ import ConfirmationDialog from "./components/utils-components/confirmation-dialo
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-calendar-datetime-picker/dist/index.css'
 import StudentProfile from "./components/student-list/studentProfile";
-import { ToastContainer, toast } from 'react-toastify';
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import StudentLayout from "./layout/student-layout";
+import PrivateRoute from "./utils/PrivateRoute";
 import Report from "./components/student/reports/report";
 import StudentDashboard from "./components/student/student Dashboard/studentDashboard";
 import StudentSetting from "./components/student/settings/student-setting";
+import Settingss from "./components/settings/Settings-ss";
 
 function App() {
     return (
         <div className="">
-            <Loader />
-            <ConfirmationDialog />
+            <Loader/>
+            <ConfirmationDialog/>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/student" element={<Student />} />
-                <Route path="/calendar" element={<Calender />} />
-                <Route path="/marks" element={<Marks />} />
-                <Route path="/broadcast" element={<Broadcast />} />
-                <Route path="/qr-scanner" element={<QrScanner />} />
-                <Route path="/appointment" element={<Appointment />} />
-                <Route path="/payment" element={<PaymentInvoice />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route exact path='/' element={<PrivateRoute/>}>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/student" element={<Student/>}/>
+                    <Route path="/calendar" element={<Calender/>}/>
+                    <Route path="/marks" element={<Marks/>}/>
+                    <Route path="/broadcast" element={<Broadcast/>}/>
+                    <Route path="/qr-scanner" element={<QrScanner/>}/>
+                    <Route path="/appointment" element={<Appointment/>}/>
+                    <Route path="/payment" element={<PaymentInvoice/>}/>
+                    <Route path="/settings" element={<Settings/>}/>
+                    <Route path="/student/*" element={<StudentLayout/>}/>
+                    <Route path="/usage" element={<Usage/>}/>
+                    <Route path="/profile/:studentId" element={<StudentProfile/>}/>
+                </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/report" element={<Report />} />
+                <Route path="/ass" element={<Settingss />} />
                 <Route path="/dashboard" element={<StudentDashboard />} />
                 <Route path="/usage" element={<Usage />} />
                 <Route path="/profile/:studentId" element={<StudentProfile />} />
                 <Route path="/profile/setting" element={<StudentSetting />} />
-
-
             </Routes>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     );
 }

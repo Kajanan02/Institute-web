@@ -8,13 +8,21 @@ import {validateStudent} from "../../utils/validation";
 import {validateParent} from "../../utils/validation";
 import {subjectData} from "./damiData";
 import FormStepper from "./FormStepper";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import {toggleLoader} from "../../redux/actions";
+import {toast} from "react-toastify";
 
 function StudentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const buyerOption = subjectData;
     const [profilePic, setProfilePic] = useState(null);
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [parentSubmit, setParentSubmit] = useState(false);
     const [nicFront, setNicFront] = useState(null);
+    const [updateStudent, setUpdateStudent] = useState(false);
     const [nicBack, setNicBack] = useState(null);
+    const [studentId, setStudentId] = useState(null);
     const [currentStep, setCurrentStep] = useState(1);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const {
@@ -26,15 +34,39 @@ function StudentForm(props) {
         errors,
     } = formHandler(isLoading, currentStep === 1 ? validateStudent : validateParent);
 
+    const dispatch = useDispatch();
+    const instituteId = localStorage.getItem("USER_ID");
+
     function isLoading() {
-        if (currentStep === 1) {
-            resetForm()
-            setCurrentStep(2)
-            console.log("student Done")
+        if (props.type === "Edit") {
+            setUpdateStudent(true)
+        } else {
+            if (currentStep === 1) {
+                setCurrentStep(2)
+                console.log("student Done")
+                setIsSubmit(true)
+            }
+            if (currentStep === 2) {
+                console.log("parent Done")
+                setIsSubmit(true)
+                setParentSubmit(true)
+            }
         }
-        if (currentStep === 2) {
-            console.log("parent Done")
-        }
+    }
+
+    function imageUpload(file, key) {
+        console.log("Fille")
+
+        dispatch(toggleLoader(true))
+        const data = new FormData()
+        data.append("file", file)
+        data.append("upload_preset", "xi7icexi")
+        data.append("cloud_name", "dacrccjrm")
+        axios.put("https://api.cloudinary.com/v1_1/dacrccjrm/image/upload", data)
+            .then((res) => {
+                console.log(res.data.url)
+                setValue({[key]: res.data.url})
+            }).finally(() => dispatch(toggleLoader(false)))
     }
 
     function resetForm() {
@@ -54,49 +86,86 @@ function StudentForm(props) {
 
     const handleChangeProfile = (file) => {
         setProfilePic(file);
+        imageUpload(file, "profilePic")
     };
 
     const handleChangeNicFront = (file) => {
         setNicFront(file);
+        imageUpload(file, "nicFront")
     };
 
     const handleChangeNicBack = (file) => {
         setNicBack(file);
+        imageUpload(file, "nicBack")
     };
 
-    // const handleNextStep = () => {
-    //     if (currentStep === 1) {
-    //         handleSubmit()
-    //         // Validate student details form before moving to the next step
-    //         if (validateStudent(values)) {
-    //             setCurrentStep(2);
-    //         }
-    //     }
-    // };
-    //
-    // const handleFormSubmit = () => {
-    //     handleSubmit()
-    //     // Handle form submission logic here
-    //     if (currentStep === 1) {
-    //         if (validateStudent(values)) {
-    //             setFormSubmitted(true);
-    //         }
-    //     } else if (currentStep === 2) {
-    //         // Handle parent details form submission logic here
-    //         if (validateParent(values)) {
-    //             setFormSubmitted(true);
-    //         }
-    //     }
-    // };
+
+    useEffect(() => {
+        if (!isSubmit) {
+            return
+        }
+        values.password = "123456"
+        console.log(values)
+        dispatch(toggleLoader(true))
+        if (currentStep === 2) {
+            values.studentId = studentId
+        }
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/${parentSubmit ? 'createParent' : 'createStudent'}`, values)
+            .then((res) => {
+                console.log(res.data)
+                props.update();
+                if (!parentSubmit) {
+                    setStudentId(res.data._id)
+                }
+                toast.success(`Successfully ${parentSubmit ? 'Parent' : 'Student'} created`)
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            setParentSubmit(false)
+            resetForm()
+            if (parentSubmit) {
+                setStudentId(null);
+                props.onHide()
+
+            }
+        })
+    }, [isSubmit]);
+
+
+    useEffect(()=>{
+        if(!updateStudent){
+            return
+        }
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${props.selectedStudent._id}`, values)
+            .then((res) => {
+                console.log(res.data)
+                toast.success(`Successfully Updated`)
+                props.update()
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+          setUpdateStudent(false)
+            resetForm()
+            props.onHide()
+        })
+
+    },[updateStudent])
+
 
     useEffect(() => {
         // Initialize the form values when the modal is shown
-        if (props.show) {
-            initForm({});
+        if (props.type === "Edit") {
+            initForm(props.selectedStudent);
+            setSelectedBuyer(props.selectedStudent?.subjects)
             setCurrentStep(1); // Reset step to 1
             setFormSubmitted(false);
         }
-    }, [props.show]);
+    }, [props.type,props.selectedStudent]);
 
     return (
         <Modal
@@ -118,7 +187,7 @@ function StudentForm(props) {
             </Modal.Header>
             <Modal.Body scrollable>
 
-                <FormStepper currentStep={currentStep}/>
+                {props.type !== "Edit" && <FormStepper currentStep={currentStep}/>}
 
                 <form>
                     <div>
@@ -360,7 +429,7 @@ function StudentForm(props) {
                     className={"btn btn-secondary students-dropdown-btn"}
                     onClick={handleSubmit}
                 >
-                    {currentStep === 1 ? "Next" : "Update"}
+                    {props.type === "Edit" ? "Update" : currentStep === 1 ? "Next" : "Update"}
                 </button>
             </Modal.Footer>
         </Modal>
