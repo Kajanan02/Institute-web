@@ -234,3 +234,49 @@ export function validatemarks(values) {
 
     return errors;
 }
+
+export function validateStudentSettings(values) {
+    console.log(values)
+    let errors = {};
+
+    if (!values.firstname) {
+        errors.firstname = "Name is Required"
+    }
+    if (!values.lastname) {
+        errors.lastname = "Name is Required"
+    }
+    if (!values.nicNo) {
+        errors.nicNo = "NIC No is Required"
+    }
+    if (!values.address) {
+        errors.address = "Address is Required"
+    }
+    if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
+        errors.email = 'Email is not valid';
+    }
+    if (!values.phoneNumber) {
+        errors.phoneNumber = 'Contact No is required';
+    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+        errors.phoneNumber = 'Contact No is not valid';
+    }
+    if (!values.gender) {
+        errors.gender = "Gender is Required"
+    }
+    if (!values.dob) {
+        errors.dob = "Date of Birth is Required"
+    }
+    return errors;
+}
+export function validateStudentPasswordSettings(values) {
+    console.log(values)
+    let errors = {};
+
+
+    if (!values.newPassword) {
+        errors.newPassword = "Please enter new password"
+    }
+    if (!values.confirmPassword) {
+        errors.confirmPassword = "Please enter current password"
+    }
+    return errors;
+}
