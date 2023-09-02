@@ -18,20 +18,46 @@ export function getAccessToken() {
     return localStorage.getItem('ACCESS_TOKEN');
 }
 
-export function isInstituteAccount() {
+export function isAdminAccount() {
     return localStorage.getItem('ROLE') === "1";
 }
-
-export function isParentAccount() {
-    return localStorage.getItem('ROLE') === "3";
-}
-
-export function isStudentAccount() {
+export function isInstituteAccount() {
     return localStorage.getItem('ROLE') === "2";
 }
 
-export function isCareerAccess() {
-    return ["2","3"].includes(localStorage.getItem('ROLE'));
+export function isParentAccount() {
+    return localStorage.getItem('ROLE') === "4";
 }
 
+export function isStudentAccount() {
+    return localStorage.getItem('ROLE') === "3";
+}
+
+export function isCareerAccess() {
+    return ["3","4","1"].includes(localStorage.getItem('ROLE'));
+}
+
+export function isReportAccess() {
+    return ["3","4"].includes(localStorage.getItem('ROLE'));
+}
+
+export function getRoleName() {
+    const role = localStorage.getItem("ROLE")
+    switch (role) {
+        case "1":
+            return 'Admin';
+        case "2":
+            return 'Institute';
+        case "3":
+            return 'Student';
+        case "4":
+            return 'Parent';
+        default:
+            return 'Unknown Role';
+    }
+}
+
+export function getName() {
+    return localStorage.getItem('NAME');
+}
 
