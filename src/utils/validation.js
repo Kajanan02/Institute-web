@@ -148,6 +148,10 @@ export function validateStatepayment(values) {
     if (!values.studentNIC) {
         errors.studentNIC = "Student NIC is Required"
     }
+
+    if (!values.regNo) {
+        errors.regNo = "Reg.Nois Required"
+    }
     if (!values.amount) {
         errors.amount = 'Amount is required';
     } else if (isNaN(values.amount) || parseFloat(values.amount) <= 0) {
@@ -186,7 +190,7 @@ export function validateinstitutesetting(values) {
         errors.firstname = " First Name is Required"
     }
     if (!values.lastname) {
-        errors.lastname = "Lastname No is Required"
+        errors.lastname = "Last name  is Required"
     }
     if (!values.address) {
         errors.address = "Address is Required"
