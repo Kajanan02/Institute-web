@@ -20,24 +20,12 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import StudentLayout from "./layout/student-layout";
 import PrivateRoute from "./utils/PrivateRoute";
+import Report from "./components/student/reports/report";
+import StudentDashboard from "./components/student/student Dashboard/studentDashboard";
+import StudentSetting from "./components/student/settings/student-setting";
+import Settingss from "./components/settings/Settings-ss";
 
 function App() {
-    // const router = createBrowserRouter([
-    //     {
-    //         path: "/student",
-    //         element: <Root />,
-    //         children: [
-    //             {
-    //                 path: "dashboard",
-    //                 element: <Dashboard />,
-    //             },
-    //             {
-    //                 path: "about",
-    //                 element: <About />,
-    //             },
-    //         ],
-    //     },
-    // ]);
     return (
         <div className="">
             <Loader/>
@@ -58,6 +46,12 @@ function App() {
                     <Route path="/profile/:studentId" element={<StudentProfile/>}/>
                 </Route>
                 <Route path="/login" element={<Login />} />
+                <Route path="/report" element={<Report />} />
+                <Route path="/ass" element={<Settingss />} />
+                <Route path="/dashboard" element={<StudentDashboard />} />
+                <Route path="/usage" element={<Usage />} />
+                <Route path="/profile/:studentId" element={<StudentProfile />} />
+                <Route path="/profile/setting" element={<StudentSetting />} />
             </Routes>
             <ToastContainer/>
         </div>

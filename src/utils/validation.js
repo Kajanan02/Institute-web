@@ -108,3 +108,69 @@ export function validateEvent(values) {
 
     return errors;
 }
+
+export function validateStateappointment(values) {
+    console.log(values)
+    let errors = {};
+
+
+    if (!values.parentName) {
+        errors.parentName = "Parent Name is Required"
+    }
+    if (!values.studentName) {
+        errors.studentName = "Student Name is Required"
+    }
+    if (!values.date) {
+        errors.date = "Date is Required"
+    }
+    if (!values.time) {
+        errors.time = "Time is Required"
+    }
+    if (!values.topic) {
+        errors.topic = "Topic is Required"
+    }
+    if (!values.description) {
+        errors.description = "Description is Required"
+    }
+
+    return errors;
+}
+
+
+export function validateStatepayment(values) {
+    console.log(values)
+    let errors = {};
+
+
+    if (!values.studentName) {
+        errors.studentName = "Student Name is Required"
+    }
+    if (!values.studentNIC) {
+        errors.studentNIC = "Student NIC is Required"
+    }
+    if (!values.amount) {
+        errors.amount = "Amount is Required"
+    }
+    if (!values.parentName) {
+        errors.parentName = "Parent Name is Required"
+    }
+    if (!values.topic) {
+        errors.topic = "Topic is Required"
+    }
+    if (!values.date) {
+        errors.date = "Date is Required"
+    }
+    if (!values.time) {
+        errors.time = "Time is Required"
+    }
+
+    if (!values.topic) {
+        errors.topic = "Topic is Required"
+    }
+    if (!values.paymentMethod) {
+        errors.paymentMethod = "Payment Method is Required"
+    }
+
+
+    return errors;
+}

@@ -1,119 +1,105 @@
 import React from 'react';
 import Layout from "../../layout/layout";
+import {FileUploader} from "react-drag-drop-files";
+import uploadIcon from "../../assets/uplod-icon.svg";
 
 function Settings(props) {
     return (
         <Layout>
-            <div className='heading'>Settings</div>
-            <div className="page-wrapper bg-gra-03 p-t-25">
-                <div className="wrapper wrapper--w790">
-                    <div className="card card-5 settings_card">
-                        <div className="card-heading">
-                            <h2 className="title">Profile</h2>
-                        </div>
-                        <div className="settings_card-body">
-                            <form className={"p-5"}>
-                                <div className="form-row">
+            <div className={"container"}>
+                <div className={"container-widget"}>
+                    <div><h3 className={"content-heading pb-4"}>Settings</h3></div>
+                    <div><h5>Profile Settings</h5></div>
+                    <div className={"form-container"}>
+                        <form className={"row student-settings-form"}>
+                            <div className={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <div><h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
+                                        Name</label></h6></div>
+                                    <div className={"pt-0"}><input type="text" className="form-control form-input"
+                                                                   id="exampleInputfName"
+                                                                   placeholder={"Enter First name"}/></div>
                                 </div>
-                                <div className="form-row">
-
-                                    <div className="name">First Name</div>
-                                    <div className="value">
-                                        <div className="input-group-desc">
-                                            <input className="input--style-5 settings_input " type="text" name="first_name"/>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div className={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Last
+                                        Name</label></h6>
+                                    <input type="text" className="form-control" id="exampleInputlName"
+                                           placeholder={"Enter Last name"}/>
                                 </div>
+                            </div>
 
-                                <div className="form-row">
-                                    <div className="name">Last Name</div>
-                                    <div className="value">
-                                        <div className="settings_input-group">
-                                            <input className="input--style-5 settings_input" type="text" name="company"/>
-                                        </div>
-                                    </div>
+
+                            <div className={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Contact
+                                        No</label></h6>
+                                    <input type="number" className="form-control" id="exampleInputContactNo"
+                                           placeholder={"Enter Contact No"}/>
                                 </div>
-                                <div className="form-row">
-                                    <div className="name">Email</div>
-                                    <div className="value">
-                                        <div className="settings_input-group">
-                                            <input className="input--style-5 settings_input" type="text" name="company"/>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1"
+                                               className="settings-form-text">Address</label></h6>
+                                    <input type="text" className={"form-control"} id="exampleInputAddress"
+                                           placeholder={"Enter Address"}/>
                                 </div>
-                                <div className="form-row">
-                                    <div className="name">Phone Number</div>
-                                    <div className="value">
-                                        <div className="settings_input-group">
-                                            <input className="input--style-5 settings_input" type="email" name="email"/>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div class={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1"
+                                               className="settings-form-text">Email</label></h6>
+                                    <input type="email" className="form-control" id="exampleInputEmail"
+                                           placeholder={"Enter Email"}/>
                                 </div>
-                                <div className="form-row m-b-55">
-                                    <div className="name">Address</div>
-                                    <div className="value">
+                            </div>
 
 
+                            <div className={"modal-footer student-settings-btn"}>
 
-                                        <div className="input-group-desc">
-                                            <input className="input--style-5 settings_input" type="text" name="phone"/>
-                                        </div>
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update Profile
+                                </button>
+                                <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel
+                                </button>
+                            </div>
 
-
-                                    </div>
+                        </form>
+                    </div>
+                    <div className={"mt-5"}><h5>Password Settings</h5></div>
+                    <div className={"form-container pt-3"}>
+                        <form className={"row student-settings-form"}>
+                            <div class={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1"
+                                               className="settings-form-text">Current Password</label></h6>
+                                    <input type="password" className={"form-control"} id="exampleInputAddress"
+                                           placeholder={"Enter Current Password"}/>
                                 </div>
+                            </div>
+                            <div class={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1"
+                                               className="settings-form-text">New Password</label></h6>
+                                    <input type="password" className="form-control" id="exampleInputEmail"
+                                           placeholder={"Enter New Password"}/>
+                                </div>
+                            </div>
 
 
-                                <button type="sumbit" className="btn btn-success btn-rounded settings_btn">Update Profile</button>
+                            <div className={"modal-footer student-settings-btn"}>
 
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}>Update Password
+                                </button>
+                                <button type="button" className={"btn btn-secondary"} data-bs-dismiss="modal">Cancel
+                                </button>
+                            </div>
 
-                            </form>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
-
-            <div className="page-wrapper-1 p-t-10 card_align">
-                <div className="wrapper wrapper--w790">
-                    <div className="card card-5 card_align settings_card">
-                        <div className="card-heading_1">
-                            <h2 className="title_1">Password</h2>
-                        </div>
-                        <div className="p-5">
-                            <form method="POST">
-
-                                <div className="form-row">
-
-                                    <div className="name">Current Password</div>
-                                    <div className="value">
-                                        <div className="settings_input-group_1">
-                                            <input className="input--style-5 settings_input" type="password" name="Currentpassword"/>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-                                <div className="form-row">
-                                    <div className="name">New Password</div>
-                                    <div className="value">
-                                        <div className="settings_input-group_1">
-                                            <input className="input--style-5 settings_input" type="password" name="Newpassword"/>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <button type="sumbit" className="btn btn-success btn-rounded settings_btn">Update Password</button>
-
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
 
 
         </Layout>

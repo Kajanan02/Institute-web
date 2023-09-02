@@ -207,7 +207,7 @@ function Layout({children}) {
                                     <li className="nav-item px-2">
                                         <a className="nav-link  position-relative p-0" aria-current="page" href="#">
 
-                                            <img src={Profile}/>
+                                            <img src={Profile} className="rounded-circle user-profile" />
                                         </a>
                                     </li>
 
