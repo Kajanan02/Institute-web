@@ -3,7 +3,7 @@ import Layout from "../../../layout/layout";
 
 function Report(props) {
     return (
-        <Layout>Reports</Layout>
+        <div>Reports</div>
     );
 }
 
