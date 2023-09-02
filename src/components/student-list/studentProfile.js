@@ -1,33 +1,51 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import User from "../../assets/BasicDetails.svg";
 import ToggleLayout from "../utils-components/toggle-layout";
 import {without} from "underscore";
 import QRCode from "qrcode.react";
 import {useParams} from "react-router-dom";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import {toggleLoader} from "../../redux/actions";
 
 function StudentProfile() {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
     const [visibleToggleIndex, setVisibleToggleIndex] = useState([1]);
+    const [seletedStudent,setSelectedStudent] = useState({});
     const {studentId} = useParams()
+    const instituteId = localStorage.getItem("USER_ID");
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        ///institute/:instituteId/student/:id
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}`)
+            .then((res) => {
+                setSelectedStudent(res.data)
+            }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    },[])
 
 
-    const user = {
-        name: 'V. Janushankan',
-        imageUrl: 'https://i.imgur.com/yXOvdOSs.jpg',
-        imageSize: 90,
-        nicNo: "200028000530",
-        address: "No. 132/ 141, Nilaveli Road, Alesgarden, Trincomalee.",
-        phoneNumber: "0711439088",
-        mail: "janushankan1006@gmail.com",
-        gender: "Male",
-        dob: "10/06/2023",
-        subjects: ["Combined Mathematics", "Physics"],
-        nicFront: 'https://www.w3schools.com/bootstrap5/cinqueterre.jpg',
-        nicBack: 'https://www.w3schools.com/bootstrap5/cinqueterre.jpg',
-    };
+    // const seletedStudent = {
+    //     name: 'V. Janushankan',
+    //     imageUrl: 'https://i.imgur.com/yXOvdOSs.jpg',
+    //     imageSize: 90,
+    //     nicNo: "200028000530",
+    //     address: "No. 132/ 141, Nilaveli Road, Alesgarden, Trincomalee.",
+    //     phoneNumber: "0711439088",
+    //     mail: "janushankan1006@gmail.com",
+    //     gender: "Male",
+    //     dob: "10/06/2023",
+    //     subjects: ["Combined Mathematics", "Physics"],
+    //     nicFront: 'https://www.w3schools.com/bootstrap5/cinqueterre.jpg',
+    //     nicBack: 'https://www.w3schools.com/bootstrap5/cinqueterre.jpg',
+    // };
     const openModal = (imageUrl, imageCaption) => {
         setSelectedImage({url: imageUrl, caption: imageCaption});
         setModalOpen(true);
@@ -60,14 +78,14 @@ function StudentProfile() {
                                 <div className="flex flex-column">
                                     <img
                                         className="avatar profile-img float-start"
-                                        src={user.imageUrl}
-                                        alt={'Photo of ' + user.name}
+                                        src={seletedStudent.imageUrl}
+                                        alt={'Photo of ' + seletedStudent.name}
                                         style={{
-                                            width: user.imageSize,
-                                            height: user.imageSize
+                                            width: seletedStudent.imageSize,
+                                            height: seletedStudent.imageSize
                                         }}
                                     />
-                                    <h4 className={"profile-name text-indent"}>{user.name}</h4>
+                                    <h4 className={"profile-name text-indent"}>{seletedStudent.name}</h4>
                                     <h4 className={"profile-name text-indent profile-view-text"}>Student</h4>
                                 </div>
                             {/* </div> */}
@@ -78,8 +96,7 @@ function StudentProfile() {
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
                                                    className="form-label profile-view-text">Name:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail2" className="form-label">V.
-                                                Janushankan</label>
+                                            <label htmlFor="exampleInputEmail2" className="form-label">{seletedStudent.name || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
@@ -149,15 +166,15 @@ function StudentProfile() {
                                                 Front:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display"
-                                                src={user.nicFront}
-                                                alt={'Photo of ' + user.name + ' (NIC Front)'}
+                                                src={seletedStudent.nicFront}
+                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
                                                 style={{
                                                     width: 90,
                                                     height: 90,
                                                     borderRadius: 12,
                                                     cursor: 'pointer',
                                                 }}
-                                                onClick={() => openModal(user.nicFront, 'NIC Front Image')}
+                                                onClick={() => openModal(seletedStudent.nicFront, 'NIC Front Image')}
                                             />
                                             {modalOpen && (
                                                 <div className="nic-expand-modal" onClick={closeModal}>
@@ -166,7 +183,7 @@ function StudentProfile() {
                                                             <span className="nic-close" onClick={closeModal}>
                                                                 &times;
                                                             </span>
-                                                        <img src={user.nicFront} alt={`NIC Front`}
+                                                        <img src={seletedStudent.nicFront} alt={`NIC Front`}
                                                              className="nic-enlarged-image"/>
                                                     </div>
                                                 </div>
@@ -182,15 +199,15 @@ function StudentProfile() {
                                                 Back:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display img-fluid"
-                                                src={user.nicBack}
-                                                alt={'Photo of ' + user.name + ' (NIC Front)'}
+                                                src={seletedStudent.nicBack}
+                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
                                                 style={{
                                                     width: 90,
                                                     height: 90,
                                                     borderRadius: 12,
                                                     cursor: 'pointer',
                                                 }}
-                                                onClick={() => openModal(user.nicBack, 'NIC Back Image')}
+                                                onClick={() => openModal(seletedStudent.nicBack, 'NIC Back Image')}
                                             />
                                             {modalOpen && (
                                                 <div className="nic-expand-modal" onClick={closeModal}>
@@ -199,7 +216,7 @@ function StudentProfile() {
                                                             <span className="nic-close" onClick={closeModal}>
                                                                 &times;
                                                             </span>
-                                                        <img src={user.nicBack} alt={`NIC Back`}
+                                                        <img src={seletedStudent.nicBack} alt={`NIC Back`}
                                                              className="nic-enlarged-image"/>
                                                     </div>
                                                 </div>
@@ -237,14 +254,14 @@ function StudentProfile() {
                                 <div className="flex flex-column">
                                     <img
                                         className="avatar profile-img float-start"
-                                        src={user.imageUrl}
-                                        alt={'Photo of ' + user.name}
+                                        src={seletedStudent.imageUrl}
+                                        alt={'Photo of ' + seletedStudent.name}
                                         style={{
-                                            width: user.imageSize,
-                                            height: user.imageSize
+                                            width: seletedStudent.imageSize,
+                                            height: seletedStudent.imageSize
                                         }}
                                     />
-                                    <h4 className={"profile-name text-indent"}>{user.name}</h4>
+                                    <h4 className={"profile-name text-indent"}>{seletedStudent.name}</h4>
                                     <h4 className={"profile-name text-indent profile-view-text"}>Parent</h4>
                                 </div>
                             </div>
@@ -323,15 +340,15 @@ function StudentProfile() {
                                                    className="form-label profile-view-text">NIC Front:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display"
-                                                src={user.nicFront}
-                                                alt={'Photo of ' + user.name + ' (NIC Front)'}
+                                                src={seletedStudent.nicFront}
+                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
                                                 style={{
                                                     width: 90,
                                                     height: 90,
                                                     borderRadius: 12,
                                                     cursor: 'pointer',
                                                 }}
-                                                onClick={() => openModal(user.nicFront, 'NIC Front Image')}
+                                                onClick={() => openModal(seletedStudent.nicFront, 'NIC Front Image')}
                                             />
                                             {modalOpen && (
                                                 <div className="nic-expand-modal" onClick={closeModal}>
@@ -340,7 +357,7 @@ function StudentProfile() {
                                                             <span className="nic-close" onClick={closeModal}>
                                                                 &times;
                                                             </span>
-                                                        <img src={user.nicFront} alt={`NIC Front`}
+                                                        <img src={seletedStudent.nicFront} alt={`NIC Front`}
                                                              className="nic-enlarged-image"/>
                                                     </div>
                                                 </div>
@@ -353,15 +370,15 @@ function StudentProfile() {
                                                    className="form-label profile-view-text">NIC Back:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display img-fluid"
-                                                src={user.nicBack}
-                                                alt={'Photo of ' + user.name + ' (NIC Front)'}
+                                                src={seletedStudent.nicBack}
+                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
                                                 style={{
                                                     width: 90,
                                                     height: 90,
                                                     borderRadius: 12,
                                                     cursor: 'pointer',
                                                 }}
-                                                onClick={() => openModal(user.nicBack, 'NIC Back Image')}
+                                                onClick={() => openModal(seletedStudent.nicBack, 'NIC Back Image')}
                                             />
                                             {modalOpen && (
                                                 <div className="nic-expand-modal" onClick={closeModal}>
@@ -370,7 +387,7 @@ function StudentProfile() {
                                                             <span className="nic-close" onClick={closeModal}>
                                                                 &times;
                                                             </span>
-                                                        <img src={user.nicBack} alt={`NIC Back`}
+                                                        <img src={seletedStudent.nicBack} alt={`NIC Back`}
                                                              className="nic-enlarged-image"/>
                                                     </div>
                                                 </div>
