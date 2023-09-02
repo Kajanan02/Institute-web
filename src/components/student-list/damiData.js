@@ -21,8 +21,8 @@ export const studentData = [{
 { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
 { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" }]
 
-export const subjectData = [{ label: "Combined Mathematics", value: "Combined_Mathematics" }, {
+export const subjectData = [{ label: "Combined Mathematics", value: "COMBINED_MATHEMATICS" }, {
     label: "Physics",
-    value: "Physics"
-}, { label: "Chemistry", value: "Chemistry" },
-{ label: "ICT", value: "ICT" }, { label: "Bio Science", value: "Bio Science" }]
+    value: "PHYSICS"
+}, { label: "Chemistry", value: "CHEMISTRY" },
+{ label: "ICT", value: "ICT" }, { label: "Bio Science", value: "BIO_SCIENCE" }]
