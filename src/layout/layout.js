@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {changeToggle} from "../redux/actions";
 import {
     getName,
-    getRoleName, isAppointmentAccess,
+    getRoleName, isAdminAccount, isAppointmentAccess,
     isCareerAccess,
     isInstituteAccount,
     isParentAccount, isReportAccess, isStudentAccount,
@@ -33,12 +33,10 @@ function Layout({children}) {
         let id = localStorage.getItem("USER_ID")
         if (isInstituteAccount()) {
             return "/"
-        } else if (isStudentAccount()) {
+        } else if (isStudentAccount() || isParentAccount()) {
             return "/student"
-        } else if (isParentAccount()) {
-            return "/parent/"+id
-        } else {
-            return "/login"
+        }  else {
+            return "/institute"
         }
     }
 
@@ -95,6 +93,16 @@ function Layout({children}) {
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Marks</div>}
+                                </div>
+                            </NavLink>
+                        </div>}
+                        {isAdminAccount()&&<div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/marks"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
+                                    {!open && <div className={''}>LeaderBoard</div>}
                                 </div>
                             </NavLink>
                         </div>}

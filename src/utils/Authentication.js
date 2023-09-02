@@ -64,12 +64,10 @@ export function initialNavigate(role) {
 
     if (role === "2") {
         return "/"
-    } else if (role === "3") {
+    } else if (role === "3" || role === "4") {
         return "/student"
-    } else if (role === "4") {
-        return "/parent"
     } else {
-        return "/login"
+        return "/institute"
     }
 }
 
