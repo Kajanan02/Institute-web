@@ -1,6 +1,6 @@
 import React from 'react';
 import BANNER from "../../assets/login-banner.png"
-import Logo from "../../assets/logo.png"
+import Logo from "../../assets/lo.png"
 import formHandler from "../../utils/FormHandler";
 import {validateLogin} from "../../utils/validation";
 import axios from "axios";
@@ -49,21 +49,21 @@ function Login(props) {
 
     return (
         <div class="login-body">
-            <div class="login-head"><b>Welcome back EDUZENT</b></div>
-            <div class="login-image">
-                <img className={"ms-5"} src={Logo} alt=""/>
+            <div className="login-small">
+                <div class="login-image">
+                    <img className={"ms-5"} src={Logo} alt=""/>
+                </div>
+                <div className="login-head"><b>HI,Welcome back EDUZENT</b></div>
             </div>
-            <div class="login-img">
-                <img src={BANNER} alt="Login-Banner"/>
-            </div>
-            <div class="login">
-                <div>
-                    <div class="login-sig">
-                        <b>Sign in to EDUZENT</b>
-                    </div>
+            <div className={"login-container"}>
+                <div class="login-img">
+                    <img src={BANNER} alt="Login-Banner"/>
                 </div>
                 <div class="full-container">
-                    <div>
+                    <div className="login-sig">
+                        <b>Sign in to EDUZENT</b>
+                    </div>
+                    <div className={"login-nuser"}>
                         New user? <a class="login-sign" href="http://127.0.0.1:5500/index.html">Create an account</a>
                     </div>
                     <br/>
@@ -81,11 +81,11 @@ function Login(props) {
                             {errors.password && <p className={"text-red"}>{errors.password}</p>}
                             <br/>
                             <a class="login-forgot" href="">Forgot Password?</a>
-                            <div class="login-field login-btn">
-                                <div class="login-login-btn-layer">
 
-                                    <div type="submit" value="Login" onClick={handleSubmit}> Login</div>
-                                </div>
+                            <div className="login-field login-btn">
+                                <div className="login-login-btn-layer">
+                                    <input type="submit" value="Login" onClick={handleSubmit} />
+                                </div><br/>
                             </div>
                         </form>
                     </div>

@@ -934,105 +934,91 @@ body {
 }
 
 /*//Login*/
+
+
 .login-body {
-    display: grid;
-    height: 100%;
-    width: 100%;
-    place-items: center;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    min-height: 100vh;
     margin-top: 160px;
 }
-
-.login {
+.login-sig {
     overflow: hidden;
     max-width: 410px;
     padding: 30px;
     border-radius: 25px;
-    margin-left: 66%;
-    margin-top: -48%;
-
+    font-size: x-large;
+    margin-left: 30px;
 }
 
-.login-head {
-    width: 400px;
-    height: 50px;
-    font-size: xx-large;
-    color: #000000;
-    margin-top: -110px;
-    margin-left: -500px;
-}
 
-.login-sig {
-    width: 400px;
-    height: 50px;
-    flex-shrink: 0;
-    font-size: large;
-    border-radius: 5px;
-    color: #000000;
-}
-
-.full-container .login-form-inner {
+.login-container {
     display: flex;
-    width: 200%;
+    flex-direction: column;
+    margin-top: 10px;
 }
 
-.full-container .login-form-inner .form-login {
-    width: 50%;
-    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+.full-container {
+    margin-left: 60px;
+    margin-top: 30px;
+}
+.login-nuser {
+    margin-left: 60px;
 }
 
-.login-form-inner .form-login .login-field {
+.login-form-inner form .login-field {
     height: 50px;
-    width: 100%;
+    width: 350px;
     margin-top: 20px;
     border-radius: 5px;
+
 }
 
-.login-form-inner .form-login .login-field input {
+.login-form-inner form .login-field input {
     height: 100%;
     width: 100%;
-    outline: none;
     padding-left: 15px;
     border-radius: 5px;
     border: 1px solid lightgrey;
     border-bottom-width: 2px;
     font-size: 17px;
-    transition: all 0.3s ease;
 }
 
-.form-login .login-btn {
+form .login-btn {
     height: 50px;
     width: 100%;
     border-radius: 15px;
     position: relative;
     overflow: hidden;
 }
+.login-head {
+    text-align: center;
+    display: flow-root;
+    font-size: 30px;
+    margin-left: 100px;
+}
 
-.form-login .login-btn .login-login-btn-layer {
+.login-small {
+    padding: 20px;
+}
+form .login-btn .login-login-btn-layer {
     height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 300%;
+    position: absolute;
     left: -100%;
-    color: white;
-    font-weight: bold;
     background: #00AB55;
     border-radius: 5px;
     transition: all 0.4s ease;
-    ;
+
 }
 
-.form-login.login-btn input[type="submit"] {
+form .login-btn input[type="submit"] {
     height: 100%;
     width: 100%;
-    z-index: 2;
+    z-index: 5;
     position: relative;
     background: none;
     border: none;
     color: #fff;
+    padding-left: 110;
     border-radius: 10px;
     font-size: 20px;
     font-weight: 500;
@@ -1041,8 +1027,8 @@ body {
 
 .login-forgot {
     color: #00AB55;
-    margin-left: 60%;
     text-decoration: none;
+    text-align: right;
 }
 
 .login-sign {
@@ -1050,36 +1036,47 @@ body {
     text-decoration: none;
 }
 
-.login-img img {
-    width: 730px;
-    height: 590px;
-}
-
-.login-img {
-    display: flex;
-    justify-content: right;
-    width: 5%;
-    margin-left: 160px;
-    margin-top: 15px;
-
-
-}
-
 .login-image {
-    display: flex;
-    justify-content: right;
-    width: 5%;
-    margin-left: -1200px;
-    margin-top: -210px;
+    text-align: left;
+    margin-top: -150px;
 }
 
 .login-image img {
-    width: 150px;
-    height: 150px;
+    width: 50px;
+    height: 50px;
+}
+
+
+.login-img img {
+    width: 660px;
+    height: 520px;
+}
+
+.login-img {
+    margin-left: -10px;
 }
 
 
 
+@media screen and (min-width: 768px) {
+    .login-container {
+        flex-direction: row;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .full-container {
+        /* flex: 1; */
+        width: 500px !important;
+    }
+
+    .login-img {
+
+        flex: 1;
+    }
+
+
+}
 
 
 /* Settings */
@@ -1627,4 +1624,8 @@ body {
 .qr-img{
     border: 0.5px solid #22C674;
     padding: 4px;
+}
+.disabled-white:disabled{
+    background-color: white !important;
+    cursor: not-allowed! important;
 }
