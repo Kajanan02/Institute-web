@@ -22,6 +22,7 @@ function Marks(props) {
   const [update, setUpdate] = useState(false);
   const instituteId = localStorage.getItem("USER_ID");
   const [deletedId, setDeletedId] = useState(null);
+  const [selectedMarks, setSelectedMarks] = useState(null);
 
   const {
     handleChange,
@@ -167,18 +168,18 @@ function Marks(props) {
                   <th scope="col">Name</th>
                   <th scope="col">Subject</th>
                   <th scope="col">Marks</th>
-                  <th scope="col">Rank</th>
+                  <th scope="col">Date of Exam</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 {marksList.map((data, index) => (<tr>
                   <th scope="row">{index + 1}</th>
-                  <td>{data.Reg}</td>
+                  <td>{data.nicNo}</td>
                   <td>{data.name}</td>
                   <td>{data.subject}</td>
                   <td>{data.marks}</td>
-                  <td>{data.rank}</td>
+                  <td>{data.date?.slice(0,10)}</td>
                   <td>
                     {/*<FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"*/}
                     {/*               data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>*/}
@@ -186,6 +187,7 @@ function Marks(props) {
                                  onClick={() => {
                                    setModalType("Edit");
                                    setModalShow(true)
+                                   setSelectedMarks(data)
                                  }}/>
 
                     <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={() => handleDelete(data._id)}/>
@@ -220,7 +222,9 @@ function Marks(props) {
       <MarksForm
           show={modalShow}
           type={modalType}
+          update={()=> setUpdate(!update)}
           onHide={() => setModalShow(false)}
+          selectedMarks={selectedMarks}
       />
 
     </Layout>

@@ -220,20 +220,17 @@ export function validatemarks(values) {
     console.log(values)
     let errors = {};
 
-    if (!values.name) {
-        errors.name = "Name is Required"
+    if (!values.nicNo) {
+        errors.nicNo = "Reg.No is Required"
     }
-    if (!values.regNo) {
-        errors.regNo = "Reg.No is Required"
-    }
-    if (!values.subjects) {
-        errors.subjects = "Subjects is Required"
+    if (!values.subject) {
+        errors.subject = "Subjects is Required"
     }
 
     if (!values.marks) {
-        errors.marks = 'Amount is required';
+        errors.marks = 'Marks is required';
     } else if (isNaN(values.marks) || parseFloat(values.marks) <= 0) {
-        errors.marks = 'Amount must be a valid positive number';
+        errors.marks = 'Marks must be a valid positive number';
     }
 
     if (!values.date) {
