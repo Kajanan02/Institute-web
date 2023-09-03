@@ -74,9 +74,6 @@ function Marks(props) {
     }));
   }
 
-  useEffect(()=>{
-    console.log("dafs")
-  })
 
   return (
     <Layout>
