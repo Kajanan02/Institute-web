@@ -26,6 +26,10 @@ function MarksForm(props) {
           setSelectedBuyer(selected);
            setValue({previousBuyer: selected});
         }
+    function multiSelectOnChangeSubjects(selected) {
+        setSelectedBuyer(selected);
+        setValue({subjects: selected});
+    }
 
     console.log(errors)
     console.log(values)
@@ -67,7 +71,7 @@ function MarksForm(props) {
                                                onChange={handleChange}
                                                value={values.name}
                                         />
-                                        {errors.name && <p className={"warning-text"}>{errors.name}</p>}
+                                        {errors.name && <p className={"text-red"}>{errors.name}</p>}
 
                                     </div>
                                 </div>
@@ -80,25 +84,45 @@ function MarksForm(props) {
                                                onChange={handleChange}
                                                value={values.regNo}
                                         />
-                                        {errors.regNo && <p className={"warning-text"}>{errors.regNo}</p>}
+
+                                        {errors.regNo && <p className={"text-red"}>{errors.regNo}</p>}
 
                                     </div>
                                 </div>
-                                    <div className={"col-md-6"}>
-                                        <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">Subjects</label>
-                                            <div className={`form-control p-0`}>
-                                                <MultiSelect
-                                                    className={"multi-select test"}
-                                                    options={buyerOption}
-                                                    selected={selectedBuyer}
-                                                    onSelectedChanged={multiSelectOnChangeBuyer}
-
-                                                />
-                                            </div>
+                                <div className={"col-md-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1"
+                                               className="form-label">Subjects</label>
+                                        <div className={`form-control ${errors.subjects ? "border-red" : ""} p-0`}>
+                                            <MultiSelect
+                                                // className={`form-control`}
+                                                // onChange={handleChange}
+                                                value={values.subjects || []}
+                                                options={buyerOption}
+                                                selected={selectedBuyer}
+                                                onSelectedChanged={multiSelectOnChangeSubjects}
+                                            />
                                         </div>
+                                        {errors.subjects && <p className={"text-red"}>{errors.subjects}</p>}
                                     </div>
+                                </div>
+                                    {/*<div className={"col-md-6"}>*/}
+                                    {/*    <div className="mb-3">*/}
+                                    {/*        <label htmlFor="exampleInputEmail1"*/}
+                                    {/*               className="form-label">Subjects</label>*/}
+                                    {/*        <div className={`form-control p-0`}>*/}
+                                    {/*            <MultiSelect*/}
+                                    {/*                className={"multi-select test"}*/}
+                                    {/*                options={buyerOption}*/}
+                                    {/*                selected={selectedBuyer}*/}
+                                    {/*                onSelectedChanged={multiSelectOnChangeBuyer}*/}
+
+                                    {/*            />*/}
+
+                                    {/*        </div>*/}
+                                    {/*        {errors.Subjects && selectedBuyer=='Select some items...' && <p className={"text-red"}>{errors.Subjects}</p>}*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Marks</label>
@@ -108,8 +132,22 @@ function MarksForm(props) {
                                                onChange={handleChange}
                                                value={values.marks}
                                         />
-                                        {errors.marks && <p className={"warning-text"}>{errors.marks}</p>}
+                                        {errors.marks && <p className={"text-red"}>{errors.marks}</p>}
 
+                                    </div>
+                                </div>
+
+                                <div className={"col-md-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1" className="form-label">Date of
+                                            Exam</label>
+                                        <input id="startDate"
+                                               className={`form-control ${errors.date ? "border-red" : ""}`}
+                                               onChange={handleChange}
+                                               name={"date"}
+                                               value={values.date || ""}
+                                               type="date"/>
+                                        {errors.date && <p className={"text-red"}>{errors.date}</p>}
                                     </div>
                                 </div>
 
