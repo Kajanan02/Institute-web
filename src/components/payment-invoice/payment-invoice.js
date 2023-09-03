@@ -3,6 +3,7 @@ import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import {paymentData} from "./damiData";
 import StatepaymentForm from "./paymentinvoiceForm";
+import {isInstituteAccount, isParentAccount} from "../../utils/Authentication";
 
 
 function PaymentInvoice(props) {
@@ -39,12 +40,12 @@ function PaymentInvoice(props) {
                                     Add
                                 </button>
 
-                                <button type="button" className={"btn btn-secondary students-dropdown-btn "}
+                                {isInstituteAccount() &&<button type="button" className={"btn btn-secondary students-dropdown-btn "}
                                     // data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                        onClick={() => setModalType("graph")}>
+                                         onClick={() => setModalType("graph")}>
                                     {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"} />*/}
                                     Graph
-                                </button>
+                                </button>}
 
                             </div>
                         </div>
@@ -78,6 +79,9 @@ function PaymentInvoice(props) {
                                 <td>
                                     <div className={"appointment_state"}
                                          onClick={() => {
+                                             if(isParentAccount()) {
+                                                 return
+                                             }
                                              setModalType("State");
                                              setModalShow(true)
                                          }}>{data.state}</div>

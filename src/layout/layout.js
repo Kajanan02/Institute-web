@@ -21,6 +21,7 @@ function Layout({children}) {
 
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
+    const studentId = localStorage.getItem("STUDENT_ID")
     const open = useSelector(state => {
         return state.setting.toggle
     });
@@ -111,7 +112,7 @@ function Layout({children}) {
                         {isAdminAccount()&&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/marks"}>
+                                to={"/leaderboard"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>LeaderBoard</div>}
@@ -121,7 +122,7 @@ function Layout({children}) {
                         {isReportAccess() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/student/sasd/report"}>
+                                to={`/student/${studentId}/report`}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Report</div>}
@@ -132,7 +133,7 @@ function Layout({children}) {
                         {isCareerAccess() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/student/sasd/career"}>
+                                to={"/career"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="book" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Career</div>}
@@ -187,7 +188,7 @@ function Layout({children}) {
 
                         <div className={'w-100 border-bottom-d1d1d1 mb-3'}/>
 
-                        <div className={"w-100 px-sm-2"}>
+                        {!isAdminAccount() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={settingPath()}>
@@ -196,7 +197,7 @@ function Layout({children}) {
                                     {!open && <div className={''}>Settings</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink

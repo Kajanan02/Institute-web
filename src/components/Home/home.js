@@ -127,7 +127,7 @@ function Home(props) {
                                     <img src={homeimage} alt="Home Image" className={" img-fluid img-responsive"} />
                                 </div>
                                 <div className={"col-md-6"}>
-                                    <div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br /> Janushankan</h4></div>
+                                    <div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br /> {getName()}</h4></div>
                                     {/*<div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br /> {getName()}</h4></div>*/}
                                     <div className={"card-subtitle studentCard-text"}><p>Empowering your educational journey with tools, insights, and resources. Let's excel together!</p></div>
                                 </div>
@@ -185,7 +185,6 @@ function Home(props) {
                                 <div className={"card-text"}>Total Admissions</div>
                                 <div><FeatherIcon className={"home-action-icons"} icon={"user-plus"} /></div>
                                 <div className={"card-text_total"}>1,200</div>
-                                <div><h6>Discover your path to success with us. We are dedicated to helping you achieve your educational goals and aspirations.</h6></div>
 
                             </div>
                         </div>

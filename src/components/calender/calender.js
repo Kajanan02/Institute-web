@@ -6,7 +6,7 @@ import formHandler from "../../utils/FormHandler";
 import { validateEvent } from "../../utils/validation";
 import DtPicker from 'react-calendar-datetime-picker'
 import FeatherIcon from "feather-icons-react";
-import {isInstituteAccount} from "../../utils/Authentication";
+import {isAdminAccount, isInstituteAccount} from "../../utils/Authentication";
 
 const localizer = momentLocalizer(moment)
 
@@ -117,7 +117,7 @@ function Calender(props) {
         <Layout>
             <div className={"container"}>
                 <div className={"d-flex justify-content-end my-4"}>
-                    {isInstituteAccount() &&<button className={"btn btn-secondary marks-dropdown-btn mt-4 px-4 py-2"}
+                    {(isInstituteAccount() || isAdminAccount()) &&<button className={"btn btn-secondary marks-dropdown-btn mt-4 px-4 py-2"}
                              onClick={() => setIsModalVisible(!isModelVisible)}>+ Add
                     </button>}
                 </div>
@@ -129,7 +129,7 @@ function Calender(props) {
                         events={eventList}
                         eventPropGetter={eventStyleGetter}
                         onSelectEvent={event => {
-                            if(!isInstituteAccount()){
+                            if(!isInstituteAccount() || !isAdminAccount()){
                                 return;
                             }
                             setIsModalVisible(true);

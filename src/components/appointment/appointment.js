@@ -3,6 +3,7 @@ import Layout from "../../layout/layout";
 import {appointmentData} from "./damiData";
 import FeatherIcon from 'feather-icons-react';
 import AppointmentForm from "./appointmentForm";
+import {isParentAccount} from "../../utils/Authentication";
 
 function Appointment(props) {
     const [appointmentList, setAppointmentList] = useState(appointmentData)
@@ -66,6 +67,9 @@ function Appointment(props) {
                                     <div className={"appointment_state"}
                                              onClick={() => {
 
+                                                 if(isParentAccount()) {
+                                                     return
+                                                 }
                                              setModalShow(true)
                                                  setModalType("State");
                                          }

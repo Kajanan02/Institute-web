@@ -10,6 +10,7 @@ import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import {validatemarks} from "../../utils/validation";
 import axios from 'axios';
 import {toast} from "react-toastify";
+import {ExportToCsv} from "export-to-csv";
 
 function Marks(props) {
   const [marksList, setMarksList] = useState([])
@@ -101,6 +102,37 @@ function Marks(props) {
     })
   },[confirmationDialog])
 
+  function exportData() {
+    const data = [];
+    marksList.forEach((mark) => {
+      console.log(mark)
+      data.push({
+        "Reg No": mark.nicNo,
+        "Name": mark.name,
+        "Subjects": mark.subject,
+        "Marks": mark.marks,
+        "Date Of Exam":mark.date?.slice(0,10),
+      });
+    });
+    const opt = {
+      fieldSeparator: ",",
+      quoteStrings: '"',
+      decimalseparator: ".",
+      showLabels: true,
+      showTitle: false,
+      title: "Student Details",
+      useBom: true,
+      noDownload: false,
+      headers: ["Reg No","Name","Subjects","Marks", "Date Of Exam"],
+      filename: "MarksDetails",
+      nullToEmptyString: true,
+    };
+
+    const csvExporter = new ExportToCsv(opt);
+    csvExporter.generateCsv(data);
+  }
+
+
 
   return (
     <Layout>
@@ -153,7 +185,7 @@ function Marks(props) {
                 Import Data
               </button>
               <button className={"btn btn-secondary students-dropdown-btn"} type="button"
-                      aria-expanded="false">
+                      aria-expanded="false" onClick={exportData}>
                 Export Data
               </button>
 
