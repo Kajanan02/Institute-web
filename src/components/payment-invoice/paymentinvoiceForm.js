@@ -203,22 +203,16 @@ function StatepaymentForm(props) {
                     className={"btn btn-success"}
                     onClick={handleSubmit}
                 >
-                    Accepeted
-                </button>}
-                {props.type === "State" && <button
-                    type="button"
-                    className={"btn btn-success"}
-                    onClick={handleSubmit}
-                >
-                    Decline
+                    Paid
                 </button>}
                 {props.type === "State" && <button
                     type="button"
                     className={"btn btn-danger"}
                     onClick={handleSubmit}
                 >
-                    Request
+                    Pending
                 </button>}
+
                 {props.type === "Add" && <button
                     type="button"
                     className={"btn btn-success"}

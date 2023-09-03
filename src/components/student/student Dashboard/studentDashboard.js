@@ -11,6 +11,7 @@ import C3Chart from "react-c3js";
 import * as d3 from "d3";
 import { useDispatch } from "react-redux";
 import Carousel from 'react-bootstrap/Carousel';
+import {getName} from "../../../utils/Authentication";
 
 
 function StudentDashboard(props) {
@@ -124,7 +125,7 @@ function StudentDashboard(props) {
                         <div className={"studentCard-container"}>
                             <div className={"row p-2"}>
                                 <div className={"col-md-6"}>
-                                    <div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br /> Janushankan</h4></div>
+                                    <div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br /> {getName()}</h4></div>
                                     <div className={"card-subtitle studentCard-text"}><p>Empowering your educational journey with tools, insights, and resources. Let's excel together!</p></div>
                                 </div>
                                 <div className={"col-md-6 card-image studentCard-image align-items-center"}>

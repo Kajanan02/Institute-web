@@ -12,6 +12,7 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {toggleLoader} from "../../redux/actions";
 import {toast} from "react-toastify";
+import StudentLocationAdd from "./student-location";
 
 function StudentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
@@ -133,6 +134,11 @@ function StudentForm(props) {
         })
     }, [isSubmit]);
 
+    function studentGeoLocation(position) {
+        let data = {}
+        data.gpscoordinates= position
+        setValue({location: position});
+    }
 
     useEffect(()=>{
         if(!updateStudent){
@@ -329,6 +335,9 @@ function StudentForm(props) {
                                         </div>
                                     </div>
                                 }
+                                {currentStep === 1&&<div className="col-md-12 mb-3">
+                                    <StudentLocationAdd onChange={studentGeoLocation} location={values?.location}/>
+                                </div>}
                                 <div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label d-block">Profile
@@ -350,6 +359,8 @@ function StudentForm(props) {
                                         </FileUploader>
                                     </div>
                                 </div>
+
+
 
                                 <div className={"col-md-12"}>
                                     <div className="mb-3">

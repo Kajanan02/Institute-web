@@ -190,7 +190,7 @@ function AppointmentForm(props) {
                 >
                     Request
                 </button>}
-                {props.type === "State" &&<button
+                {props.type === "Add" &&<button
                     type="button"
                     className={"btn btn-secondary students-dropdown-btn"}
                     onClick={handleSubmit}

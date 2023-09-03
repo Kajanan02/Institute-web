@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import Layout from "../../layout/layout";
-import {FileUploader} from "react-drag-drop-files";
-import uploadIcon from "../../assets/uplod-icon.svg";
 import formHandler from "../../utils/FormHandler";
-import {validateinstitutesetting,validateinstitutesettingpassword} from "../../utils/validation";
+import {validateinstitutesetting} from "../../utils/validation";
+import PasswordSetting from "../password-setting/password-setting";
 
 function Settings(props) {
 
@@ -22,8 +21,6 @@ function Settings(props) {
     }
     console.log(errors)
     console.log(values)
-
-
     console.log(props.type)
 
     return (
@@ -63,8 +60,6 @@ function Settings(props) {
 
                                 </div>
                             </div>
-
-
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Contact
@@ -107,69 +102,18 @@ function Settings(props) {
 
                                 </div>
                             </div>
+                            <div className={"modal-footer student-settings-btn"}>
 
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"} onClick={handleSubmit}>Update
+                                </button>
 
-                            <button
-                                type="button"
-                                className={"btn btn-success"}
-                                onClick={handleSubmit}
-                            >
-                                Update Profile
-                            </button>
-
-
+                            </div>
 
                         </form>
                     </div>
-                    <div className={"mt-5"}><h5>Password Settings</h5></div>
-                    <div className={"form-container pt-3"}>
-                        <form className={"row student-settings-form"}>
-                            <div className={"col-md-6"}>
-                                <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Current
-                                        Password
-                                    </label></h6>
-                                    <input name={"currentPassword"} placeholder={"Enter Current Password"}
-                                           className={`form-control ${errors.currentPassword ? "border-red" : ""}`}
-                                           id="exampleInputEmail1"
-                                           onChange={handleChange}
-                                           value={values.currentPassword || ""}
-                                    />
-                                    {props.type === "State" &&errors.currentPassword && <p className={"text-red"}>{errors.currentPassword}</p>}
-
-                                </div>
-                            </div>
-                            <div className={"col-md-6"}>
-                                <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">New Password
-                                    </label></h6>
-                                    <input name={"newPassword"} placeholder={"Enter New Password"}
-                                           className={`form-control ${errors.newPassword ? "border-red" : ""}`}
-                                           id="exampleInputEmail1"
-                                           onChange={handleChange}
-                                           value={values.newPassword || ""}
-                                    />
-                                    {props.type === "State" &&errors.newPassword && <p className={"text-red"}>{errors.newPassword}</p>}
-
-                                </div>
-                            </div>
-
-
-                            {<button
-                                type="button"
-                                className={"btn btn-success"}
-                                onClick={handleSubmit}
-                            >
-                                Update Password
-                            </button>}
-
-
-                        </form>
-                    </div>
+                <PasswordSetting/>
                 </div>
             </div>
-
-
         </Layout>
     );
 }
