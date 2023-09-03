@@ -1641,3 +1641,7 @@ body {
     margin: 35px;
     text-align: center;
 }
+.disabled-white:disabled{
+    background-color: white !important;
+    cursor: not-allowed! important;
+}
