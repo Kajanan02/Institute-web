@@ -4,14 +4,19 @@ import formHandler from "../../utils/FormHandler";
 import {validateinstitute} from "../../utils/validation";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
+import {toggleLoader} from "../../redux/actions";
+import axios from "axios";
+import {toast} from "react-toastify";
+import {useDispatch} from "react-redux";
 // import MultiSelect from "@khanacademy/react-multi-select";
 
 
 function InstituteForm(props) {
     const [profilePic, setProfilePic] = useState(null);
-    const handleChangeProfile = (file) => {
-        setProfilePic(file);
-    };
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [updateInstitute, setUpdateInstitute] = useState(false);
+
+
 
     // const [selectedBuyer, setSelectedBuyer] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -24,10 +29,91 @@ function InstituteForm(props) {
         values,
         errors,
     } = formHandler(isInstitute, validateinstitute);
+    const dispatch = useDispatch();
 
     function isInstitute() {
+        setIsSubmit(true)
 
     }
+    function resetForm() {
+        initForm({})
+        setProfilePic(null)
+    }
+    function imageUpload(file, key) {
+        console.log("Fille")
+
+        dispatch(toggleLoader(true))
+        const data = new FormData()
+        data.append("file", file)
+        data.append("upload_preset", "xi7icexi")
+        data.append("cloud_name", "dacrccjrm")
+        axios.put("https://api.cloudinary.com/v1_1/dacrccjrm/image/upload", data)
+            .then((res) => {
+                console.log(res.data.url)
+                setValue({[key]: res.data.url})
+            }).finally(() => dispatch(toggleLoader(false)))
+    }
+
+
+    const handleChangeProfile = (file) => {
+        setProfilePic(file);
+        imageUpload(file, "profilePic")
+    };
+
+    useEffect(()=>{
+        if(!isSubmit || props.type !== "Edit"){
+            return
+        }
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/users/${values._id}/profile`, values)
+            .then((res) => {
+                console.log(res.data)
+                toast.success(`Successfully Updated`)
+                props.update()
+            }).catch((err) => {
+
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            resetForm()
+            props.onHide()
+        })
+
+    },[isSubmit])
+
+    useEffect(()=>{
+        if(!props.selectedInstitute){
+            return
+        }
+        initForm(props.selectedInstitute)
+
+    },[props.selectedInstitute])
+
+    useEffect(() => {
+        if (!isSubmit || props.type !== "Add") {
+            return
+        }
+        values.password = "123456"
+        console.log(values)
+        dispatch(toggleLoader(true))
+
+        axios.post(`${process.env.REACT_APP_HOST}/users/register`, values)
+            .then((res) => {
+                console.log(res.data)
+                props.update();
+                props.onHide();
+                toast.success(`Successfully created`)
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+
+            resetForm()
+
+        })
+    }, [isSubmit]);
     // function multiSelectOnChangeBuyer(selected) {
     //     setSelectedBuyer(selected);
     //     setValue({previousBuyer: selected});
@@ -38,6 +124,7 @@ function InstituteForm(props) {
 
 
     console.log(props.type)
+
 
     return (
         <Modal
@@ -158,7 +245,23 @@ function InstituteForm(props) {
 
                                     </div>
                                 </div>
-                                {props.type !== "View" &&<div className={"col-md-12"}>
+                                {props.type === "View" &&values?.profilePic &&<div className={"col-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1"
+                                               className="form-label profile-view-text">Profile pic:&nbsp;</label>
+                                        <img
+                                            className="avatar profile-img-display img-fluid"
+                                            src={values.profilePic}
+                                            alt={'Photo of'}
+                                            style={{
+                                                width: 90,
+                                                height: 90,
+                                                borderRadius: 12,
+                                                cursor: 'pointer',
+                                            }}
+                                          />
+                                    </div>
+                                </div>}                                {props.type !== "View" &&<div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className={`form-label d-block ${props.type !== "View" ? "" : ""}`}>Profile
                                             Picture</label>
