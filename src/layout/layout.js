@@ -39,6 +39,16 @@ function Layout({children}) {
             return "/institute"
         }
     }
+    function settingPath() {
+        let id = localStorage.getItem("USER_ID")
+        if (isInstituteAccount()) {
+            return "/settings"
+        } else if (isStudentAccount() || isParentAccount()) {
+            return "/settings/student"
+        }  else {
+            return "/institute"
+        }
+    }
 
     console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID)
 
@@ -180,7 +190,7 @@ function Layout({children}) {
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/settings"}>
+                                to={settingPath()}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="settings" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Settings</div>}

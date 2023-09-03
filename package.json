@@ -22,6 +22,7 @@
     "bootstrap": "^5.3.1",
     "d3": "^7.0.0",
     "dayjs": "^1.11.9",
+    "export-to-csv": "^0.2.2",
     "feather-icons-react": "^0.6.2",
     "moment": "^2.29.4",
     "qrcode.react": "^3.1.0",
