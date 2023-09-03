@@ -589,7 +589,18 @@ body {
 
 .profile-img {
     border-radius: 50%;
-    padding: auto;
+    padding: 2px;
+    height: 120px;
+    width: 120px;
+    border: 3px solid #ccc;
+}
+
+.profile-img:hover {
+    border-radius: 50%;
+    padding: 2px;
+    height: 120px;
+    width: 120px;
+    border: 3px solid #00AB55;
 }
 
 .profile-view-text {
@@ -1564,6 +1575,8 @@ body {
 .user-profile {
     padding: 2px;
     border: 2px solid #ccc;
+    width: 57.6px;
+    height: 57.6px;
 }
 
 .user-profile:hover {

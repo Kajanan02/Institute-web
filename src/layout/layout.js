@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Bell from "../assets/bell-icon.svg";
 import Msg from "../assets/msg-icon.svg";
-import Profile from "../assets/profile-img.svg";
+import Profile from "../assets/layoutDefaultProfile.jpg";
 import SideClose from "../assets/carbon_side-panel-close.svg";
 import FeatherIcon from 'feather-icons-react';
 import {NavLink} from "react-router-dom";
