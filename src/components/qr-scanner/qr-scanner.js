@@ -3,11 +3,40 @@ import {QrReader} from 'react-qr-reader';
 import Layout from "../../layout/layout";
 import QrImg from "../../assets/Qr-img.svg";
 import QrIcon from "../../assets/Qr-icon.svg";
+import axios from "axios";
+import {initialNavigate, loadCredential} from "../../utils/Authentication";
+import {toast} from "react-toastify";
+import {toggleLoader} from "../../redux/actions";
+import {useDispatch} from "react-redux";
 
 function QrScanner(props) {
 
     const [data, setData] = useState('No result');
     const [cameraVisible, setCameraVisible] = useState(false);
+    const dispatch = useDispatch();
+    const instituteId = localStorage.getItem("USER_ID");
+
+
+
+    function updateAttendece(studentId) {
+
+        dispatch(toggleLoader(true))
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/attendance`)
+            .then((res) => {
+                console.log(res.data)
+                toast.success("Successfully attendance updated");
+            }).catch((err) => {
+            if(err?.response?.data?.message){
+                toast.error(err?.response?.data?.message)
+            }else {
+                toast.error("Something went wrong")
+            }
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }
+
+    console.log(data)
 
     return (
         <Layout>
@@ -24,11 +53,16 @@ function QrScanner(props) {
                         onResult={(result, error) => {
                             console.log(result);
                             if (!!result) {
+                                console.log(data ===result.text)
+                                if(data ===result.text) {
+                                    return
+                                }
                                 setData(result?.text);
-                                alert(result?.text)
+                                updateAttendece(result?.text)
+                                // alert(result?.text)
                             }
                             if (!!error) {
-                                console.info(error);
+                                // console.info(error);
                             }
                         }}
 

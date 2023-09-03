@@ -236,7 +236,7 @@ function StudentProfile() {
 
                                             <div>
                                                 <QRCode className="qr-img"
-                                                    value={window.location.protocol + '//' + window.location.host + '/profile/' + studentId} />
+                                                    value={studentId} />
                                             </div>
 
                                         </div>

@@ -1,17 +1,33 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from "feather-icons-react";
 import InstituteForm from "./instituteForm";
 import {useDispatch} from "react-redux";
-import {toggleConfirmationDialog} from "../../redux/actions";
+import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import {instituteData} from "../institute/instituteDamiData";
+import axios from "axios";
 // import {appointmentData} from "../appointment/damiData";
 
 
 function Institute(props) {
-    const [instituteList, setInstituteList] = useState(instituteData)
+    const [instituteList, setInstituteList] = useState([])
     const [modalType, setModalType] = useState("view")
     const [modalShow, setModalShow] = useState(false);
+    const [update, setUpdate] = useState(false);
+    const [selectedInstitute, setSelectedInstitute] = useState(null)
+    const users = localStorage.getItem("USER_ID");
+
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/users/allprofile`)
+            .then((res) => {
+                setInstituteList(res.data)
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [update])
 
     function handleDelete() {
         dispatch(toggleConfirmationDialog({
@@ -106,32 +122,42 @@ function Institute(props) {
 
                                     <td>{data.name}</td>
                                     <td>{data.email}</td>
-                                    <td>{data.contact}</td>
+                                    <td>{data.phoneNumber}</td>
                                     <td>{data.address}</td>
                                     <td>
                                         <FeatherIcon className={"action-icons"} icon={"eye"}
                                                      onClick={() => {
                                                          setModalType("View");
+                                                         setSelectedInstitute(data)
                                                          setModalShow(true)
                                                      }}/>
                                         <FeatherIcon className={"action-icons"} icon={"edit"}
                                                      onClick={() => {
+                                                         setSelectedInstitute(data)
                                                          setModalType("Edit");
                                                          setModalShow(true)
                                                      }}/>
+
 
                                         <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={handleDelete}/>
                                     </td>
                                 </tr>))}
                                 </tbody>
                             </table>
+                            {instituteList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Institute Data Found,Please Add</div>}
+
                         </div>
                     </div>
                 </div>
             <InstituteForm
                 show={modalShow}
                 type={modalType}
-                onHide={() => setModalShow(false)}
+                selectedInstitute={selectedInstitute}
+                update={()=>setUpdate(!update)}
+                onHide={() => {
+                    setModalShow(false);
+                    setSelectedInstitute(null)
+                }}
             />
 
 
