@@ -1,6 +1,6 @@
 import React from 'react';
 import BANNER from "../../assets/login-banner.png"
-import Logo from "../../assets/lo.png"
+import Logo from "../../assets/eduzon.svg"
 import formHandler from "../../utils/FormHandler";
 import {validateLogin} from "../../utils/validation";
 import axios from "axios";
