@@ -137,6 +137,20 @@ function MarksForm(props) {
                                     </div>
                                 </div>
 
+                                <div className={"col-md-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1" className="form-label">Date of
+                                            Exam</label>
+                                        <input id="startDate"
+                                               className={`form-control ${errors.date ? "border-red" : ""}`}
+                                               onChange={handleChange}
+                                               name={"date"}
+                                               value={values.date || ""}
+                                               type="date"/>
+                                        {errors.date && <p className={"text-red"}>{errors.date}</p>}
+                                    </div>
+                                </div>
+
 
                             </div>
                         </div>

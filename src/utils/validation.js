@@ -236,6 +236,10 @@ export function validatemarks(values) {
         errors.marks = 'Amount must be a valid positive number';
     }
 
+    if (!values.date) {
+        errors.date = "Date Of Exam is Required"
+    }
+
     return errors;
 }
 

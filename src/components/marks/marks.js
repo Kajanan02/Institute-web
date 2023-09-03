@@ -38,9 +38,6 @@ function Marks(props) {
     setProfilePic(file);
   };
 
-  useEffect(()=>{
-    setValue({name:"oppai"})
-  },[])
 
   console.log(values)
   console.log(errors)
@@ -77,7 +74,9 @@ function Marks(props) {
     }));
   }
 
-  console.log()
+  useEffect(()=>{
+    console.log("dafs")
+  })
 
   return (
     <Layout>
