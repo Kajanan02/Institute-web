@@ -93,16 +93,18 @@ function MarksForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
                                                className="form-label">Subjects</label>
-                                        <div className={`form-control ${errors.subjects ? "border-red" : ""} p-0`}>
-                                            <MultiSelect
-                                                // className={`form-control`}
-                                                // onChange={handleChange}
-                                                value={values.subjects || []}
-                                                options={buyerOption}
-                                                selected={selectedBuyer}
-                                                onSelectedChanged={multiSelectOnChangeSubjects}
-                                            />
-                                        </div>
+                                        <select className={`form-control ${errors.subjects ? "border-red" : ""}`}
+                                                onChange={handleChange}
+                                                value={values.subjects || ""}
+                                                name={"subjects"}
+                                                aria-label="Default select example">
+                                            <option hidden>Subjects</option>
+                                            <option value="Combined Mathematics">Combined Mathematics</option>
+                                            <option value="Physics">Physics</option>
+                                            <option value="Chemistry">Chemistry</option>
+                                            <option value="ICT">ICT</option>
+                                            <option value="Bio Science">Bio Science</option>
+                                        </select>
                                         {errors.subjects && <p className={"text-red"}>{errors.subjects}</p>}
                                     </div>
                                 </div>
