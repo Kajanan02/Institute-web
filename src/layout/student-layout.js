@@ -8,7 +8,7 @@ function StudentLayout(props) {
     return (
         <Layout>
             <Routes>
-                <Route path=":studentId" element={<StudentDashboard/>}/>
+                <Route path="/" element={<StudentDashboard/>}/>
                 <Route path=":studentId/report" element={<Report/>}/>
                 <Route path=":studentId/career" element={<Report/>}/>
             </Routes>

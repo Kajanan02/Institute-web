@@ -33,7 +33,7 @@ function App() {
             <Routes>
                 <Route exact path='/' element={<PrivateRoute/>}>
                     <Route path="/" element={<Home/>}/>
-                    <Route path="/student" element={<Student/>}/>
+                    <Route path="/students" element={<Student/>}/>
                     <Route path="/calendar" element={<Calender/>}/>
                     <Route path="/marks" element={<Marks/>}/>
                     <Route path="/broadcast" element={<Broadcast/>}/>
@@ -43,15 +43,15 @@ function App() {
                     <Route path="/settings" element={<Settings/>}/>
                     <Route path="/student/*" element={<StudentLayout/>}/>
                     <Route path="/usage" element={<Usage/>}/>
-                    <Route path="/profile/:studentId" element={<StudentProfile/>}/>
+                    <Route path="/students/:studentId" element={<StudentProfile/>}/>
+                    <Route path="/settings/student" element={<StudentSetting />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/report" element={<Report />} />
                 <Route path="/ass" element={<Settingss />} />
-                <Route path="/dashboard" element={<StudentDashboard />} />
                 <Route path="/usage" element={<Usage />} />
-                <Route path="/profile/:studentId" element={<StudentProfile />} />
-                <Route path="/profile/setting" element={<StudentSetting />} />
+                {/*<Route path="/profile/:studentId" element={<StudentProfile />} />*/}
+                {/*<Route path="/profile/setting" element={<StudentSetting />} />*/}
             </Routes>
             <ToastContainer/>
         </div>
