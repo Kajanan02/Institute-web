@@ -5,6 +5,7 @@ import StudentForm from "./student-form";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
+import {ExportToCsv} from "export-to-csv";
 import axios from "axios";
 import {toast} from "react-toastify";
 
@@ -73,7 +74,37 @@ function Students(props) {
         })
     },[confirmationDialog])
 
-    console.log(deletedId)
+    function exportData() {
+        const data = [];
+        studentsList.forEach((student) => {
+            data.push({
+                "Name": student.name,
+                "Date of Birth": student.dob,
+                "Gender":student.gender,
+                "NIC No": student.nicNo,
+                "Address ": student.address,
+                "Subjects ": student.subjects.map(e => e.replace("_"," ")).join(","),
+                "Joined Date":student.createdAt.slice(0,10),
+                "Email": student.email ? student.email : " - ",
+            });
+        });
+        const opt = {
+            fieldSeparator: ",",
+            quoteStrings: '"',
+            decimalseparator: ".",
+            showLabels: true,
+            showTitle: false,
+            title: "Student Details",
+            useBom: true,
+            noDownload: false,
+            headers: ["Name", "Date of Birth", "Gender", "NIC No", "Address ", "Subjects ", "Joined Date","Email"],
+            filename: "StudentDetails",
+            nullToEmptyString: true,
+        };
+
+        const csvExporter = new ExportToCsv(opt);
+        csvExporter.generateCsv(data);
+    }
 
     return (
         <Layout>
@@ -95,13 +126,13 @@ function Students(props) {
                                 </button>
 
 
+                                {/*<button className={"btn btn-secondary students-dropdown-btn"} type="button"*/}
+                                {/*        aria-expanded="false">*/}
+                                {/*    <FeatherIcon className={"action-icons text-white"} icon={"download"}/>*/}
+                                {/*    Import Data*/}
+                                {/*</button>*/}
                                 <button className={"btn btn-secondary students-dropdown-btn"} type="button"
-                                        aria-expanded="false">
-                                    <FeatherIcon className={"action-icons text-white"} icon={"download"}/>
-                                    Import Data
-                                </button>
-                                <button className={"btn btn-secondary students-dropdown-btn"} type="button"
-                                        aria-expanded="false">
+                                        aria-expanded="false" onClick={exportData}>
                                     Export Data
                                 </button>
                             </div>
