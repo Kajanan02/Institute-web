@@ -1628,3 +1628,7 @@ body {
     border: 0.5px solid #22C674;
     padding: 4px;
 }
+.disabled-white:disabled{
+    background-color: white !important;
+    cursor: not-allowed! important;
+}
