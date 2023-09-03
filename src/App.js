@@ -24,6 +24,7 @@ import Report from "./components/student/reports/report";
 import StudentDashboard from "./components/student/student Dashboard/studentDashboard";
 import StudentSetting from "./components/student/settings/student-setting";
 import Settingss from "./components/settings/Settings-ss";
+import Institute from "./components/institute/institute";
 
 function App() {
     return (
@@ -47,6 +48,7 @@ function App() {
                 </Route>
                 <Route path="/login" element={<Login />} />
                 <Route path="/report" element={<Report />} />
+                <Route path="/institute" element={<Institute />} />
                 <Route path="/ass" element={<Settingss />} />
                 <Route path="/dashboard" element={<StudentDashboard />} />
                 <Route path="/usage" element={<Usage />} />

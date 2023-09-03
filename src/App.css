@@ -1609,3 +1609,16 @@ body {
 .nav-profileRole {
     font-size: 12px;
 }
+.dashboardStudent{
+    margin: 12px;
+    display: flex;
+    gap: 10px;
+}
+.admissionCard{
+    margin: 12px;
+    gap: 10px;
+}
+.admissionCard-Content{
+    margin: 35px;
+    text-align: center;
+}

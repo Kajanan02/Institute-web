@@ -179,11 +179,12 @@ function StudentDashboard(props) {
                 <div className={"row p-2 mt-4"}>
                     <div className={"col-sm-6 mb-3 mb-sm-0"}>
                         <div className={"card home_card"}>
-                            <div className={"card-body p-3"}>
+                            <div className={"dashboardStudent p-3"}>
+                                <div className={"admissionCard"}>
                                 <div className={"card-text"}>Total Admissions</div>
                                 <div><FeatherIcon className={"home-action-icons"} icon={"user-plus"} /></div>
-                                <div className={"card-text_total"}>1,200</div>
-
+                                <div className={"card-text_total"}>1,200</div></div>
+                                <div className={"admissionCard-Content"}><h6>Discover your path to <br/><FeatherIcon className={"home-action-icons"} icon={"award"} /> success with us. </h6></div>
                             </div>
                         </div>
                     </div>
