@@ -1625,6 +1625,19 @@ form .login-btn input[type="submit"] {
     border: 0.5px solid #22C674;
     padding: 4px;
 }
+.dashboardStudent{
+    margin: 12px;
+    display: flex;
+    gap: 10px;
+}
+.admissionCard{
+    margin: 12px;
+    gap: 10px;
+}
+.admissionCard-Content{
+    margin: 35px;
+    text-align: center;
+}
 .disabled-white:disabled{
     background-color: white !important;
     cursor: not-allowed! important;
