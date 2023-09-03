@@ -1,22 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from "../../layout/layout";
 import User from "../../assets/BasicDetails.svg";
 import ToggleLayout from "../utils-components/toggle-layout";
-import {without} from "underscore";
+import { without } from "underscore";
 import QRCode from "qrcode.react";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
-import {useDispatch} from "react-redux";
-import {toggleLoader} from "../../redux/actions";
+import { useDispatch } from "react-redux";
+import { toggleLoader } from "../../redux/actions";
+import layoutDefaultProfile from "../../assets/layoutDefaultProfile.jpg";
 
 function StudentProfile() {
 
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
     const [visibleToggleIndex, setVisibleToggleIndex] = useState([1]);
-    const [seletedStudent,setSelectedStudent] = useState({});
-    const {studentId} = useParams()
+    const [seletedStudent, setSelectedStudent] = useState({});
+    const { studentId } = useParams()
     const instituteId = localStorage.getItem("USER_ID");
+    const [profileImage, setProfileImage] = useState(layoutDefaultProfile);
 
     const dispatch = useDispatch();
 
@@ -27,9 +29,14 @@ function StudentProfile() {
             .then((res) => {
                 setSelectedStudent(res.data)
             }).finally(() => {
-            dispatch(toggleLoader(false))
-        })
-    },[])
+                dispatch(toggleLoader(false))
+            })
+    }, [])
+
+
+    function updateProfileImage(Profile) {
+        setProfileImage(Profile);
+    }
 
 
     // const seletedStudent = {
@@ -47,7 +54,7 @@ function StudentProfile() {
     //     nicBack: 'https://www.w3schools.com/bootstrap5/cinqueterre.jpg',
     // };
     const openModal = (imageUrl, imageCaption) => {
-        setSelectedImage({url: imageUrl, caption: imageCaption});
+        setSelectedImage({ url: imageUrl, caption: imageCaption });
         setModalOpen(true);
     };
 
@@ -63,106 +70,110 @@ function StudentProfile() {
             setVisibleToggleIndex(oldArray => [...oldArray, index]);
         }
     }
+    console.log(seletedStudent.profilePic);
 
 
     return (
         <Layout>
             <div className={"mt-5 mb-5"}>
                 <ToggleLayout image={User} title={"View Students Details"} dropDown={false}
-                              visibleToggleIndex={visibleToggleIndex}
-                              toggleIndex={1}
-                              onVisibleToggleIndexChange={(index) => toggle(index)}>
+                    visibleToggleIndex={visibleToggleIndex}
+                    toggleIndex={1}
+                    onVisibleToggleIndexChange={(index) => toggle(index)}>
                     <div className="accordion-content p-5">
                         <div className="row">
-                            {/* <div className={"row"}> */}
-                                <div className="flex flex-column">
-                                    <img
-                                        className="avatar profile-img float-start"
-                                        src={seletedStudent.imageUrl}
-                                        alt={'Photo of ' + seletedStudent.name}
-                                        style={{
-                                            width: seletedStudent.imageSize,
-                                            height: seletedStudent.imageSize
-                                        }}
-                                    />
-                                    <h4 className={"profile-name text-indent"}>{seletedStudent.name}</h4>
-                                    <h4 className={"profile-name text-indent profile-view-text"}>Student</h4>
+                            <div className="row align-items-center">
+                                <div className="col-12 col-md-2">
+                                    <div className="d-flex-start align-items-center justify-content-start">
+                                        <img
+                                            className="avatar profile-img float-start"
+                                            src={seletedStudent.profilePic ? seletedStudent.profilePic : layoutDefaultProfile}
+                                            alt={'Photo of ' + seletedStudent.name}
+                                            style={{
+                                                width: seletedStudent.imageSize,
+                                                height: seletedStudent.imageSize
+                                            }}
+                                        />
+                                    </div>
                                 </div>
-                            {/* </div> */}
+                                <div className="col-12 col-md-10">
+                                    <div className="d-flex-start flex-row align-items-center justify-content-center">
+                                        <h4 className={"profile-name"}>{seletedStudent.name}</h4>
+                                        <h4 className={"profile-name profile-view-text"}>Student</h4>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div className={"pop-up-form-container"}>
                                 <div className={"row label-align mt-3"}>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Name:&nbsp;</label>
+                                                className="form-label profile-view-text">Name:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail2" className="form-label">{seletedStudent.name || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC
+                                                className="form-label profile-view-text">NIC
                                                 No:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">200028000530</label>
+                                                className="form-label">{seletedStudent.nicNo || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Address:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label">No. 132/
-                                                141,
-                                                Nilaveli Road, Alesgarden, Trincomalee.</label>
+                                                className="form-label profile-view-text">Address:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">{seletedStudent.address || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Contact
+                                                className="form-label profile-view-text">Contact
                                                 No:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">0711439088</label>
+                                                className="form-label">{seletedStudent.phoneNumber || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Email:&nbsp;</label>
+                                                className="form-label profile-view-text">Email:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">janushankan1006@gmail.com</label>
+                                                className="form-label">{seletedStudent.email || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Gender:&nbsp;</label>
+                                                className="form-label profile-view-text">Gender:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">Male</label>
+                                                className="form-label">{seletedStudent.gender || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Date of
+                                                className="form-label profile-view-text">Date of
                                                 Birth:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">10/06/2000</label>
+                                                className="form-label">{seletedStudent.dob || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Subjects:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Combined
-                                                Mathematics, Physics</label>
+                                                className="form-label profile-view-text">Subjects:&nbsp;</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">{seletedStudent.subjects && seletedStudent.subjects.length > 0 ? seletedStudent.subjects.join(', ').toString() : 'No subjects available'}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC
+                                                className="form-label profile-view-text">NIC
                                                 Front:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display"
@@ -179,12 +190,12 @@ function StudentProfile() {
                                             {modalOpen && (
                                                 <div className="nic-expand-modal" onClick={closeModal}>
                                                     <div className="nic-modal-content"
-                                                         onClick={(e) => e.stopPropagation()}>
-                                                            <span className="nic-close" onClick={closeModal}>
-                                                                &times;
-                                                            </span>
-                                                        <img src={seletedStudent.nicFront} alt={`NIC Front`}
-                                                             className="nic-enlarged-image"/>
+                                                        onClick={(e) => e.stopPropagation()}>
+                                                        <span className="nic-close" onClick={closeModal}>
+                                                            &times;
+                                                        </span>
+                                                        <img src={selectedImage.url} alt={`NIC Front`}
+                                                            className="nic-enlarged-image" />
                                                     </div>
                                                 </div>
                                             )}
@@ -195,12 +206,12 @@ function StudentProfile() {
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC
+                                                className="form-label profile-view-text">NIC
                                                 Back:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display img-fluid"
                                                 src={seletedStudent.nicBack}
-                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
+                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Back)'}
                                                 style={{
                                                     width: 90,
                                                     height: 90,
@@ -209,28 +220,16 @@ function StudentProfile() {
                                                 }}
                                                 onClick={() => openModal(seletedStudent.nicBack, 'NIC Back Image')}
                                             />
-                                            {modalOpen && (
-                                                <div className="nic-expand-modal" onClick={closeModal}>
-                                                    <div className="nic-modal-content"
-                                                         onClick={(e) => e.stopPropagation()}>
-                                                            <span className="nic-close" onClick={closeModal}>
-                                                                &times;
-                                                            </span>
-                                                        <img src={seletedStudent.nicBack} alt={`NIC Back`}
-                                                             className="nic-enlarged-image"/>
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">QR :</label>
+                                                className="form-label profile-view-text">QR :</label>
 
                                             <div>
-                                            <QRCode className="qr-profile-center"
-                                                    value={window.location.protocol + '//' + window.location.host + '/profile/' + studentId}/>
+                                                <QRCode className="qr-profile-center"
+                                                    value={window.location.protocol + '//' + window.location.host + '/profile/' + studentId} />
                                             </div>
 
                                         </div>
@@ -243,26 +242,32 @@ function StudentProfile() {
 
 
                 <ToggleLayout image={User} title={"View Parent Details"} dropDown={false}
-                              visibleToggleIndex={visibleToggleIndex}
-                              toggleIndex={2}
-                              onVisibleToggleIndexChange={(index) => toggle(index)}>
+                    visibleToggleIndex={visibleToggleIndex}
+                    toggleIndex={2}
+                    onVisibleToggleIndexChange={(index) => toggle(index)}>
 
 
                     <div className="accordion-content rounded p-5">
                         <div className="row">
-                            <div className={"row"}>
-                                <div className="flex flex-column">
-                                    <img
-                                        className="avatar profile-img float-start"
-                                        src={seletedStudent.imageUrl}
-                                        alt={'Photo of ' + seletedStudent.name}
-                                        style={{
-                                            width: seletedStudent.imageSize,
-                                            height: seletedStudent.imageSize
-                                        }}
-                                    />
-                                    <h4 className={"profile-name text-indent"}>{seletedStudent.name}</h4>
-                                    <h4 className={"profile-name text-indent profile-view-text"}>Parent</h4>
+                            <div className="row align-items-center">
+                                <div className="col-12 col-md-2">
+                                    <div className="d-flex-start align-items-center justify-content-start">
+                                        <img
+                                            className="avatar profile-img float-start"
+                                            src={seletedStudent.imageUrl}
+                                            alt={'Photo of ' + seletedStudent.name}
+                                            style={{
+                                                width: seletedStudent.imageSize,
+                                                height: seletedStudent.imageSize
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col-12 col-md-10">
+                                    <div className="d-flex-start flex-row align-items-center justify-content-center">
+                                        <h4 className={"profile-name"}>{seletedStudent.name}</h4>
+                                        <h4 className={"profile-name profile-view-text"}>Parent</h4>
+                                    </div>
                                 </div>
                             </div>
 
@@ -271,7 +276,7 @@ function StudentProfile() {
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Name:&nbsp;</label>
+                                                className="form-label profile-view-text">Name:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail2" className="form-label">V.
                                                 Janushankan</label>
                                         </div>
@@ -279,15 +284,15 @@ function StudentProfile() {
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC No:&nbsp;</label>
+                                                className="form-label profile-view-text">NIC No:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">200028000530</label>
+                                                className="form-label">200028000530</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Address:&nbsp;</label>
+                                                className="form-label profile-view-text">Address:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1" className="form-label">No. 132/ 141,
                                                 Nilaveli Road, Alesgarden, Trincomalee.</label>
                                         </div>
@@ -295,49 +300,49 @@ function StudentProfile() {
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Contact
+                                                className="form-label profile-view-text">Contact
                                                 No:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">0711439088</label>
+                                                className="form-label">0711439088</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Email:&nbsp;</label>
+                                                className="form-label profile-view-text">Email:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">janushankan1006@gmail.com</label>
+                                                className="form-label">janushankan1006@gmail.com</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Gender:&nbsp;</label>
+                                                className="form-label profile-view-text">Gender:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1" className="form-label">Male</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Date of
+                                                className="form-label profile-view-text">Date of
                                                 Birth:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">10/06/2000</label>
+                                                className="form-label">10/06/2000</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">Relationship to
+                                                className="form-label profile-view-text">Relationship to
                                                 Student:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label">Father</label>
+                                                className="form-label">Father</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC Front:&nbsp;</label>
+                                                className="form-label profile-view-text">NIC Front:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display"
                                                 src={seletedStudent.nicFront}
@@ -350,24 +355,12 @@ function StudentProfile() {
                                                 }}
                                                 onClick={() => openModal(seletedStudent.nicFront, 'NIC Front Image')}
                                             />
-                                            {modalOpen && (
-                                                <div className="nic-expand-modal" onClick={closeModal}>
-                                                    <div className="nic-modal-content"
-                                                         onClick={(e) => e.stopPropagation()}>
-                                                            <span className="nic-close" onClick={closeModal}>
-                                                                &times;
-                                                            </span>
-                                                        <img src={seletedStudent.nicFront} alt={`NIC Front`}
-                                                             className="nic-enlarged-image"/>
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC Back:&nbsp;</label>
+                                                className="form-label profile-view-text">NIC Back:&nbsp;</label>
                                             <img
                                                 className="avatar profile-img-display img-fluid"
                                                 src={seletedStudent.nicBack}
@@ -380,18 +373,6 @@ function StudentProfile() {
                                                 }}
                                                 onClick={() => openModal(seletedStudent.nicBack, 'NIC Back Image')}
                                             />
-                                            {modalOpen && (
-                                                <div className="nic-expand-modal" onClick={closeModal}>
-                                                    <div className="nic-modal-content"
-                                                         onClick={(e) => e.stopPropagation()}>
-                                                            <span className="nic-close" onClick={closeModal}>
-                                                                &times;
-                                                            </span>
-                                                        <img src={seletedStudent.nicBack} alt={`NIC Back`}
-                                                             className="nic-enlarged-image"/>
-                                                    </div>
-                                                </div>
-                                            )}
                                         </div>
                                     </div>
                                 </div>
