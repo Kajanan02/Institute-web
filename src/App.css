@@ -592,6 +592,7 @@ body {
     padding: 2px;
     height: 120px;
     width: 120px;
+    transition: ease-in 0.5s;
     border: 3px solid #ccc;
 }
 
@@ -1577,6 +1578,7 @@ body {
     border: 2px solid #ccc;
     width: 57.6px;
     height: 57.6px;
+    transition: ease-in 0.5s;
 }
 
 .user-profile:hover {
@@ -1621,4 +1623,8 @@ body {
 
 .nav-profileRole {
     font-size: 12px;
+}
+.qr-img{
+    border: 0.5px solid #22C674;
+    padding: 4px;
 }
