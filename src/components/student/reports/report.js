@@ -22,7 +22,7 @@ function Report(props) {
     const [modalType, setModalType] = useState("view")
     const dispatch = useDispatch();
     return (
-        <Layout>
+        <div>
             <div className={"container"}>
                 <div className={"container-widget"}>
                     <div className={"students_marks_container"}>
@@ -81,7 +81,7 @@ function Report(props) {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </div>
     );
 }
 

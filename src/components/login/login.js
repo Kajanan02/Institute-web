@@ -8,7 +8,7 @@ import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {toggleLoader} from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
-import {loadCredential} from "../../utils/Authentication";
+import {initialNavigate, loadCredential} from "../../utils/Authentication";
 
 function Login(props) {
 
@@ -33,7 +33,7 @@ function Login(props) {
                 console.log(res.data)
                 loadCredential(res.data)
                 toast.success("Successfully Login");
-                navigate("/");
+                navigate(initialNavigate(res.data.role));
             }).catch((err) => {
                 if(err?.response?.data?.message){
                     toast.error(err?.response?.data?.message)
