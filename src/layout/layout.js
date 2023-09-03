@@ -21,6 +21,7 @@ function Layout({children}) {
 
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
+    const studentId = localStorage.getItem("STUDENT_ID")
     const open = useSelector(state => {
         return state.setting.toggle
     });
@@ -121,7 +122,7 @@ function Layout({children}) {
                         {isReportAccess() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/student/sasd/report"}>
+                                to={`/student/${studentId}/report`}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Report</div>}

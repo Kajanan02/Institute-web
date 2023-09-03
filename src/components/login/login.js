@@ -33,7 +33,15 @@ function Login(props) {
                 console.log(res.data)
                 loadCredential(res.data)
                 toast.success("Successfully Login");
+                if(res.data.role === "3"){
+                    console.log(res.data._id)
+                  localStorage.setItem("STUDENT_ID",res.data._id)
+                }
+                if(res.data.role === "4"){
+                    localStorage.setItem("STUDENT_ID",res.data.studentId)
+                }
                 navigate(initialNavigate(res.data.role));
+
             }).catch((err) => {
                 if(err?.response?.data?.message){
                     toast.error(err?.response?.data?.message)

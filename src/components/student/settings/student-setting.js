@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../../layout/layout";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../../assets/uplod-icon.svg";
@@ -7,6 +7,7 @@ import formHandler from "../../../utils/FormHandler";
 import {validateStudentSettings} from "../../../utils/validation";
 import {validateStudentPasswordSettings} from "../../../utils/validation";
 import PasswordSetting from "../../password-setting/password-setting";
+import axios from "axios";
 
 function StudentSetting(props) {
     const [modalType, setModalType] = useState("view")
@@ -65,8 +66,9 @@ function StudentSetting(props) {
         setNicBack(file);
     };
 
-    console.log(errors)
-    console.log(values)
+    // useEffect(() => {
+    //     axios.get(`${process.env.REACT_APP_HOST}/users/${localStorage.getItem("STUDENT_ID")}`)
+    // }, []);
 
     return (
         <Layout>
