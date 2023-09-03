@@ -6,18 +6,24 @@ import {marksData ,subjectData } from "../marks/marksDamiData";
 import {mapObject} from "underscore";
 import formHandler from "../../utils/FormHandler";
 import {useDispatch, useSelector} from "react-redux";
-import {toggleConfirmationDialog} from "../../redux/actions";
+import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import {validatemarks} from "../../utils/validation";
-
+import axios from 'axios';
+import {toast} from "react-toastify";
 
 function Marks(props) {
-  const [marksList, setMarksList] = useState(marksData)
+  const [marksList, setMarksList] = useState([])
   const [modalType, setModalType] = useState("view")
   const [modalShow, setModalShow] = useState(false);
   const [studentsList, setStudentsList] = useState(marksData)
   const [selectedBuyer, setSelectedBuyer] = useState([]);
   const buyerOption = subjectData;
   const [profilePic, setProfilePic] = useState(null);
+  const [update, setUpdate] = useState(false);
+  const instituteId = localStorage.getItem("USER_ID");
+  const [deletedId, setDeletedId] = useState(null);
+  const [selectedMarks, setSelectedMarks] = useState(null);
+
   const {
     handleChange,
     handleSubmit,
@@ -42,22 +48,18 @@ function Marks(props) {
   console.log(values)
   console.log(errors)
 
-  // const [marksList, setMarksList] = useState([{ No: 0o1, Reg: 200012345678, name: "Harsh", subject: "Physics", marks: 80, rank: 0o3 },
-  // { No: 0o2, Reg: 200012345679, name: "Kadyan", subject: "Physics", marks: 90, rank: 0o2 },
-  // { No: 0o3, Reg: 200012345680, name: "Harsh Kadyan", subject: "Physics", marks: 95, rank: 0o1 },
-  // { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o5, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o6, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 },
-  // { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", subject: "Physics", marks: 78, rank: 0o4 }])
-  // console.log(marksList)
-  // console.log(marksList[0])
-  // const [modalType, setModalType] = useState("view")
+  useEffect(() => {
+    dispatch(toggleLoader(true))
+    axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/getAllMarks`)
+        .then((res) => {
+            setMarksList(res.data)
+        }).catch((err) => {
+        console.log(err)
+    }).finally(() => {
+        dispatch(toggleLoader(false))
+    })
+}, [update])
+
   const dispatch = useDispatch();
   //
   const confirmationDialog = useSelector(state => {
@@ -66,13 +68,38 @@ function Marks(props) {
 
   console.log(confirmationDialog)
 
-  function handleDelete() {
+  function handleDelete(id) {
     dispatch(toggleConfirmationDialog({
-      isVisible: true,
-      confirmationHeading: ('ARE YOU SURE YOU WANT TO DELETE THIS DETAILS'),
-      confirmationDescription: ('THE DELETE ACTION WILL REMOVE THE THIS DETAILS')
+        isVisible: true,
+        confirmationHeading: ('ARE YOU SURE YOU WANT TO DELETE THIS STUDENT DATA'),
+        confirmationDescription: ('THE DELETE ACTION WILL REMOVE THE THIS STUDENT DATA')
     }));
-  }
+    setDeletedId(id)
+    console.log("ads")
+}
+
+  console.log(confirmationDialog)
+  console.log(deletedId)
+  useEffect(()=>{
+    if (!confirmationDialog || !confirmationDialog.onSuccess) {
+        console.log("asdf")
+        return;
+    }
+    console.log("asdasd")
+    dispatch(toggleLoader(true))
+    
+    axios.delete(`${process.env.REACT_APP_HOST}/institute/${instituteId}/marks/${deletedId}/deleteMarks`)
+        .then((res) => {
+          setUpdate(!update)
+            toast.success(`Successfully Deleted`)
+
+        }).catch((err) => {
+        console.log(err)
+    }).finally(() => {
+        dispatch(toggleLoader(false))
+        setDeletedId(null)
+    })
+  },[confirmationDialog])
 
 
   return (
@@ -141,18 +168,18 @@ function Marks(props) {
                   <th scope="col">Name</th>
                   <th scope="col">Subject</th>
                   <th scope="col">Marks</th>
-                  <th scope="col">Rank</th>
+                  <th scope="col">Date of Exam</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
                 {marksList.map((data, index) => (<tr>
                   <th scope="row">{index + 1}</th>
-                  <td>{data.Reg}</td>
+                  <td>{data.nicNo}</td>
                   <td>{data.name}</td>
                   <td>{data.subject}</td>
                   <td>{data.marks}</td>
-                  <td>{data.rank}</td>
+                  <td>{data.date?.slice(0,10)}</td>
                   <td>
                     {/*<FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"*/}
                     {/*               data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>*/}
@@ -160,13 +187,16 @@ function Marks(props) {
                                  onClick={() => {
                                    setModalType("Edit");
                                    setModalShow(true)
+                                   setSelectedMarks(data)
                                  }}/>
 
-                    <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={handleDelete}/>
+                    <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={() => handleDelete(data._id)}/>
                   </td>
                 </tr>))}
               </tbody>
             </table>
+            {marksList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Student Data Found,Please Add</div>}
+
           </div>
         </div>
       </div>
@@ -192,7 +222,9 @@ function Marks(props) {
       <MarksForm
           show={modalShow}
           type={modalType}
+          update={()=> setUpdate(!update)}
           onHide={() => setModalShow(false)}
+          selectedMarks={selectedMarks}
       />
 
     </Layout>

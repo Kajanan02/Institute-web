@@ -9,16 +9,17 @@ import axios from "axios";
 import {useDispatch} from "react-redux";
 import {Typeahead} from "react-bootstrap-typeahead";
 import {find, pluck} from "underscore";
+import {toast} from "react-toastify";
 
 function MarksForm(props) {
     const buyerOption = subjectData;
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [studentsList, setStudentsList] = useState([]);
-    const [update, setUpdate] = useState(false);
     const instituteId = localStorage.getItem("USER_ID");
     const dispatch = useDispatch();
     const [singleSelections, setSingleSelections] = useState([]);
+    const [isSubmit, setIsSubmit] = useState(false);
 
 
 
@@ -32,6 +33,7 @@ function MarksForm(props) {
     } = formHandler(ismarks, validatemarks);
 
     function ismarks() {
+        setIsSubmit(true)
 
     }
     function multiSelectOnChangeBuyer(selected) {
@@ -41,6 +43,10 @@ function MarksForm(props) {
     function multiSelectOnChangeSubjects(selected) {
         setSelectedBuyer(selected);
         setValue({subjects: selected});
+    }
+
+    function resetForm() {
+        initForm({})
     }
 
     console.log(errors)
@@ -57,7 +63,65 @@ function MarksForm(props) {
         }).finally(() => {
             dispatch(toggleLoader(false))
         })
-    }, [update])
+    }, [])
+
+
+    useEffect(() => {
+        if(!props.selectedMarks){
+            return 
+        }
+        props.selectedMarks.date = props.selectedMarks.date.slice(0,10)
+        initForm(props.selectedMarks)
+        setSingleSelections([props.selectedMarks?.nicNo])
+
+    }, [props.selectedMarks])
+
+
+    useEffect(() => {
+        if (!isSubmit || props.type !== "Add") {
+            return
+        }
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/createMarks`, values)
+            .then((res) => {
+                console.log(res.data)
+                props.update()
+                props.onHide();
+                toast.success(`Successfully Marks created`)
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            resetForm()
+            // if (parentSubmit) {
+            //     setStudentId(null);
+            //     props.onHide()
+
+            // }
+        })
+    }, [isSubmit]);
+
+    useEffect(()=>{
+        if(!isSubmit || props.type !== "Edit"){
+            return
+        }
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/marks/${props.selectedMarks._id}`, values)
+            .then((res) => {
+                console.log(res.data)
+                toast.success(`Successfully Updated`)
+                props.update()
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+          setIsSubmit(false)
+            resetForm()
+            props.onHide()
+        })
+
+    },[isSubmit])
 
     return (
         <Modal
@@ -90,7 +154,7 @@ function MarksForm(props) {
                                         <Typeahead
                                             id="basic-typeahead-single"
                                             labelKey="name"
-                                            className={`disabled-white ${errors.name ? "border-red" : ""}`}
+                                            className={`disabled-white ${errors.nicNo ? "border-red" : ""}`}
                                             onChange={(res)=> {
                                                setValue({nicNo:res[0]})
                                                 setValue({name:find(studentsList,{nicNo:res[0]})?.name})
@@ -101,7 +165,7 @@ function MarksForm(props) {
                                             placeholder="Choose a state..."
                                             selected={singleSelections}
                                         />
-                                        {errors.regNo && <p className={"text-red"}>{errors.regNo}</p>}
+                                        {errors.nicNo && <p className={"text-red"}>{errors.nicNo}</p>}
 
                                     </div>
                                 </div>
@@ -123,16 +187,18 @@ function MarksForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
                                                className="form-label">Subjects</label>
-                                        <div className={`form-control ${errors.subjects ? "border-red" : ""} p-0`}>
-                                            <MultiSelect
-                                                // className={`form-control`}
-                                                // onChange={handleChange}
-                                                value={values.subjects || []}
-                                                options={buyerOption}
-                                                selected={selectedBuyer}
-                                                onSelectedChanged={multiSelectOnChangeSubjects}
-                                            />
-                                        </div>
+                                        <select className={`form-control ${errors.subjects ? "border-red" : ""}`}
+                                                onChange={handleChange}
+                                                value={values.subject || ""}
+                                                name={"subject"}
+                                                aria-label="Default select example">
+                                            <option hidden>Subjects</option>
+                                            <option value="COMBINED_MATHEMATICS">Combined Mathematics</option>
+                                            <option value="PHYSICS">Physics</option>
+                                            <option value="CHEMISTRY">Chemistry</option>
+                                            <option value="ICT">ICT</option>
+                                            <option value="BIO_SCIENCE">Bio Science</option>
+                                        </select>
                                         {errors.subjects && <p className={"text-red"}>{errors.subjects}</p>}
                                     </div>
                                 </div>
@@ -160,7 +226,7 @@ function MarksForm(props) {
                                                className={`form-control ${errors.marks ? "border-red" : ""}`}
                                                id="exampleInputEmail1"
                                                onChange={handleChange}
-                                               value={values.marks}
+                                               value={values.marks || ""}
                                         />
                                         {errors.marks && <p className={"text-red"}>{errors.marks}</p>}
 
