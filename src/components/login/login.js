@@ -43,6 +43,7 @@ function Login(props) {
                 navigate(initialNavigate(res.data.role));
 
             }).catch((err) => {
+            console.log(err?.response)
                 if(err?.response?.data?.message){
                     toast.error(err?.response?.data?.message)
                 }else {

@@ -122,7 +122,7 @@ function Layout({children}) {
                         {isReportAccess() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={`/student/${studentId}/report`}>
+                                to={`/report/${studentId}/student`}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Report</div>}
@@ -181,7 +181,7 @@ function Layout({children}) {
                                 to={"/payment"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="credit-card" className={!open ? 'me-2' : "ms-1"}/>
-                                    {!open && <div className={''}>Payment & Invoice</div>}
+                                    {!open && <div className={''}>{isInstituteAccount() ? "Payment & Invoice" : "Payment"}</div>}
                                 </div>
                             </NavLink>
                         </div>}

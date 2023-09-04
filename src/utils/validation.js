@@ -92,6 +92,12 @@ export function validateParent(values) {
     return errors;
 }
 
+export function validatePay(values){
+    let errors = {};
+    return errors;
+
+}
+
 export function validateEvent(values) {
     console.log(values)
     let errors = {};
