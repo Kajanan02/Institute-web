@@ -3,9 +3,10 @@ import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import MarksForm from "./marksForm";
 import {marksData ,subjectData } from "../marks/marksDamiData";
-import {mapObject} from "underscore";
+import {findWhere, mapObject} from "underscore";
 import formHandler from "../../utils/FormHandler";
 import {useDispatch, useSelector} from "react-redux";
+import * as XLSX from "xlsx";
 import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import {validatemarks} from "../../utils/validation";
 import axios from 'axios';
@@ -24,6 +25,8 @@ function Marks(props) {
   const instituteId = localStorage.getItem("USER_ID");
   const [deletedId, setDeletedId] = useState(null);
   const [selectedMarks, setSelectedMarks] = useState(null);
+  const [excelData, setExcelData] = useState([]);
+
 
   const {
     handleChange,
@@ -67,7 +70,7 @@ function Marks(props) {
     return state.setting.confirmationDialog
   });
 
-  console.log(confirmationDialog)
+  // console.log(confirmationDialog)
 
   function handleDelete(id) {
     dispatch(toggleConfirmationDialog({
@@ -79,10 +82,10 @@ function Marks(props) {
     console.log("ads")
 }
 
-  console.log(confirmationDialog)
-  console.log(deletedId)
+  // console.log(confirmationDialog)
+  // console.log(deletedId)
   useEffect(()=>{
-    if (!confirmationDialog || !confirmationDialog.onSuccess) {
+    if (!confirmationDialog || !confirmationDialog.onSuccess || !deletedId) {
         console.log("asdf")
         return;
     }
@@ -132,6 +135,86 @@ function Marks(props) {
     csvExporter.generateCsv(data);
   }
 
+  function uploadExcelFile(file) {
+    excelData.splice(0, excelData.length);
+    // setIsUpload(true);
+    readExcelFile(file);
+    dispatch(toggleConfirmationDialog({
+      isVisible: true,
+      type: 'request',
+      confirmationHeading: "Are you sure want to import " + " \"" + file.name + "\"" + " ?"
+      ,
+      confirmationDescription: "The selected file named " + " \"" + file.name + "\"" + " will be uploaded, make sure the fields are appropriate to import!"
+    }));
+    readExcelFile(file);
+  }
+
+  function resetFile(file) {
+    if (file) { document.getElementById("file-upload").value = ""; }
+  }
+
+  function readExcelFile(file) {
+    console.log("sadf")
+    console.log(file)
+    const promise = new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsArrayBuffer(file);
+
+      fileReader.onload = (e) => {
+        const bufferArray = e.target.result;
+
+        const wb = XLSX.read(bufferArray, { type: "buffer" });
+
+        const wsname = wb.SheetNames[0];
+
+        const ws = wb.Sheets[wsname];
+
+        const data = XLSX.utils.sheet_to_json(ws);
+
+        resolve(data);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+
+    promise.then((d) => {
+      let column1 = Object.keys(d[0])[0];
+      let column2 = Object.keys(d[0])[1];
+      let column3 = Object.keys(d[0])[2];
+      let column4 = Object.keys(d[0])[3];
+      let column5 = Object.keys(d[0])[4];
+      let column6 = Object.keys(d[0])[5];
+      let optimizedData = [];
+
+      console.log(d)
+
+      d.map(yields => {
+        let optimizedObject = {};
+
+        // if (Object.keys(yields)[2] && Object.keys(yields)[2] !== 'None') {
+        //   if (findWhere(marksList, { name: yields[Object.keys(yields)[2]] })) {
+        //     optimizedObject['plotId'] = findWhere(marksList, { name: yields[Object.keys(yields)[2]] }).id;
+        //   }
+        // }
+        optimizedObject['nicNo'] = yields[column1];
+        optimizedObject['name'] = yields[column2];
+        optimizedObject['subject'] = yields[column3];
+        optimizedObject['marks'] = yields[column4];
+        optimizedObject['date'] = yields[column5];
+        optimizedObject['studentId'] = yields[column6];
+        optimizedData.push(optimizedObject);
+        return yields;
+
+      })
+
+      console.log(optimizedData)
+
+      setExcelData(optimizedData);
+    });
+  }
+
 
 
   return (
@@ -179,11 +262,18 @@ function Marks(props) {
                 <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                 Add
               </button>
-              <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+              <form onClick={(e) => { resetFile(e.target.files[0]); }} >
+                <input accept=".xlsx" id="file-upload" type="file" className={"d-none"}
+                       onChange={(e) => {
+                         const file = e.target.files[0];
+                         uploadExcelFile(file);
+                       }}
+                /></form>
+              <label htmlFor={"file-upload"} className={"btn btn-secondary students-dropdown-btn"} type="button"
                       aria-expanded="false">
                 <FeatherIcon className={"action-icons text-white"} icon={"download"} />
                 Import Data
-              </button>
+              </label>
               <button className={"btn btn-secondary students-dropdown-btn"} type="button"
                       aria-expanded="false" onClick={exportData}>
                 Export Data

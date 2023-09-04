@@ -45,7 +45,8 @@
     "redux": "^4.2.1",
     "styled-components": "^5.3.11",
     "underscore": "^1.13.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -230,11 +230,11 @@ function Layout({children}) {
                                             <img src={Bell}/>
                                         </a>
                                     </li>
-                                    <li className="nav-item px-2">
-                                        <a className="nav-link  position-relative" aria-current="page" href="#">
+                                    {/*<li className="nav-item px-2">*/}
+                                    {/*    <a className="nav-link  position-relative" aria-current="page" href="#">*/}
 
-                                            <img src={Msg}/></a>
-                                    </li>
+                                    {/*        <img src={Msg}/></a>*/}
+                                    {/*</li>*/}
                                     <li className="nav-item px-2">
                                         <a className="nav-link  position-relative p-0" aria-current="page" href="#">
 
