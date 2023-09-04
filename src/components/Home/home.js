@@ -179,22 +179,40 @@ function Home(props) {
 
 
                 <div className={"row  mt-4"}>
-                    <div className={"col-sm-6 mb-3 mb-sm-0"}>
+                    <div className={"col-sm-3 mb-3 mb-sm-0"}>
                         <div className={"card home_card"}>
                             <div className={"card-body p-3"}>
                                 <div className={"card-text"}>Total Admissions</div>
-                                <div><FeatherIcon className={"home-action-icons"} icon={"user-plus"} /></div>
-                                <div className={"card-text_total"}>1,200</div>
+                                <div className={"d-flex align-items-center"}>
+                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"user-plus"} /></div>
+                                    <div className={"card-text_total"}>1,200</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={"col-sm-3 mb-3 mb-sm-0"}>
+                        <div className={"card home_card"}>
+                            <div className={"card-body p-3"}>
+                                <div className={"card-text"}>Today's Attendance</div>
+                                <div className={"d-flex align-items-center"}>
+                                <div><FeatherIcon className={"home-action-icons me-3"} icon={"user-check"} /></div>
+                                <div className={"card-text_total"}>1,191</div>
+                                </div>
 
                             </div>
                         </div>
                     </div>
                     <div className={"col-sm-3 mb-3 mb-sm-0"}>
                         <div className={"card home_card"}>
-                            <div className={"card-body p-3"}>
-                                <div className={"card-text"}>Attendance</div>
-                                <div><FeatherIcon className={"home-action-icons"} icon={"user-check"} /></div>
-                                <div className={"card-text_total"}>1,191</div>
+                            <div className={"card-body "}>
+
+                                <div className={"card-text"}>Total Pending Income</div>
+                                <div className={"d-flex align-items-center"}>
+                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"dollar-sign"} /></div>
+                                    <div className={"card-text_total"}>20,000</div>
+                                </div>
 
                             </div>
                         </div>
@@ -204,8 +222,10 @@ function Home(props) {
                             <div className={"card-body "}>
 
                                 <div className={"card-text"}>Total Income</div>
-                                <div><FeatherIcon className={"home-action-icons"} icon={"dollar-sign"} /></div>
+                                <div className={"d-flex align-items-center"}>
+                                <div><FeatherIcon className={"home-action-icons me-3"} icon={"dollar-sign"} /></div>
                                 <div className={"card-text_total"}>228,000</div>
+                                </div>
 
                             </div>
                         </div>

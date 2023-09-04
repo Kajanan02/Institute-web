@@ -98,7 +98,7 @@ const ConfirmationDialog = () => {
             {/*}*/}
           </div>
           {(confirmationDialog.type && confirmationDialog.type == "request") ?
-            (<div className="sa-popup-btn">
+            (<div className="sa-popup-btn mb-4">
               <button type={"button"} className="sa-popup-secondary-btn-style sa-popup-cancel-btn-style"
                       onClick={hideDialog}>{"Cancel"}
               </button>
