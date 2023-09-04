@@ -4,12 +4,14 @@ import FeatherIcon from 'feather-icons-react';
 import {paymentData} from "./damiData";
 import StatepaymentForm from "./paymentinvoiceForm";
 import {isInstituteAccount, isParentAccount} from "../../utils/Authentication";
+import AddPaymentForm from "../student/add-payment-student";
 
 
 function PaymentInvoice(props) {
     const [paymentList, setpaymentList] = useState(paymentData)
     const [modalType, setModalType] = useState("view")
     const [modalShow, setModalShow] = useState(false);
+    const [studentModalShow, setStudentModalShow] = useState(false);
 
 
     return (
@@ -34,7 +36,11 @@ function PaymentInvoice(props) {
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}
                                         onClick={() => {
                                             setModalType("Add");
-                                            setModalShow(true)
+                                            if(isParentAccount()) {
+                                            setStudentModalShow(true)
+                                            }else {
+                                                setModalShow(true)
+                                            }
                                         }}>
                                     <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                                     Add
@@ -110,6 +116,11 @@ function PaymentInvoice(props) {
                 type={modalType}
                 onHide={() => setModalShow(false)}
             />
+            <AddPaymentForm
+                show={studentModalShow}
+                type={modalType}
+                onHide={() => setStudentModalShow(false)}
+                />
         </Layout>
     );
 }

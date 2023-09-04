@@ -27,6 +27,7 @@ import Settingss from "./components/settings/Settings-ss";
 import Institute from "./components/institute/institute";
 import Leaderboard from "./components/admin/Leaderboard/Leaderboard";
 import Career from "./components/admin/Career/career";
+import React from "react";
 
 function App() {
     return (
@@ -47,6 +48,7 @@ function App() {
                     <Route path="/payment" element={<PaymentInvoice/>}/>
                     <Route path="/settings" element={<Settings/>}/>
                     <Route path="/student/*" element={<StudentLayout/>}/>
+                    <Route path="/report/:studentId/student" element={<Report/>}/>
                     <Route path="/usage" element={<Usage/>}/>
                     <Route path="/students/:studentId" element={<StudentProfile/>}/>
                     <Route path="/settings/student" element={<StudentSetting />} />
