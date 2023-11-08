@@ -1642,3 +1642,154 @@ form .login-btn input[type="submit"] {
     background-color: white !important;
     cursor: not-allowed! important;
 }
+
+.notification-box {
+    position: absolute;
+    top: 74px;
+    right: 50px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 400px;
+    border-radius: 8px;
+    max-height: 700px;
+    overflow-y: auto;
+}
+  
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px 8px 0 0;
+    align-items: center;
+}
+  
+.notification-header h3 {
+    font-size: 16px;
+    margin: 0;
+}
+  
+.notification-header button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+  
+.notification-header .mark-all-read-button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #00AB55;
+    cursor: pointer;
+    padding: 5px;
+}
+  
+.notification-list {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+  
+.notification-list li {
+    padding: 5px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+  
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+  
+.notification-content {
+    flex: 1;
+    padding: 4px;
+}
+  
+.notification-heading {
+    font-size: 16px;
+    font-weight: bold;
+}
+  
+.notification-text {
+    max-height: 48px;
+    overflow: hidden;
+    transition: max-height 0.3s;
+}
+  
+.notification-text.expanded {
+    max-height: none;
+}
+  
+.notification-actions {
+    display: flex;
+    align-items: center !important;
+    justify-content: space-between;
+    margin-top: 1px;
+}
+
+.notification-actions p {
+    color: #1D283D;
+    margin-left: 5px;
+}
+
+.toggle-expand-button svg {
+    vertical-align: super;
+    color: #00AB55;
+}
+  
+.toggle-expand-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 180px;
+}
+  
+.toggle-expand-button:hover svg {
+    transform: rotate(180deg);
+}
+  
+.notification-time {
+    font-size: 14px;
+    color: #777;
+    margin-right: 5px;
+}
+  
+.notification-type {
+    font-size: 14px;
+    color: #777;
+}
+  
+.notification-list li.read:hover {
+    background-color: #5be49b33;
+}
+
+.notification-list li.unread {
+    background-color: #5be49b33;
+    color: #7C7C7C;
+}
+
+.notification-list li.read {
+    background-color: #f0f0f0;
+    color: #777;
+}
+
+@media (max-width: 768px) {
+    .notification-box {
+        width: 100%;
+        right: 0;
+        border-radius: 0;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+}
+ 
+.notification-open .nav-item {
+    border-left: 2px solid #00AB55;
+    border-right: 2px solid #00AB55;
+}
+
