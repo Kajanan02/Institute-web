@@ -120,12 +120,7 @@ export function validateStateappointment(values) {
     let errors = {};
 
 
-    if (!values.parentName) {
-        errors.parentName = "Parent Name is Required"
-    }
-    if (!values.studentName) {
-        errors.studentName = "Student Name is Required"
-    }
+
     if (!values.date) {
         errors.date = "Date is Required"
     }

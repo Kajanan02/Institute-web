@@ -2,8 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
 import {validateStateappointment} from "../../utils/validation";
+import {togglæeConfirmationDialog, toggleLoader} from "../../redux/actions";
+import axios from 'axios';
+import {toast} from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
+import { isEmpty } from 'underscore';
 
 function AppointmentForm(props) {
+    const [appointmentList, setAppointmentList] = useState([])
 
     const [formSubmitted, setFormSubmitted] = useState(false);
     const {
@@ -14,16 +20,81 @@ function AppointmentForm(props) {
         values,
         errors,
     } = formHandler(stateAppoint, validateStateappointment);
+    const instituteId = localStorage.getItem("USER_ID");
+    const studentId = localStorage.getItem("STUDENT_ID");
+    const [update, setUpdate] = useState(false);
+    const [isSubmit, setIsSubmit] = useState(false);
+    const [selectedAppoinment, setSelectedAppoinment] = useState({});
+    const dispatch = useDispatch();
+    const [singleSelections, setSingleSelections] = useState([]);
+
 
     function stateAppoint() {
-
+        setIsSubmit(true)
+    }
+    function resetForm(){
+        
     }
 
-    console.log(errors)
-    console.log(values)
+    useEffect(()=>{
+        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedAppointment)){
+           
+            initForm(props.selectedAppointment)
+        }
+    },[props.type,props.selectedAppointment])
 
+    function statusUpdate(status){
+        values.status = status
+        console.log(props.selectedAppointment)
+        console.log(props.selectedAppointment._id)
 
-    console.log(props.type)
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/Appointment/${props.selectedAppointment._id}`, values)
+        // axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/marks/${props.selectedMarks._id}`, values)
+            .then((res) => {
+                console.log(res.data)
+                toast.success(`Successfully Updated`)
+                props.update()
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+          setIsSubmit(false)
+            resetForm()
+            props.onHide()
+        })
+
+    }
+   
+    useEffect(() => {
+        if (!isSubmit || props.type !== "Add") {
+            return
+        }
+        // http://localhost:5000/api/institute/:instituteId/student/:studentId/appointment
+        
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/Appointment` , values)
+            .then((res) => {
+                console.log(res.data)
+                props.update()
+                props.onHide();
+                toast.success(`Successfully Marks created`)
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            resetForm()
+            // if (parentSubmit) {
+            //     setStudentId(null);
+            //     props.onHide()
+
+            // }
+        })
+    }, [isSubmit]);
+
+  
+
 
     return (
         <Modal
@@ -50,7 +121,7 @@ function AppointmentForm(props) {
                     <div>
                         <div className={"pop-up-form-container"}>
                             <div className={"row"}>
-                                {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
+                                {(["View", "State"].includes(props.type)) && (localStorage.getItem('ROLE') === "2") && <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : ""}`}>Parent
@@ -60,7 +131,7 @@ function AppointmentForm(props) {
 
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
-                                            value={values.parentName || "nava"}
+                                            value={values.parentName || ""}
 
 
                                                disabled={["View", "State"].includes(props.type)}
@@ -69,7 +140,7 @@ function AppointmentForm(props) {
 
                                     </div>
                                 </div>}
-                                {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
+                                {(["View", "State"].includes(props.type)) && (localStorage.getItem('ROLE') === "2") && <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student
@@ -78,7 +149,7 @@ function AppointmentForm(props) {
                                                className={`form-control ${errors.studentName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
-                                               value={values.studentName || ""}
+                                               value={values?.studentId?.name || ""}
 
                                                disabled={["View", "State"].includes(props.type)}
                                         />
@@ -135,16 +206,17 @@ function AppointmentForm(props) {
                                     </div>
                                 </div>}
 
-                                {["Add", "State"].includes(props.type) && <div className={"col-md-12"}>
+                                {["Add", "State","View"].includes(props.type) && <div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                               className="form-label">Description</label>
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Description</label>
                                         <textarea name={"description"} placeholder={"Enter Description"}
-                                                  className={`form-control ${errors.description ? "border-red" : ""}`}
+                                                  className={`form-control ${errors.description ? "border-red" : ""}${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
                                                   id="exampleInputEmail5"
                                                   onChange={handleChange}
                                                   value={values.description || ""}
-                                                  aria-describedby="emailHelp"/>
+                                                  aria-describedby="emailHelp"
+                                                  disabled={["View", "State"].includes(props.type)}/>
                                         {errors.description && <p className={"text-red"}>{errors.description}</p>}
                                     </div>
                                 </div>}
@@ -169,33 +241,35 @@ function AppointmentForm(props) {
                     Cancel
                 </button>
                 {/*["View","Add"].includes(props.type) &&*/}
-                {props.type === "State" && <button
+                {props.type === "State" && <div className='d-flex gap-2'>
+                <button
                     type="button"
                     className={"btn btn-success"}
-                    onClick={handleSubmit}
+                    onClick={()=>statusUpdate("ACCEPTED")}
                 >
                     Accepeted
-                </button>}
-                {props.type === "State" && <button
-                    type="button"
-                    className={"btn btn-warning"}
-                    onClick={handleSubmit}
-                >
-                    Decline
-                </button>}
-                {props.type === "State" && <button
+                </button>
+               <button
                     type="button"
                     className={"btn btn-danger"}
-                    onClick={handleSubmit}
+                    onClick={()=>statusUpdate("DECLINE")}
+                >
+                    Decline
+                </button>
+                 <button
+                    type="button"
+                    className={"btn btn-warning"}
+                    onClick={()=>statusUpdate("REQUESTED")}
                 >
                     Request
-                </button>}
+                </button>
+                </div>}
                 {props.type === "Add" &&<button
                     type="button"
                     className={"btn btn-secondary students-dropdown-btn"}
                     onClick={handleSubmit}
                 >
-                    Submit
+                    Add
                 </button>}
             </Modal.Footer>
         </Modal>
