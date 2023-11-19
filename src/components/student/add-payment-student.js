@@ -72,8 +72,7 @@ function AddPaymentForm(props) {
 
                                 {props.type !== "View" && <div className={"col-md-12"}>
                                     <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className={`form-label d-block ${props.type !== "View" ? "" : ""}`}>Profile
-                                            Picture</label>
+                                        <label htmlFor="exampleInputEmail1" className={`form-label d-block ${props.type !== "View" ? "" : ""}`}>Payment Slip</label>
                                         <FileUploader handleChange={handleChangeProfile}>
                                             <div className={"file-uploader-container"}>
                                                 <img src={uploadIcon} width={"27%"} />

@@ -54,6 +54,7 @@ function Marks(props) {
 
   useEffect(() => {
     dispatch(toggleLoader(true))
+    
     axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/getAllMarks`)
         .then((res) => {
             setMarksList(res.data)
