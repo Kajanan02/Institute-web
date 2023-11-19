@@ -11,6 +11,7 @@ import Profile from "../../assets/profile-img.svg";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "../../redux/actions";
 import layoutDefaultProfile from "../../assets/layoutDefaultProfile.jpg";
+import StudentForm from './student-form';
 
 function StudentProfile() {
 
@@ -18,9 +19,17 @@ function StudentProfile() {
     const [selectedImage, setSelectedImage] = useState('');
     const [visibleToggleIndex, setVisibleToggleIndex] = useState([1]);
     const [seletedStudent, setSelectedStudent] = useState({});
+    const [selectedParent, setSelectedParent] = useState({});
+
     const { studentId } = useParams()
+    // const { parentId } = useParams()
     const instituteId = localStorage.getItem("USER_ID");
     const [profileImage, setProfileImage] = useState(layoutDefaultProfile);
+    const [modalShow, setModalShow] = useState(false);
+    const [modalType, setModalType] = useState("view")
+    const [update, setUpdate] = useState(false);
+    
+
 
     const dispatch = useDispatch();
 
@@ -33,7 +42,19 @@ function StudentProfile() {
             }).finally(() => {
                 dispatch(toggleLoader(false))
             })
-    }, [])
+    }, [update])
+
+    // useEffect(() => {
+    //     ///institute/:instituteId/student/:id
+    //     dispatch(toggleLoader(true))
+    //     axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/parent/${parentId}`)
+
+    //         .then((res) => {
+    //             setSelectedParent(res.data)
+    //         }).finally(() => {
+    //             dispatch(toggleLoader(false))
+    //         })
+    // }, [])
 
 
     function updateProfileImage(Profile) {
@@ -259,6 +280,16 @@ function StudentProfile() {
                                             </div>
                                         )}
                                     </div>
+                                    {!seletedStudent?.parentId?._id ? <div className="d-flex justify-content-end my-4">
+                                        <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+                                            aria-expanded="false" onClick={() => {
+                                                setModalType("Add")
+                                                setModalShow(true)
+                                            }}
+                                            >
+                                        Add Parent
+                                        </button>
+                                    </div>: null}
                                 </div>
                             </div>
                         </div>
@@ -266,7 +297,7 @@ function StudentProfile() {
                 </ToggleLayout>
 
 
-                <ToggleLayout image={User} title={"View Parent Details"} dropDown={false}
+                {seletedStudent?.parentId?._id ? <ToggleLayout image={User} title={"View Parent Details"} dropDown={false}
                     visibleToggleIndex={visibleToggleIndex}
                     toggleIndex={2}
                     onVisibleToggleIndexChange={(index) => toggle(index)}>
@@ -290,7 +321,7 @@ function StudentProfile() {
                                 </div>
                                 <div className="col-12 col-md-10">
                                     <div className="d-flex-start flex-row align-items-center justify-content-center">
-                                        <h4 className={"profile-name"}>{seletedStudent.name}</h4>
+                                        <h4 className={"profile-name"}>{seletedStudent?.parentId?.name}</h4>
                                         <h4 className={"profile-name profile-view-text"}>Parent</h4>
                                     </div>
                                 </div>
@@ -302,8 +333,7 @@ function StudentProfile() {
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
                                                 className="form-label profile-view-text">Name:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail2" className="form-label">V.
-                                                Janushankan</label>
+                                            <label htmlFor="exampleInputEmail2" className="form-label">{seletedStudent?.parentId?.name || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
@@ -311,15 +341,14 @@ function StudentProfile() {
                                             <label htmlFor="exampleInputEmail1"
                                                 className="form-label profile-view-text">NIC No:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                className="form-label">200028000530</label>
+                                                className="form-label">{seletedStudent?.parentId?.nicNo || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
                                                 className="form-label profile-view-text">Address:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label">No. 132/ 141,
-                                                Nilaveli Road, Alesgarden, Trincomalee.</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">{seletedStudent?.parentId?.address || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
@@ -328,7 +357,7 @@ function StudentProfile() {
                                                 className="form-label profile-view-text">Contact
                                                 No:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                className="form-label">0711439088</label>
+                                                className="form-label">{seletedStudent?.parentId?.phoneNumber || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
@@ -336,14 +365,14 @@ function StudentProfile() {
                                             <label htmlFor="exampleInputEmail1"
                                                 className="form-label profile-view-text">Email:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                className="form-label">janushankan1006@gmail.com</label>
+                                                className="form-label">{seletedStudent?.parentId?.email || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
                                                 className="form-label profile-view-text">Gender:&nbsp;</label>
-                                            <label htmlFor="exampleInputEmail1" className="form-label">Male</label>
+                                            <label htmlFor="exampleInputEmail1" className="form-label">{seletedStudent?.parentId?.gender || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
@@ -352,7 +381,7 @@ function StudentProfile() {
                                                 className="form-label profile-view-text">Date of
                                                 Birth:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                className="form-label">10/06/2000</label>
+                                                className="form-label">{seletedStudent?.parentId?.dob || "-"}</label>
                                         </div>
                                     </div>
                                     <div className={"col-6"}>
@@ -361,7 +390,7 @@ function StudentProfile() {
                                                 className="form-label profile-view-text">Relationship to
                                                 Student:&nbsp;</label>
                                             <label htmlFor="exampleInputEmail1"
-                                                className="form-label">Father</label>
+                                                className="form-label">{seletedStudent?.parentId?.relationship|| "Father"}</label>
                                         </div>
                                     </div>
                                     {/*<div className={"col-6"}>*/}
@@ -405,8 +434,20 @@ function StudentProfile() {
                         </div>
                     </div>
 
-                </ToggleLayout>
+                </ToggleLayout>: null}
             </div>
+            <StudentForm
+            from={"studentProfile"}
+
+            id={seletedStudent.name}
+                show={modalShow}
+                type={modalType}
+                studentId={seletedStudent._id}
+                onHide={() => setModalShow(false)}
+                update={()=>setUpdate(!update)}
+                // selectedStudent={selectedStudent}
+            />
+
         </Layout>
     );
 }
