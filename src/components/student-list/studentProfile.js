@@ -7,6 +7,7 @@ import QRCode from "qrcode.react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import StudentLocationView from "./student-location-view";
+import Profile from "../../assets/profile-img.svg";
 import { useDispatch } from "react-redux";
 import { toggleLoader } from "../../redux/actions";
 import layoutDefaultProfile from "../../assets/layoutDefaultProfile.jpg";
@@ -29,6 +30,8 @@ function StudentProfile() {
         axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}`)
             .then((res) => {
                 setSelectedStudent(res.data)
+   
+
             }).finally(() => {
                 dispatch(toggleLoader(false))
             })
@@ -39,6 +42,7 @@ function StudentProfile() {
         setProfileImage(Profile);
     }
 
+    console.log(seletedStudent?.parentId?._id);
 
     // const seletedStudent = {
     //     name: 'V. Janushankan',
@@ -71,7 +75,7 @@ function StudentProfile() {
             setVisibleToggleIndex(oldArray => [...oldArray, index]);
         }
     }
-    console.log(seletedStudent.profilePic);
+
 
 
     return (
@@ -278,7 +282,7 @@ function StudentProfile() {
                                     <div className="d-flex-start align-items-center justify-content-start">
                                         <img
                                             className="avatar profile-img float-start"
-                                            src={seletedStudent.imageUrl}
+                                            src={Profile}
                                             alt={'Photo of ' + seletedStudent.name}
                                             style={{
                                                 width: seletedStudent.imageSize,
@@ -363,42 +367,42 @@ function StudentProfile() {
                                                 className="form-label">Father</label>
                                         </div>
                                     </div>
-                                    <div className={"col-6"}>
-                                        <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1"
-                                                className="form-label profile-view-text">NIC Front:&nbsp;</label>
-                                            <img
-                                                className="avatar profile-img-display"
-                                                src={seletedStudent.nicFront}
-                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
-                                                style={{
-                                                    width: 90,
-                                                    height: 90,
-                                                    borderRadius: 12,
-                                                    cursor: 'pointer',
-                                                }}
-                                                onClick={() => openModal(seletedStudent.nicFront, 'NIC Front Image')}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className={"col-6"}>
-                                        <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1"
-                                                className="form-label profile-view-text">NIC Back:&nbsp;</label>
-                                            <img
-                                                className="avatar profile-img-display img-fluid"
-                                                src={seletedStudent.nicBack}
-                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
-                                                style={{
-                                                    width: 90,
-                                                    height: 90,
-                                                    borderRadius: 12,
-                                                    cursor: 'pointer',
-                                                }}
-                                                onClick={() => openModal(seletedStudent.nicBack, 'NIC Back Image')}
-                                            />
-                                        </div>
-                                    </div>
+                                    {/*<div className={"col-6"}>*/}
+                                    {/*    <div className="mb-3">*/}
+                                    {/*        <label htmlFor="exampleInputEmail1"*/}
+                                    {/*            className="form-label profile-view-text">NIC Front:&nbsp;</label>*/}
+                                    {/*        <img*/}
+                                    {/*            className="avatar profile-img-display"*/}
+                                    {/*            src={seletedStudent.nicFront}*/}
+                                    {/*            alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}*/}
+                                    {/*            style={{*/}
+                                    {/*                width: 90,*/}
+                                    {/*                height: 90,*/}
+                                    {/*                borderRadius: 12,*/}
+                                    {/*                cursor: 'pointer',*/}
+                                    {/*            }}*/}
+                                    {/*            onClick={() => openModal(seletedStudent.nicFront, 'NIC Front Image')}*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
+                                    {/*<div className={"col-6"}>*/}
+                                    {/*    <div className="mb-3">*/}
+                                    {/*        <label htmlFor="exampleInputEmail1"*/}
+                                    {/*            className="form-label profile-view-text">NIC Back:&nbsp;</label>*/}
+                                    {/*        <img*/}
+                                    {/*            className="avatar profile-img-display img-fluid"*/}
+                                    {/*            src={seletedStudent.nicBack}*/}
+                                    {/*            alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}*/}
+                                    {/*            style={{*/}
+                                    {/*                width: 90,*/}
+                                    {/*                height: 90,*/}
+                                    {/*                borderRadius: 12,*/}
+                                    {/*                cursor: 'pointer',*/}
+                                    {/*            }}*/}
+                                    {/*            onClick={() => openModal(seletedStudent.nicBack, 'NIC Back Image')}*/}
+                                    {/*        />*/}
+                                    {/*    </div>*/}
+                                    {/*</div>*/}
                                 </div>
                             </div>
                         </div>

@@ -8,10 +8,12 @@ import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import {ExportToCsv} from "export-to-csv";
 import axios from "axios";
 import {toast} from "react-toastify";
+import {values,pick,filter} from "underscore";
 
 function Students(props) {
 
     const [studentsList, setStudentsList] = useState([])
+    const [studentsAllist, setStudentsAllList] = useState([])
     const [modalType, setModalType] = useState("view")
     const [selectedStudent, setSelectedStudent] = useState(null);
     const [modalShow, setModalShow] = useState(false);
@@ -32,6 +34,7 @@ function Students(props) {
         axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/getAllStudents`)
             .then((res) => {
                 setStudentsList(res.data)
+                setStudentsAllList(res.data)
             }).catch((err) => {
             console.log(err)
         }).finally(() => {
@@ -76,7 +79,7 @@ function Students(props) {
 
     function exportData() {
         const data = [];
-        studentsList.forEach((student) => {
+        studentsAllist.forEach((student) => {
             data.push({
                 "Name": student.name,
                 "Date of Birth": student.dob,
@@ -106,6 +109,17 @@ function Students(props) {
         csvExporter.generateCsv(data);
     }
 
+    function handleSearch(e) {
+        let val = e.target.value;
+        if (val !== "") {
+            let res = filter(studentsAllist, function (item) { return values(pick(item, 'name',  'gender', 'createdAt','nicNo')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase()); });
+            setStudentsList(res);
+            console.log(res)
+        } else {
+            setStudentsList(studentsAllist);
+        }
+    }
+
     return (
         <Layout>
             <div className={"container"}>
@@ -114,7 +128,8 @@ function Students(props) {
                         <div><h3 className={"content-heading"}>Students Details</h3></div>
                         <div className={"students-dropdown-container d-flex justify-content-end pb-3"}>
                             <div className={"table-btn-container"}>
-
+                                <input className="form-control me-2 w-50" onChange={handleSearch} type="search" placeholder="Search"
+                                       aria-label="Search"/>
 
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}
                                         onClick={() => {
@@ -124,6 +139,10 @@ function Students(props) {
                                     <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                                     Add
                                 </button>
+                                <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+                                        aria-expanded="false" onClick={exportData}>
+                                    Export Data
+                                </button>
 
 
                                 {/*<button className={"btn btn-secondary students-dropdown-btn"} type="button"*/}
@@ -131,10 +150,10 @@ function Students(props) {
                                 {/*    <FeatherIcon className={"action-icons text-white"} icon={"download"}/>*/}
                                 {/*    Import Data*/}
                                 {/*</button>*/}
-                                <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+                                {/* <button className={"btn btn-secondary students-dropdown-btn"} type="button"
                                         aria-expanded="false" onClick={exportData}>
                                     Export Data
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     </div>

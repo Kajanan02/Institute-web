@@ -29,7 +29,7 @@ function Settings(props) {
             <div className={"container"}>
                 <div className={"container-widget"}>
                     <div><h3 className={"content-heading pb-4"}>Settings</h3></div>
-                    <div><h5>Profile Settings</h5></div>
+
                     <div className={"form-container"}>
                         <form  onSubmit={handleSubmit} className={"row student-settings-form"}>
                             <div className={"col-md-6"}>

@@ -25,6 +25,10 @@ import StudentDashboard from "./components/student/student Dashboard/studentDash
 import StudentSetting from "./components/student/settings/student-setting";
 import Settingss from "./components/settings/Settings-ss";
 import Institute from "./components/institute/institute";
+import Leaderboard from "./components/admin/Leaderboard/Leaderboard";
+import Career from "./components/admin/Career/career";
+import React, {useEffect, useState} from "react";
+import mqtt from "mqtt";
 
 function App() {
     return (
@@ -39,10 +43,13 @@ function App() {
                     <Route path="/marks" element={<Marks/>}/>
                     <Route path="/broadcast" element={<Broadcast/>}/>
                     <Route path="/qr-scanner" element={<QrScanner/>}/>
+                    <Route path="/leaderboard" element={<Leaderboard/>}/>
+                    <Route path="/career" element={<Career/>}/>
                     <Route path="/appointment" element={<Appointment/>}/>
                     <Route path="/payment" element={<PaymentInvoice/>}/>
                     <Route path="/settings" element={<Settings/>}/>
                     <Route path="/student/*" element={<StudentLayout/>}/>
+                    <Route path="/report/:studentId/student" element={<Report/>}/>
                     <Route path="/usage" element={<Usage/>}/>
                     <Route path="/students/:studentId" element={<StudentProfile/>}/>
                     <Route path="/settings/student" element={<StudentSetting />} />
@@ -52,7 +59,7 @@ function App() {
                 <Route path="/institute" element={<Institute />} />
                 <Route path="/ass" element={<Settingss />} />
                 <Route path="/usage" element={<Usage />} />
-                {/*<Route path="/profile/:studentId" element={<StudentProfile />} />*/}
+                                {/*<Route path="/profile/:studentId" element={<StudentProfile />} />*/}
                 {/*<Route path="/profile/setting" element={<StudentSetting />} />*/}
             </Routes>
             <ToastContainer/>

@@ -92,6 +92,12 @@ export function validateParent(values) {
     return errors;
 }
 
+export function validatePay(values){
+    let errors = {};
+    return errors;
+
+}
+
 export function validateEvent(values) {
     console.log(values)
     let errors = {};
@@ -114,12 +120,7 @@ export function validateStateappointment(values) {
     let errors = {};
 
 
-    if (!values.parentName) {
-        errors.parentName = "Parent Name is Required"
-    }
-    if (!values.studentName) {
-        errors.studentName = "Student Name is Required"
-    }
+
     if (!values.date) {
         errors.date = "Date is Required"
     }
@@ -306,5 +307,31 @@ export function validateinstitute(values) {
     if (!values.address) {
         errors.address = "Address is Required"
     }
+    return errors;
+}
+export function validateCreer(values) {
+    console.log(values)
+    let errors = {};
+
+
+    if (!values.course) {
+        errors.course = "Course is Required"
+    }
+    if (!values.degreeProgramme) {
+        errors.degreeProgramme = "Degree Programme is Required"
+    }
+    if (!values.availableUniversities) {
+        errors.availableUniversities = "Available Universities is Required"
+    }
+    if (!values.mediumofInstructions) {
+        errors.mediumofInstructions = "Medium of Instructions is Required"
+    }
+    if (!values.duration) {
+        errors.duration = "Duration is Required"
+    }
+    if (!values.description) {
+        errors.description = "Description is Required"
+    }
+
     return errors;
 }
