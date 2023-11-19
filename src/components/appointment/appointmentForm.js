@@ -78,7 +78,7 @@ function AppointmentForm(props) {
                 console.log(res.data)
                 props.update()
                 props.onHide();
-                toast.success(`Successfully Marks created`)
+                toast.success(`Successfully Appointment Created`)
             }).catch((err) => {
             toast.error("Something went wrong")
         }).finally(() => {

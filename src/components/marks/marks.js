@@ -318,7 +318,7 @@ function Marks(props) {
                 </tr>))}
               </tbody>
             </table>
-            {marksList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Student Data Found,Please Add</div>}
+            {marksList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Marks Data Found,Please Add</div>}
 
           </div>
         </div>

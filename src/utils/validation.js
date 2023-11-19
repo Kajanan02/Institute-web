@@ -309,7 +309,7 @@ export function validateinstitute(values) {
     }
     return errors;
 }
-export function validateCreer(values) {
+export function validateCareer(values) {
     console.log(values)
     let errors = {};
 
@@ -323,11 +323,13 @@ export function validateCreer(values) {
     if (!values.availableUniversities) {
         errors.availableUniversities = "Available Universities is Required"
     }
-    if (!values.mediumofInstructions) {
-        errors.mediumofInstructions = "Medium of Instructions is Required"
+    if (!values.medium) {
+        errors.medium = "Medium of Instructions is Required"
     }
     if (!values.duration) {
-        errors.duration = "Duration is Required"
+        errors.duration = "Duration is required";
+    } else if (!values.duration.match(/^[1-8]$/)) {
+        errors.duration = 'Duration must be a number from 1 to 8';
     }
     if (!values.description) {
         errors.description = "Description is Required"
