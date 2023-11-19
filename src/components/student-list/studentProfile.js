@@ -75,10 +75,6 @@ function StudentProfile() {
             setVisibleToggleIndex(oldArray => [...oldArray, index]);
         }
     }
-    console.log(seletedStudent.parentId.__id);
-    console.log(seletedStudent.name);
-    console.log(seletedStudent.__id);
-    console.log(modalOpen);
 
 
 

@@ -19,28 +19,28 @@ function Calender(props) {
     let events = [
         {
             id: 0,
-            title: 'Board meeting',
+            title: 'Maths class',
             start: new Date(2023, 7, 29, 9, 0, 0),
             end: new Date(2023, 7, 29, 13, 0, 0),
             resourceId: 1,
         },
         {
             id: 1,
-            title: 'MS training',
+            title: 'Chemistry training',
             start: new Date(2023, 7, 29, 17, 30, 0),
             end: new Date(2023, 7, 29, 16, 30, 0),
             resourceId: 2,
         },
         {
             id: 2,
-            title: 'Team lead meeting',
+            title: 'Physics mechanics class',
             start: new Date(2023, 7, 29, 8, 30, 0),
             end: new Date(2023, 7, 29, 12, 30, 0),
             resourceId: [2, 3],
         },
         {
             id: 11,
-            title: 'Birthday Party',
+            title: 'physics MCQ',
             textColor: 'red',
             start: new Date(2023, 7, 30, 7, 0, 0),
             end: new Date(2023, 7, 30, 10, 30, 0),

@@ -63,11 +63,11 @@ function StudentDashboard(props) {
 
             // xFormat: '%Y-%m-%d',
             columns: [
-                ['Attendance'].concat(durationCurrentAggregated),
+                ['Marks'].concat(durationCurrentAggregated),
                 ['Date'].concat(date),
             ],
             colors: {
-                ['Attendance']: '#00AB55'
+                ['Marks']: '#00AB55'
             },
             // unload: unload(weatherTab),
             type: 'area-spline',
@@ -87,7 +87,7 @@ function StudentDashboard(props) {
             },
             y: {
                 label: {
-                    text: "Attendance",
+                    text: "Marks",
                     position: 'outer-middle',
 
                 }
