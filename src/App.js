@@ -59,7 +59,7 @@ function App() {
                 <Route path="/institute" element={<Institute />} />
                 <Route path="/ass" element={<Settingss />} />
                 <Route path="/usage" element={<Usage />} />
-                {/*<Route path="/profile/:studentId" element={<StudentProfile />} />*/}
+                                {/*<Route path="/profile/:studentId" element={<StudentProfile />} />*/}
                 {/*<Route path="/profile/setting" element={<StudentSetting />} />*/}
             </Routes>
             <ToastContainer/>
