@@ -27,7 +27,8 @@ import Settingss from "./components/settings/Settings-ss";
 import Institute from "./components/institute/institute";
 import Leaderboard from "./components/admin/Leaderboard/Leaderboard";
 import Career from "./components/admin/Career/career";
-import React from "react";
+import React, {useEffect, useState} from "react";
+import mqtt from "mqtt";
 
 function App() {
     return (
@@ -58,7 +59,7 @@ function App() {
                 <Route path="/institute" element={<Institute />} />
                 <Route path="/ass" element={<Settingss />} />
                 <Route path="/usage" element={<Usage />} />
-                {/*<Route path="/profile/:studentId" element={<StudentProfile />} />*/}
+                                {/*<Route path="/profile/:studentId" element={<StudentProfile />} />*/}
                 {/*<Route path="/profile/setting" element={<StudentSetting />} />*/}
             </Routes>
             <ToastContainer/>

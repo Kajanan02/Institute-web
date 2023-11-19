@@ -39,6 +39,8 @@ function StudentProfile() {
         axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}`)
             .then((res) => {
                 setSelectedStudent(res.data)
+   
+
             }).finally(() => {
                 dispatch(toggleLoader(false))
             })
@@ -61,6 +63,7 @@ function StudentProfile() {
         setProfileImage(Profile);
     }
 
+    console.log(seletedStudent?.parentId?._id);
 
     // const seletedStudent = {
     //     name: 'V. Janushankan',
@@ -93,7 +96,7 @@ function StudentProfile() {
             setVisibleToggleIndex(oldArray => [...oldArray, index]);
         }
     }
-    console.log(seletedStudent.profilePic);
+
 
 
     return (

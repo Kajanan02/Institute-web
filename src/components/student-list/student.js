@@ -139,6 +139,10 @@ function Students(props) {
                                     <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                                     Add
                                 </button>
+                                <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+                                        aria-expanded="false" onClick={exportData}>
+                                    Export Data
+                                </button>
 
 
                                 {/*<button className={"btn btn-secondary students-dropdown-btn"} type="button"*/}
@@ -146,10 +150,10 @@ function Students(props) {
                                 {/*    <FeatherIcon className={"action-icons text-white"} icon={"download"}/>*/}
                                 {/*    Import Data*/}
                                 {/*</button>*/}
-                                <button className={"btn btn-secondary students-dropdown-btn"} type="button"
+                                {/* <button className={"btn btn-secondary students-dropdown-btn"} type="button"
                                         aria-expanded="false" onClick={exportData}>
                                     Export Data
-                                </button>
+                                </button> */}
                             </div>
                         </div>
                     </div>
