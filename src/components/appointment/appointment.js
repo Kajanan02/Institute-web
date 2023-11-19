@@ -7,7 +7,7 @@ import {isParentAccount} from "../../utils/Authentication";
 import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
-import {values,pick,filter} from "underscore";
+import {values, pick, filter, pluck} from "underscore";
 
 
 function Appointment(props) {
@@ -128,7 +128,6 @@ function Appointment(props) {
                                 <td>
                                     <div className={"appointment_state " + (colorChange(data.status))}
                                              onClick={() => {
-
                                                  if(isParentAccount()) {
                                                      return
                                                  }
