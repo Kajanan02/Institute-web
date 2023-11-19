@@ -8,6 +8,7 @@ import {initialNavigate, loadCredential} from "../../utils/Authentication";
 import {toast} from "react-toastify";
 import {toggleLoader} from "../../redux/actions";
 import {useDispatch} from "react-redux";
+import Mqtt from "./mqtt";
 
 function QrScanner(props) {
 
@@ -15,16 +16,18 @@ function QrScanner(props) {
     const [cameraVisible, setCameraVisible] = useState(false);
     const dispatch = useDispatch();
     const instituteId = localStorage.getItem("USER_ID");
+    const [led,setLed]= useState(false)
 
 
 
     function updateAttendece(studentId) {
-
         dispatch(toggleLoader(true))
         axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/attendance`)
             .then((res) => {
                 console.log(res.data)
                 toast.success("Successfully attendance updated");
+                setLed(true)
+
             }).catch((err) => {
             if(err?.response?.data?.message){
                 toast.error(err?.response?.data?.message)
@@ -74,7 +77,9 @@ function QrScanner(props) {
                     <button className={"btn btn-secondary marks-dropdown-btn mt-4 px-5 py-2"} onClick={()=> setCameraVisible(!cameraVisible)}><img src={QrIcon} className={"me-3"} width={"25px"}/> Scan QR Code</button>
                 </div>
             </div>
-            <p>{data}</p></Layout>
+            <p>{data}</p>
+        <Mqtt led={led}/>
+        </Layout>
     );
 }
 
