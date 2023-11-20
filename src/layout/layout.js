@@ -16,6 +16,7 @@ import {
     signOut
 } from "../utils/Authentication";
 import Career from "../assets/career-logo.svg";
+import NotificationBox from './NotificationBox';
 
 function Layout({children}) {
 
@@ -25,6 +26,87 @@ function Layout({children}) {
     const open = useSelector(state => {
         return state.setting.toggle
     });
+
+    const [showNotification, setShowNotification] = useState(false);
+    const [notifications, setNotifications] = useState([
+      {
+        heading: 'New message from Alice',
+        text:
+          'Alice sent you a new message. This is a lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '2 hours ago',
+        type: 'Message',
+        read: false,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'Meeting at 2 PM today',
+        text: 'You have a meeting scheduled for 2 PM today.',
+        time: 'In 1 hour',
+        type: 'Meeting',
+        read: false,
+      },
+    ]);
+  
+    const toggleNotification = () => {
+      setShowNotification(!showNotification);
+    };
+  
+    const closeNotification = () => {
+      setShowNotification(false);
+    };
+  
+    const markAsRead = (index) => {
+      const updatedNotifications = [...notifications];
+      updatedNotifications[index].read = true;
+      setNotifications(updatedNotifications);
+    };
+  
+    const markAllRead = () => {
+      const updatedNotifications = notifications.map((notification) => ({
+        ...notification,
+        read: true,
+      }));
+      setNotifications(updatedNotifications);
+    };
 
     function toggleDrawer() {
         dispatch(changeToggle(!open));
@@ -224,10 +306,11 @@ function Layout({children}) {
                             <div className="collapse navbar-collapse " id="">
                                 <ul className="navbar-nav ms-auto align-items-center flex-row">
                                     <li className="nav-item">
-                                        <a className="nav-link active position-relative px-2" aria-current="page"
-                                           href="#">
-                                            <div className="red-dot"/>
-                                            <img src={Bell}/>
+                                        <a className="nav-link active position-relative px-2" aria-current="page" href="#">
+                                            {notifications.some((notification) => !notification.read) && (
+                                            <div className="red-dot" />
+                                            )}
+                                            <img src={Bell} onClick={toggleNotification} />
                                         </a>
                                     </li>
                                     {/*<li className="nav-item px-2">*/}
@@ -257,6 +340,14 @@ function Layout({children}) {
                     </div>
                 </div>
             </div>
+            {showNotification && (
+                <NotificationBox
+                    notifications={notifications}
+                    onClose={closeNotification}
+                    markAsRead={markAsRead}
+                    markAllRead={markAllRead}
+                />
+            )}
         </div>
     );
 }

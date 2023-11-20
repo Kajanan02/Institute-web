@@ -128,7 +128,7 @@ function Students(props) {
                         <div><h3 className={"content-heading"}>Students Details</h3></div>
                         <div className={"students-dropdown-container d-flex justify-content-end pb-3"}>
                             <div className={"table-btn-container"}>
-                                <input className="form-control me-2 w-50" onChange={handleSearch} type="search" placeholder="Search"
+                                <input className="form-control w-50" onChange={handleSearch} type="search" placeholder="Search"
                                        aria-label="Search"/>
 
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}

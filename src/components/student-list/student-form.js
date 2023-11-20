@@ -15,6 +15,8 @@ import {toast} from "react-toastify";
 import StudentLocationAdd from "./student-location";
 
 function StudentForm(props) {
+    console.log(props)
+    const [parentMode, setParentMode] = useState(false);
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const buyerOption = subjectData;
     const [profilePic, setProfilePic] = useState(null);
@@ -37,6 +39,7 @@ function StudentForm(props) {
 
     const dispatch = useDispatch();
     const instituteId = localStorage.getItem("USER_ID");
+    console.log(currentStep)
 
     function isLoading() {
         if (props.type === "Edit") {
@@ -54,6 +57,15 @@ function StudentForm(props) {
             }
         }
     }
+
+    console.log(values);
+
+    useEffect(() => {
+if(props.from === "studentProfile"){
+setCurrentStep(2)
+setParentMode(true)
+}
+    },[props.from]);
 
     function imageUpload(file, key) {
         console.log("Fille")
@@ -105,11 +117,12 @@ function StudentForm(props) {
         if (!isSubmit) {
             return
         }
+        
         values.password = "123456"
         console.log(values)
         dispatch(toggleLoader(true))
         if (currentStep === 2) {
-            values.studentId = studentId
+            values.studentId = props.studentId ? props.studentId :studentId
         }
         axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/${parentSubmit ? 'createParent' : 'createStudent'}`, values)
             .then((res) => {
@@ -188,18 +201,18 @@ function StudentForm(props) {
                 }
             }}>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    {props.type === "Add" ? "Add Student Details" : "Edit Student Details"}
+                    {parentMode ? "Add Parent Details" : props.type === "Add" ? "Add Student Details" : "Edit Student Details"}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body scrollable>
 
-                {props.type !== "Edit" && <FormStepper currentStep={currentStep}/>}
+                {(props.type !== "Edit" && !parentMode ) && <FormStepper currentStep={currentStep}/>}
 
                 <form>
                     <div>
-                        <div
+                        {!props.from && <div
                             className="step-text">Step {currentStep}: {currentStep === 1 ? "Student" : "Parent"} Details
-                        </div>
+                        </div>}
                         <div className={"pop-up-form-container"}>
                             <div className={"row"}>
                                 <div className={"col-md-6"}>
@@ -440,7 +453,7 @@ function StudentForm(props) {
                     className={"btn btn-secondary students-dropdown-btn"}
                     onClick={handleSubmit}
                 >
-                    {props.type === "Edit" ? "Update" : currentStep === 1 ? "Next" : "Update"}
+                    {parentMode ? "Add" : props.type === "Edit" ? "Update" : currentStep === 1 ? "Next" : "Update"}
                 </button>
             </Modal.Footer>
         </Modal>
