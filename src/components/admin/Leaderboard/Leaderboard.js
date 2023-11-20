@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { values, pick, filter, pluck } from "underscore";
 import { toast } from "react-toastify";
+import { rankMarks } from '../../../utils/utils';
 
 export default function LeaderBoard(props) {
     const [leaderBoardList, setLeaderBoardList] = useState([])
@@ -17,29 +18,8 @@ export default function LeaderBoard(props) {
     const [modalShow, setModalShow] = useState(false);
     const [deletedId, setDeletedId] = useState(null);
     const [update, setUpdate] = useState(false);
-    const instituteId = localStorage.getItem("USER_ID");
-    const studentId = localStorage.getItem("STUDENT_ID");
     const [selectedLeaderBoard, setSelectedLeaderBoard] = useState({})
 
-
-
-    console.log(selectedLeaderBoard);
-
-    useEffect(() => {
-        dispatch(toggleLoader(true))
-
-        //http://localhost:5000/api/getAllLeaderBoards
-        axios.get(`${process.env.REACT_APP_HOST}/getAllLeaderBoards`)
-            .then((res) => {
-                let data = res.data
-                setLeaderBoardList(res.data)
-                setLeaderBoardAllList(res.data)
-            }).catch((err) => {
-                console.log(err)
-            }).finally(() => {
-                dispatch(toggleLoader(false))
-            })
-    }, [update])
 
     const confirmationDialog = useSelector(state => {
         return state.setting.confirmationDialog
@@ -92,46 +72,9 @@ export default function LeaderBoard(props) {
 
     useEffect(() => {
         dispatch(toggleLoader(true));
-
         axios.get(`${process.env.REACT_APP_HOST}/getAllLeaderBoards`)
             .then((res) => {
-                let data = res.data;
-
-                // Keep track of the initial order
-                const initialOrder = data.map((item, index) => ({
-                    ...item,
-                    initialOrder: index + 1,
-                }));
-
-                // Group data by subject
-                const groupedData = {};
-
-                initialOrder.forEach(item => {
-                    const subject = item.subject;
-
-                    if (!groupedData[subject]) {
-                        groupedData[subject] = [];
-                    }
-
-                    groupedData[subject].push(item);
-                });
-
-                // Calculate rank within each subject based on the initial order
-                Object.keys(groupedData).forEach(subject => {
-                    const subjectData = groupedData[subject];
-
-                    // Sort data by marks in descending order
-                    subjectData.sort((a, b) => b.marks - a.marks || a.initialOrder - b.initialOrder);
-
-                    // Add rank to the data within the subject
-                    subjectData.forEach((item, index) => {
-                        item.rank = index + 1;
-                    });
-                });
-
-                // Flatten the grouped data back into a single array
-                const rankedData = Object.values(groupedData).flat();
-
+                let rankedData =rankMarks(res.data,"rank") 
                 setLeaderBoardList(rankedData);
                 setLeaderBoardAllList(rankedData);
             })
@@ -203,7 +146,7 @@ export default function LeaderBoard(props) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {leaderBoardList.map((data, index) => (<tr key={index + "asd"}>
+                                {leaderBoardList.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt)).map((data, index) => (<tr key={index + "asd"}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{data.regNo}</td>
                                     <td>{data.name}</td>
