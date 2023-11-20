@@ -94,8 +94,15 @@ function StatepaymentForm(props) {
             </Modal.Header>
             <Modal.Body scrollable>
 
-                {props.type === "Add" && !directPayment && <div>
-                    <button type="button" className={"btn btn-secondary students-dropdown-btn payment-method-btn"}
+                {props.type === "Add" && !directPayment && <div className={"d-flex justify-content-around"}>
+                    <button type="button" className={"btn-payment-method"}
+                            onClick={() => {
+                                setDirectPayment(true)
+                            }}>
+                        {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
+                        Direct Payment
+                    </button>
+                    <button type="button" className={"btn-payment-method"}
                             onClick={() => {
                                 // setModalType("Add");
                                 // setModalShow(true)
@@ -103,13 +110,7 @@ function StatepaymentForm(props) {
                         {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
                         Online Payment
                     </button>
-                    <button type="button" className={"btn btn-secondary students-dropdown-btn payment-method-btn"}
-                            onClick={() => {
-                                setDirectPayment(true)
-                            }}>
-                        {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
-                        Direct Payment
-                    </button>
+
                 </div>}
                 {directPayment && <form onSubmit={handleSubmit}>
                     <div>
@@ -257,7 +258,7 @@ function StatepaymentForm(props) {
 
                 </form>}
             </Modal.Body>
-            <Modal.Footer>
+            { directPayment && <Modal.Footer>
 
 
                 <button
@@ -297,7 +298,7 @@ function StatepaymentForm(props) {
                 >
                     Pay
                 </button>}
-            </Modal.Footer>
+            </Modal.Footer>}
         </Modal>
     );
 }
