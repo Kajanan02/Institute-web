@@ -309,7 +309,7 @@ export function validateinstitute(values) {
     }
     return errors;
 }
-export function validateCreer(values) {
+export function validateCareer(values) {
     console.log(values)
     let errors = {};
 
@@ -323,14 +323,35 @@ export function validateCreer(values) {
     if (!values.availableUniversities) {
         errors.availableUniversities = "Available Universities is Required"
     }
-    if (!values.mediumofInstructions) {
-        errors.mediumofInstructions = "Medium of Instructions is Required"
+    if (!values.medium) {
+        errors.medium = "Medium of Instructions is Required"
     }
     if (!values.duration) {
-        errors.duration = "Duration is Required"
+        errors.duration = "Duration is required";
+    } else if (!values.duration.match(/^[1-8]$/)) {
+        errors.duration = 'Duration must be a number from 1 to 8';
     }
     if (!values.description) {
         errors.description = "Description is Required"
+    }
+
+    return errors;
+}
+
+export function validateLeaderBoard(values) {
+    console.log(values)
+    let errors = {};
+
+    if (!values.regNo) {
+        errors.regNo = "Reg No is Required"
+    }
+    if (!values.subject) {
+        errors.subject = "Subject is Required"
+    }
+    if (!values.marks) {
+        errors.marks = 'Marks is required';
+    } else if (isNaN(values.marks) || parseFloat(values.marks) <= 0) {
+        errors.marks = 'Marks must be a valid positive number';
     }
 
     return errors;

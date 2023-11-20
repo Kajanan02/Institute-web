@@ -25,10 +25,10 @@ import StudentDashboard from "./components/student/student Dashboard/studentDash
 import StudentSetting from "./components/student/settings/student-setting";
 import Settingss from "./components/settings/Settings-ss";
 import Institute from "./components/institute/institute";
-import Leaderboard from "./components/admin/Leaderboard/Leaderboard";
 import Career from "./components/admin/Career/career";
 import React, {useEffect, useState} from "react";
 import mqtt from "mqtt";
+import LeaderBoard from './components/admin/leaderboard/leaderBoard';
 
 function App() {
     return (
@@ -43,7 +43,7 @@ function App() {
                     <Route path="/marks" element={<Marks/>}/>
                     <Route path="/broadcast" element={<Broadcast/>}/>
                     <Route path="/qr-scanner" element={<QrScanner/>}/>
-                    <Route path="/leaderboard" element={<Leaderboard/>}/>
+                    <Route path="/leaderboard" element={<LeaderBoard/>}/>
                     <Route path="/career" element={<Career/>}/>
                     <Route path="/appointment" element={<Appointment/>}/>
                     <Route path="/payment" element={<PaymentInvoice/>}/>
