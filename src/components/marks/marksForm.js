@@ -154,7 +154,7 @@ function MarksForm(props) {
                                         <Typeahead
                                             id="basic-typeahead-single"
                                             labelKey="name"
-                                            className={`disabled-white ${errors.nicNo ? "border-red" : ""}`}
+                                            className={`disabled-white ${errors.regNO ? "border-red" : ""}`}
                                             onChange={(res)=> {
                                                setValue({nicNo:res[0]})
                                                 setValue({name:find(studentsList,{nicNo:res[0]})?.name})
@@ -165,7 +165,7 @@ function MarksForm(props) {
                                             placeholder="Choose a state..."
                                             selected={singleSelections}
                                         />
-                                        {errors.nicNo && <p className={"text-red"}>{errors.nicNo}</p>}
+                                        {errors.regNO && <p className={"text-red"}>{errors.regNO}</p>}
 
                                     </div>
                                 </div>
@@ -193,7 +193,7 @@ function MarksForm(props) {
                                                 name={"subject"}
                                                 aria-label="Default select example">
                                             <option hidden>Subjects</option>
-                                            <option value="COMBINED_MATHEMATICS">Combined Mathematics</option>
+                                            <option value="COMBINED MATHEMATICS">Combined Mathematics</option>
                                             <option value="PHYSICS">Physics</option>
                                             <option value="CHEMISTRY">Chemistry</option>
                                             <option value="ICT">ICT</option>

@@ -14,3 +14,26 @@ export function isEmpty(obj) {
 export function isFunction(functionToCheck) {
     return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
 }
+
+export function rankMarks(initialOrder = [],key="rank") {
+    const groupedData = {};
+
+                initialOrder.forEach(item => {
+                    const subject = item.subject;
+                    if (!groupedData[subject]) {
+                        groupedData[subject] = [];
+                    }
+                    groupedData[subject].push(item);
+                });
+
+                Object.keys(groupedData).forEach(subject => {
+                    const subjectData = groupedData[subject];
+
+                    subjectData.sort((a, b) => b.marks - a.marks || a.initialOrder - b.initialOrder);
+
+                    subjectData.forEach((item, index) => {
+                        item[key] = index + 1;
+                    });
+                });
+                return Object.values(groupedData).flat();
+}
