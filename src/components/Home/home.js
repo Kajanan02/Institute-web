@@ -5,115 +5,59 @@ import studentSlider1 from "../../assets/studentSlider1.png";
 import studentSlider2 from "../../assets/studentSlider2.png"
 import studentSlider3 from "../../assets/studentSlider3.png"
 import homeimage from "../../assets/homeimage.svg"
-import logo from "../../assets/logo.png"
-import C3Chart from "react-c3js";
-import * as d3 from "d3";
-import { useDispatch } from "react-redux";
 import Carousel from 'react-bootstrap/Carousel';
 import {getName} from "../../utils/Authentication";
+import Chart from 'react-apexcharts'
 
 
 function Home(props) {
-    const [dataSet, setDataSet] = useState({});
-    const [loadGraph, setLoadGraph] = useState(false);
-    const dispatch = useDispatch();
-    function styleGraph() {
-        if (window.innerWidth < 769) {
-            d3.select(".c3-axis-x-label").attr("dy", "42px");
-            d3.selectAll(".tick").style("font-size", "7px");
-            d3.select(".c3-axis-y-label").attr("dy", "-34px");
-        } else {
-            d3.select(".c3-axis-y-label").attr("dy", "-36px");
-        }
-        d3.selectAll(".c3-legend-item").attr("x", "400");
-    }
 
-    async function addDataGraphDate(graphData) {
-        await new Promise((resolve, reject) => {
-            resolve(1); setDataSet(graphData)
-        });
-    }
+    var options = {
+        series: [{
+            name: 'Attendance',
+            data: [55, 75, 28, 51, 42, 109, 100]
+        }],
+        chart: {
+            height: 350,
+            // type: 'area'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        colors:['#00b957'],
+        fill: {
+            type: "gradient",
+            gradient: {
+                shadeIntensity: 1,
+                opacityFrom: 0.7,
+                opacityTo: 0.9,
+                stops: [0, 100],
+                colorStops: [{
+                    offset: 0,
+                    color: "rgba(0,255,136,0.69)",
+                    opacity: 1
+                }, {
+                    offset: 100,
+                    color: "rgba(0,255,136,0.19)",
+                    opacity: 1
+                }]
 
-    const data = {
-        columns: [
-            ["Attendance", 40, 50, 70, 90, 80, 50],
-            ["Date", "2023-08-09", "2023-08-12", "2023-08-15", "2023-08-17", "2023-08-20", "2023-08-25"]
-        ]
+            }
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            type: 'date',
+            categories: ["2023-09-19", "2023-09-20", "2023-09-21", "2023-09-22", "2023-09-23", "2023-09-24", "2023-09-25"]
+        },
+        tooltip: {
+            x: {
+                format: 'dd/MM/yy'
+            },
+        },
     };
 
-    function drawGraph() {
-        //Here You want data below two line
-        const durationCurrentAggregated = [40, 50, 70, 90, 80, 50]
-        const date = ["2023-08-09", "2023-08-12", "2023-08-15", "2023-08-17", "2023-08-20", "2023-08-25"];
-
-        const graphData = {};
-        graphData.data = null;
-        graphData.axis = null;
-        const tooltip = {
-            format: {
-                value: function (value, ratio, id, index) {
-                    return value;
-                }
-            },
-        };
-
-        const data = {
-            x: 'Date',
-
-            // xFormat: '%Y-%m-%d',
-            columns: [
-                ['Attendance'].concat(durationCurrentAggregated),
-                ['Date'].concat(date),
-            ],
-            colors: {
-                ['Attendance']: '#00AB55'
-            },
-            // unload: unload(weatherTab),
-            type: 'area-spline',
-        };
-        let axis
-
-        axis = {
-            x: {
-                type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
-                },
-                label: {
-                    text: 'Date',
-                    position: 'outer-center',
-                },
-            },
-            y: {
-                label: {
-                    text: "Attendance",
-                    position: 'outer-middle',
-
-                }
-            },
-        };
-        const zoom = {
-            rescale: true
-
-        };
-        graphData['data'] = data;
-        graphData['axis'] = axis;
-        graphData['tooltip'] = tooltip;
-        graphData['zoom'] = zoom;
-
-        addDataGraphDate(graphData).then(() => {
-            setLoadGraph(true);
-            console.log("drawing graph");
-        });
-
-    }
-
-    useEffect(() => {
-        setLoadGraph(false);
-        drawGraph();
-    }, []);
-
-    console.log(dataSet)
 
     return (
         <Layout>
@@ -233,11 +177,8 @@ function Home(props) {
                 </div>
                 <div className={"row m-1 p-2 mt-4"}>
                     <div className={"default-container"}>
-                        {loadGraph && dataSet.data && <C3Chart area={{ zerobased: false }} padding={{ left: 45 }} tooltip={dataSet.tooltip}
-                                                               zoom={dataSet.zoom}
 
-                                                               data={dataSet.data} subchart={{ show: false }} onrendered={styleGraph}
-                                                               axis={dataSet.axis} />}
+                        <Chart options={options} series={options.series} type="area"  width={"100%"} height={320} />
                     </div>
                 </div>
             </div>

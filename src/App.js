@@ -28,7 +28,8 @@ import Institute from "./components/institute/institute";
 import Career from "./components/admin/Career/career";
 import React, {useEffect, useState} from "react";
 import mqtt from "mqtt";
-import LeaderBoard from './components/admin/leaderboard/leaderBoard';
+import LeaderBoard from "./components/admin/Leaderboard/Leaderboard";
+
 
 function App() {
     return (
