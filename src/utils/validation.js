@@ -337,3 +337,22 @@ export function validateCareer(values) {
 
     return errors;
 }
+
+export function validateLeaderBoard(values) {
+    console.log(values)
+    let errors = {};
+
+    if (!values.regNo) {
+        errors.regNo = "Reg No is Required"
+    }
+    if (!values.subject) {
+        errors.subject = "Subject is Required"
+    }
+    if (!values.marks) {
+        errors.marks = 'Marks is required';
+    } else if (isNaN(values.marks) || parseFloat(values.marks) <= 0) {
+        errors.marks = 'Marks must be a valid positive number';
+    }
+
+    return errors;
+}

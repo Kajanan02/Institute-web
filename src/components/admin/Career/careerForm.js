@@ -6,10 +6,7 @@ import { isEmpty } from 'underscore';import axios from 'axios';
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import {togglæeConfirmationDialog, toggleLoader} from "../../../redux/actions";
-const careerData = {
-    // Other properties of the career object
-    medium: "SomeMediumValue",
-  };
+
 
 function CareerForm(props) {
 
