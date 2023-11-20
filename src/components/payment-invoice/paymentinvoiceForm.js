@@ -2,10 +2,31 @@ import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
 import {validateStatepayment} from "../../utils/validation";
+import FeatherIcon from "feather-icons-react";
+import {FileUploader} from "react-drag-drop-files";
+import uploadIcon from "../../assets/uplod-icon.svg";
+import {toggleLoader} from "../../redux/actions";
+import axios from "axios";
+import {useDispatch} from "react-redux";
 
 function StatepaymentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [modalType, setModalType] = useState("view")
+    const [modalShow, setModalShow] = useState(false);
+    const [directPayment, setDirectPayment] = useState(false);
+    const [paymentSlip, setPaymentSlip] = useState(null);
+    const [profilePic, setProfilePic] = useState(null);
+
+    const dispatch = useDispatch();
+
+
+    const handleChangeSlip = (file) => {
+        setPaymentSlip(file);
+        // imageUpload(file, "profilePic")
+    };
+
+
     const {
         handleChange,
         handleSubmit,
@@ -21,6 +42,20 @@ function StatepaymentForm(props) {
 
     console.log(errors)
     console.log(values)
+    function imageUpload(file, key) {
+        console.log("Fille")
+
+        dispatch(toggleLoader(true))
+        const data = new FormData()
+        data.append("file", file)
+        data.append("upload_preset", "xi7icexi")
+        data.append("cloud_name", "dacrccjrm")
+        axios.put("https://api.cloudinary.com/v1_1/dacrccjrm/image/upload", data)
+            .then((res) => {
+                console.log(res.data.url)
+                setValue({[key]: res.data.url})
+            }).finally(() => dispatch(toggleLoader(false)))
+    }
 
 
     useEffect(() => {
@@ -31,6 +66,7 @@ function StatepaymentForm(props) {
             setFormSubmitted(false);
         }
     }, [props.show]);
+    console.log(directPayment)
 
     return (
         <Modal
@@ -45,6 +81,8 @@ function StatepaymentForm(props) {
                 if (!formSubmitted) {
                     initForm({});
                 }
+                setDirectPayment(false)
+
             }}>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {<Modal.Title id="contained-modal-title-vcenter">
@@ -56,9 +94,26 @@ function StatepaymentForm(props) {
             </Modal.Header>
             <Modal.Body scrollable>
 
-                <form onSubmit={handleSubmit}>
-                    <div>
+                {props.type === "Add" && !directPayment && <div className={"d-flex justify-content-around"}>
+                    <button type="button" className={"btn-payment-method"}
+                            onClick={() => {
+                                setDirectPayment(true)
+                            }}>
+                        {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
+                        Direct Payment
+                    </button>
+                    <button type="button" className={"btn-payment-method"}
+                            onClick={() => {
+                                // setModalType("Add");
+                                // setModalShow(true)
+                            }}>
+                        {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
+                        Online Payment
+                    </button>
 
+                </div>}
+                {directPayment && <form onSubmit={handleSubmit}>
+                    <div>
                         <div className={"pop-up-form-container"}>
                             <div className={"row"}>
                                 {<div
@@ -175,13 +230,35 @@ function StatepaymentForm(props) {
                                     </div>
                                 </div>}
 
+                                <div className={"col-md-12"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1" className="form-label d-block">Profile
+                                            Picture</label>
+                                        <FileUploader handleChange={handleChangeSlip}>
+                                            <div className={"file-uploader-container"}>
+                                                <img src={uploadIcon} width={"27%"}/>
+                                                {!paymentSlip?.name ? <div>
+                                                        <div className={"fw-semibold my-2"}>Drop or Select file
+                                                        </div>
+                                                        <div className={""}>Drop files here or click <span
+                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                            your machine
+                                                        </div>
+                                                    </div> :
+                                                    <div className={"fw-semibold my-2"}>{paymentSlip?.name}</div>
+                                                }
+                                            </div>
+                                        </FileUploader>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
 
-                </form>
+                </form>}
             </Modal.Body>
-            <Modal.Footer>
+            { directPayment && <Modal.Footer>
 
 
                 <button
@@ -192,6 +269,7 @@ function StatepaymentForm(props) {
                             props.onHide();
                             initForm({});
                         }
+                        setDirectPayment(false)
                     }}
                 >
                     Cancel
@@ -213,14 +291,14 @@ function StatepaymentForm(props) {
                     Pending
                 </button>}
 
-                {props.type === "Add" && <button
+                {props.type !== "Add" && <button
                     type="button"
                     className={"btn btn-success"}
                     onClick={handleSubmit}
                 >
                     Pay
                 </button>}
-            </Modal.Footer>
+            </Modal.Footer>}
         </Modal>
     );
 }

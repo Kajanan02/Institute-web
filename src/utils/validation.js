@@ -176,7 +176,7 @@ export function validateStatepayment(values) {
         errors.topic = "Topic is Required"
     }
     if (!values.paymentMethod) {
-        errors.paymentMethod = "Payment Method is Required"
+        errors.paymentMethod = "Paymentcard Method is Required"
     }
 
 
