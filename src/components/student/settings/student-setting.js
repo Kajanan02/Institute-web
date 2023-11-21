@@ -93,13 +93,12 @@ function StudentSetting(props) {
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
                                         Name</label></h6>
-                                    <input type="text" name={"firstname"}
-                                           className={`form-control form-input ${errors.name ? "border-red" : ""}`}
-                                           onChange={handleChange}
-                                           value={values.name || ""}
-                                           id="exampleInputfName"
-                                           placeholder={"Enter First name"}
-                                    />
+                                        <input name={"name"} placeholder={"Enter Name"}
+                                               className={`form-control ${errors.name ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
+                                               onChange={handleChange}
+                                               value={values.name || ""}
+                                        />
                                     {errors.name && <p className={"text-red"}>{errors.name}</p>}
                                 </div>
                             </div>
@@ -108,13 +107,18 @@ function StudentSetting(props) {
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1"
                                                className="settings-form-text">Gender</label></h6>
-                                    <input type="text" name={"gender"} id="exampleInputGender"
-                                           placeholder={"Enter Gender"}
-                                           className={`form-control ${errors.gender ? "border-red" : ""}`}
-                                           onChange={handleChange}
-                                    />
-                                    {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
-                                </div>
+                                    <select className={`form-control ${errors.gender ? "border-red" : ""}`}
+                                                onChange={handleChange}
+                                                value={values.gender || ""}
+                                                name={"gender"}
+                                                aria-label="Default select example">
+                                            <option hidden>Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Not Specified">Not Specified</option>
+                                        </select>
+                                        {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
+                                    </div>
                             </div>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
@@ -124,6 +128,8 @@ function StudentSetting(props) {
                                            placeholder={"Enter Date of birth"}
                                            className={`form-control ${errors.dob ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.dob || ""}
+                                           
                                     />
                                     {errors.dob && <p className={"text-red"}>{errors.dob}</p>}
                                 </div>
@@ -136,6 +142,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter NIC No"}
                                            className={`form-control ${errors.nicNo ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.nicNo || ""}
                                     />
                                     {errors.nicNo && <p className={"text-red"}>{errors.nicNo}</p>}
                                 </div>
@@ -148,6 +155,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter Contact No"}
                                            className={`form-control ${errors.phoneNumber ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.phoneNumber || ""}
                                     />
                                     {errors.phoneNumber && <p className={"text-red"}>{errors.phoneNumber}</p>}
                                 </div>
@@ -160,6 +168,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter Address"}
                                            className={`form-control ${errors.address ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.address || ""}
                                     />
                                     {errors.address && <p className={"text-red"}>{errors.address}</p>}
                                 </div>
@@ -172,6 +181,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter Email"}
                                            className={`form-control ${errors.email ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.email || ""}
                                     />
                                     {errors.email && <p className={"text-red"}>{errors.email}</p>}
                                 </div>
