@@ -37,3 +37,13 @@ export function rankMarks(initialOrder = [],key="rank") {
                 });
                 return Object.values(groupedData).flat();
 }
+
+export function filterDataByKey(array,subject,key="subject"){
+    let filteredData = []
+    if(subject === "All") {
+        filteredData = array
+    }else {
+        filteredData = array.filter((item) => item[key] === subject)
+    }
+    return filteredData
+}
