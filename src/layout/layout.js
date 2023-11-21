@@ -7,6 +7,7 @@ import FeatherIcon from 'feather-icons-react';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
 import {changeToggle, setUserDetail, toggleLoader} from "../redux/actions";
+import Logo from "../../src/assets/eduzon.svg"
 import {
     getInstituteId,
     getName,
@@ -91,21 +92,21 @@ function Layout({children}) {
     const userData = useSelector(state => {
         return state.userDetail.data
     });
-  
+
     const toggleNotification = () => {
       setShowNotification(!showNotification);
     };
-  
+
     const closeNotification = () => {
       setShowNotification(false);
     };
-  
+
     const markAsRead = (index) => {
       const updatedNotifications = [...notifications];
       updatedNotifications[index].read = true;
       setNotifications(updatedNotifications);
     };
-  
+
     const markAllRead = () => {
       const updatedNotifications = notifications.map((notification) => ({
         ...notification,
@@ -184,13 +185,16 @@ function Layout({children}) {
     return (
         <div className="container-fluid">
             <div className="row flex-nowrap overflow-auto">
-                <div
-                    className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-default border-right min-vh-100 trans"}>
+                <div className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-default border-right min-vh-100 trans"}>
+                    <div className={"logo"}>
+                        {!open && <div className={"edulogo"}>
+                    <img className={"logosvg ms-4"} src={Logo} alt=""/>
+                    </div>}
                     <div className={"close-btn-container mobile-hide"} onClick={toggleDrawer}>
                         <img src={SideClose} alt="SideClose" className={!!open ? "rotate-180" :""}/>
                     </div>
-                    <div
-                        className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-4">
+                    </div>
+                    <div className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-4">
 
 
                         <div className={"w-100 px-sm-2"}>
