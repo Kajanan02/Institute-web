@@ -66,16 +66,18 @@ function Broadcast(props) {
                                           placeholder="Message" rows="5"></textarea>
                             </div>
                             <div className={"dropdown-center pb-3"}>
-                                <button className={"btn btn-secondary dropdown-toggle send-category-btn"} type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                    Send To
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a className={"dropdown-item"} href="#">
-                                        Mathematics</a></li>
-                                    <li><a className={"dropdown-item"} href="#">Physics</a></li>
-                                    <li><a className={"dropdown-item"} href="#">Chemistry</a></li>
-                                </ul>
+                                <select className={`form-control ${errors.subjects ? "border-red" : ""}`}
+                                        onChange={handleChange}
+                                        value={values.subject || ""}
+                                        name={"subject"}
+                                        aria-label="Default select example">
+                                    <option hidden>Sent To</option>
+                                    <option value="COMBINED_MATHEMATICS">Combined Mathematics</option>
+                                    <option value="PHYSICS">Physics</option>
+                                    <option value="CHEMISTRY">Chemistry</option>
+                                    <option value="ICT">ICT</option>
+                                    <option value="BIO_SCIENCE">Bio Science</option>
+                                </select>
                             </div>
                             <div className={"d-grid gap-2 d-md-block broadcast-send"}>
                                 <button className={"btn btn-primary broadcast-send-btn"} type={"button"}
