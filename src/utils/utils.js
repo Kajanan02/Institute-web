@@ -47,3 +47,33 @@ export function filterDataByKey(array,subject,key="subject"){
     }
     return filteredData
 }
+
+export  const optionsGraph = {
+    chart: {
+        height: 350,
+        // type: 'area'
+    },
+    dataLabels: {
+        enabled: false
+    },
+    colors:['#00b957','#008ffb','#ad00b9'],
+    fill: {
+        type: 'gradient',
+        gradient: {
+            opacityFrom: 0.7,
+            opacityTo: 0.4,
+        }
+    },
+    stroke: {
+        curve: 'smooth'
+    },
+    xaxis: {
+        type: 'date',
+    },
+    tooltip: {
+        backgroundColor: '#ff0000',
+        x: {
+            format: 'dd/MM/yy'
+        },
+    },
+};

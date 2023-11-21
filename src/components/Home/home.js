@@ -52,6 +52,7 @@ function Home(props) {
             categories: ["2023-09-19", "2023-09-20", "2023-09-21", "2023-09-22", "2023-09-23", "2023-09-24", "2023-09-25"]
         },
         tooltip: {
+            backgroundColor: '#ff0000',
             x: {
                 format: 'dd/MM/yy'
             },

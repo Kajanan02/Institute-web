@@ -1,121 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import Layout from "../../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import attendance from "../../../assets/Attendance.jpg";
 import studentSlider1 from "../../../assets/studentSlider1.png";
 import studentSlider2 from "../../../assets/studentSlider2.png"
 import studentSlider3 from "../../../assets/studentSlider3.png"
 import homeimage from "../../../assets/homeimage.svg"
-import logo from "../../../assets/logo.png"
-import C3Chart from "react-c3js";
-import * as d3 from "d3";
+
 import { useDispatch } from "react-redux";
 import Carousel from 'react-bootstrap/Carousel';
-import {getName} from "../../../utils/Authentication";
+import {getInstituteId, getName, getStudentId} from "../../../utils/Authentication";
+import ReportGraph from "../reports/report-graph";
+import {optionsGraph, rankMarks} from "../../../utils/utils";
+import {toggleLoader} from "../../../redux/actions";
+import axios from "axios";
+import {pluck, uniq} from "underscore";
 
 
 function StudentDashboard(props) {
     const [dataSet, setDataSet] = useState({});
-    const [loadGraph, setLoadGraph] = useState(false);
     const dispatch = useDispatch();
-    function styleGraph() {
-        if (window.innerWidth < 769) {
-            d3.select(".c3-axis-x-label").attr("dy", "42px");
-            d3.selectAll(".tick").style("font-size", "7px");
-            d3.select(".c3-axis-y-label").attr("dy", "-34px");
-        } else {
-            d3.select(".c3-axis-y-label").attr("dy", "-36px");
-        }
-        d3.selectAll(".c3-legend-item").attr("x", "400");
-    }
 
-    async function addDataGraphDate(graphData) {
-        await new Promise((resolve, reject) => {
-            resolve(1); setDataSet(graphData)
-        });
-    }
 
-    const data = {
-        columns: [
-            ["Attendance", 40, 50, 70, 90, 80, 50],
-            ["Date", "2023-08-09", "2023-08-12", "2023-08-15", "2023-08-17", "2023-08-20", "2023-08-25"]
-        ]
-    };
 
-    function drawGraph() {
-        //Here You want data below two line
-        const durationCurrentAggregated = [40, 50, 70, 90, 80, 50]
-        const date = ["2023-08-09", "2023-08-12", "2023-08-15", "2023-08-17", "2023-08-20", "2023-08-25"];
 
-        const graphData = {};
-        graphData.data = null;
-        graphData.axis = null;
-        const tooltip = {
-            format: {
-                value: function (value, ratio, id, index) {
-                    return value;
-                }
-            },
-        };
-
-        const data = {
-            x: 'Date',
-
-            // xFormat: '%Y-%m-%d',
-            columns: [
-                ['Marks'].concat(durationCurrentAggregated),
-                ['Date'].concat(date),
-            ],
-            colors: {
-                ['Marks']: '#00AB55'
-            },
-            // unload: unload(weatherTab),
-            type: 'area-spline',
-        };
-        let axis
-
-        axis = {
-            x: {
-                type: 'timeseries',
-                tick: {
-                    format: '%Y-%m-%d'
-                },
-                label: {
-                    text: 'Date',
-                    position: 'outer-center',
-                },
-            },
-            y: {
-                label: {
-                    text: "Marks",
-                    position: 'outer-middle',
-
-                }
-            },
-        };
-        const zoom = {
-            rescale: true
-
-        };
-        graphData['data'] = data;
-        graphData['axis'] = axis;
-        graphData['tooltip'] = tooltip;
-        graphData['zoom'] = zoom;
-
-        addDataGraphDate(graphData).then(() => {
-            setLoadGraph(true);
-            console.log("drawing graph");
-        });
-
-    }
 
     useEffect(() => {
-        setLoadGraph(false);
-        drawGraph();
-    }, []);
-
-    console.log(dataSet)
-
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/getAllMarks`)
+            .then((res) => {
+                let data = rankMarks(res.data,"rank")
+                let filteredData = data.filter((item) => item.studentId === getStudentId())
+                let subList = uniq(pluck(filteredData,"subject"))
+                console.log(subList)
+                let series = []
+                for (const subListElement of subList) {
+                    let obj = {}
+                    let subItem = filteredData.filter((item) => item.subject === subListElement)
+                    obj.name = subListElement
+                    obj.data = subItem.map((item) => {
+                        let data = {}
+                        data.x = item.date?.slice(0,10)
+                        data.y = item.marks
+                        return data
+                    })
+                    series.push(obj)
+                }
+                console.log(series)
+                setDataSet(series)
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [])
     return (
         <div>
 
@@ -212,13 +149,8 @@ function StudentDashboard(props) {
                     </div>
                 </div>
                 <div className={"row p-2 mt-4"}>
-                    <div className={"default-container"}>
-                        {loadGraph && dataSet.data && <C3Chart area={{ zerobased: false }} padding={{ left: 45 }} tooltip={dataSet.tooltip}
-                            zoom={dataSet.zoom}
-
-                            data={dataSet.data} subchart={{ show: false }} onrendered={styleGraph}
-                            axis={dataSet.axis} />}
-                    </div>
+                        {dataSet.length >0 && <ReportGraph options={optionsGraph}
+                                      dataSet={dataSet}/>}
                 </div>
             </div>
 
