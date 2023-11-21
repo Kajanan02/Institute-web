@@ -183,8 +183,7 @@ export function validateStatepayment(values) {
     return errors;
 }
 
-export function validateinstitutesetting(values) {
-    console.log(values)
+export function validateParentSetting(values) {
     let errors = {};
 
     if (!values.firstname) {
@@ -204,17 +203,31 @@ export function validateinstitutesetting(values) {
     } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
-
-    if (!values.currentPassword) {
-        errors.currentPassword = "Current Password is Required"
-    }
-    if (!values.newPassword) {
-        errors.newPassword = " New Password is Required"
-    }
-
-
     return errors;
 }
+
+export function validateInstituteSetting(values) {
+    let errors = {};
+
+    if (!values.name) {
+        errors.name = " First Name is Required"
+    }
+    if (!values.address) {
+        errors.address = "Address is Required"
+    }
+    if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
+        errors.email = 'Email is not valid';
+    }
+    if (!values.phoneNumber) {
+        errors.phoneNumber = 'Contact No is required';
+    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+        errors.phoneNumber = 'Contact No is not valid';
+    }
+
+    return errors;
+
+}
+
 
 
 export function validatemarks(values) {
@@ -283,6 +296,8 @@ export function validateStudentPasswordSettings(values) {
     }
     if (!values.confirmPassword) {
         errors.confirmPassword = "Please enter current password"
+    }else if(values.newPassword !== values.confirmPassword){
+        errors.confirmPassword = "Password does not match"
     }
     return errors;
 }

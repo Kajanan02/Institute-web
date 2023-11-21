@@ -1,8 +1,17 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import formHandler from "../../utils/FormHandler";
 import {validateStudentPasswordSettings, validateStudentSettings} from "../../utils/validation";
+import axios from "axios";
+import {getInstituteId, getUserId, isInstituteAccount, isStudentAccount} from "../../utils/Authentication";
+import {useDispatch} from "react-redux";
+import {toast} from "react-toastify";
+import {setUserDetail, toggleLoader} from "../../redux/actions";
 
 function PasswordSetting(props) {
+
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const dispatch = useDispatch();
+
 
     const {
         handleChange,
@@ -15,11 +24,42 @@ function PasswordSetting(props) {
 
 
     function passwordUpdate() {
-
-        console.log("done")
+        console.log("done");
+        setFormSubmitted(true);
     }
 
-    console.log(values)
+    useEffect(() => {
+        if(!formSubmitted){
+          return
+        }
+        dispatch(toggleLoader(true))
+        let data = {}
+        data.password = values.newPassword
+        if(isInstituteAccount()){
+            axios.put(`${process.env.REACT_APP_HOST}/users/${getUserId()}/profile`, data)
+                .then((res) => {
+                    toast.success("Password Updated Successfully")
+                }).catch((err) => {
+                toast.error("Something went wrong")
+                console.log(err)
+            }).finally(() => {
+                dispatch(toggleLoader(false));
+                setFormSubmitted(false)
+            })
+        }
+        if(isStudentAccount()){
+            axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getUserId()}`,data)
+                .then((res) => {
+                    toast.success("Password Updated Successfully")
+                }).catch((err) => {
+                console.log(err)
+                toast.error("Something went wrong")
+            }).finally(() => {
+                dispatch(toggleLoader(false))
+                setFormSubmitted(false)
+            })
+        }
+    }, [formSubmitted]);
 
     return (
         <div className={"form-container pt-3 mt-5"}>

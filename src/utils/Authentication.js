@@ -18,6 +18,20 @@ export function getAccessToken() {
     return localStorage.getItem('ACCESS_TOKEN');
 }
 
+export function getUserId() {
+    return localStorage.getItem('USER_ID');
+}
+
+export function getInstituteId() {
+    return localStorage.getItem('INSTITUTE_ID');
+}
+export function getStudentId() {
+    return localStorage.getItem('STUDENT_ID');
+}
+export function getUserName() {
+    return localStorage.getItem('NAME');
+}
+
 export function isAdminAccount() {
     return localStorage.getItem('ROLE') === "1";
 }

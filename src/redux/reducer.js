@@ -24,9 +24,19 @@ const loaderReducer = (state = {toggle: false}, action) => {
     }
 }
 
+const userDetailReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'USER_DETAIL':
+            return {...state, data: action.payload};
+        default:
+            return state;
+    }
+}
+
 const reducers = combineReducers({
     setting: settingReducer,
     loader: loaderReducer,
+    userDetail: userDetailReducer,
 });
 
 export default reducers;

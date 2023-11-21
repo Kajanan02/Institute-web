@@ -6,7 +6,7 @@ import {validateLogin} from "../../utils/validation";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
-import {toggleLoader} from "../../redux/actions";
+import {setUserDetail, toggleLoader} from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 import {initialNavigate, loadCredential} from "../../utils/Authentication";
 
@@ -32,10 +32,12 @@ function Login(props) {
             .then((res) => {
                 console.log(res.data)
                 loadCredential(res.data)
+                dispatch(setUserDetail(res.data))
                 toast.success("Successfully Login");
                 if(res.data.role === "3"){
                     console.log(res.data._id)
                   localStorage.setItem("STUDENT_ID",res.data._id)
+                  localStorage.setItem("INSTITUTE_ID",res.data.instituteId)
                 }
                 if(res.data.role === "4"){
                     localStorage.setItem("STUDENT_ID",res.data.studentId)

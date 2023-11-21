@@ -3,7 +3,7 @@ import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import MarksForm from "./marksForm";
 import {marksData ,subjectData } from "../marks/marksDamiData";
-import {findWhere, mapObject} from "underscore";
+import {findWhere, mapObject, pluck, uniq} from "underscore";
 import formHandler from "../../utils/FormHandler";
 import {useDispatch, useSelector} from "react-redux";
 import * as XLSX from "xlsx";
@@ -12,9 +12,11 @@ import {validatemarks} from "../../utils/validation";
 import axios from 'axios';
 import {toast} from "react-toastify";
 import {ExportToCsv} from "export-to-csv";
+import {filterDataByKey, rankMarks} from "../../utils/utils";
 
 function Marks(props) {
   const [marksList, setMarksList] = useState([])
+  const [marksListAll, setMarksListAll] = useState([])
   const [modalType, setModalType] = useState("view")
   const [modalShow, setModalShow] = useState(false);
   const [studentsList, setStudentsList] = useState(marksData)
@@ -57,7 +59,9 @@ function Marks(props) {
     
     axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/getAllMarks`)
         .then((res) => {
-            setMarksList(res.data)
+          let data = rankMarks(res.data,"rank")
+            setMarksList(data)
+            setMarksListAll(data)
         }).catch((err) => {
         console.log(err)
     }).finally(() => {
@@ -218,6 +222,8 @@ function Marks(props) {
 
 
 
+
+
   return (
     <Layout>
       <div className={"container"}>
@@ -225,29 +231,16 @@ function Marks(props) {
           <div className={"students_marks_container"}>
             <div><h3 className={"content-heading"}>Students Marks</h3></div>
             <div className={"table-btn-container d-flex justify-content-end pb-3"}>
-              {/*<div className={"dropdown"}>*/}
-              {/*  <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">*/}
-              {/*    Stream*/}
-              {/*  </button>*/}
-              {/*  <ul className="dropdown-menu dropdown-menu-dark">*/}
-              {/*    <li><a className={"dropdown-item active"} href="#">Biology</a></li>*/}
-              {/*    <li><a className={"dropdown-item"} href="#">Physical Science</a></li>*/}
-              {/*    <li><a className={"dropdown-item"} href="#">Commerce</a></li>*/}
-              {/*    <li><a className={"dropdown-item"} href="#">Arts</a></li>*/}
-              {/*    <li><a className={"dropdown-item"} href="#">Technology</a></li>*/}
-              {/*  </ul>*/}
-              {/*</div>*/}
-              {/*<div className={"dropdown"}>*/}
-              {/*  <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">*/}
-              {/*    Subject*/}
-              {/*  </button>*/}
-              {/*  <ul class={"dropdown-menu dropdown-menu-dark"}>*/}
-              {/*    <li><a className={"}dropdown-item active"} href="#">Action</a></li>*/}
-              {/*    <li><a className={"dropdown-item"} href="#">Another action</a></li>*/}
-              {/*    <li><a className={"dropdown-item"} href="#">Something else here</a></li>*/}
-              {/*    <li><a className={"dropdown-item"} href="#">Separated link</a></li>*/}
-              {/*  </ul>*/}
-              {/*</div>*/}
+              <div className={"dropdown"}>
+                <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Stream
+                </button>
+                <ul className="dropdown-menu dropdown-menu-dark">
+                  <li><a className={"dropdown-item cursor-pointer"} onClick={()=>setMarksList(filterDataByKey(marksListAll,"All"))}>All</a></li>
+                  {uniq(pluck(marksListAll,"subject")).map((item,index)=> <li><a className={"dropdown-item cursor-pointer"} key={index+item} onClick={()=>setMarksList(filterDataByKey(marksListAll,item))}>{item.replace("_"," ")}</a></li>)}
+
+                </ul>
+              </div>
 
             {/*  <button type="button" className={"btn btn-secondary students-dropdown-btn"}*/}
             {/*    data-bs-toggle="modal" data-bs-target="#exampleModal"*/}
@@ -291,6 +284,7 @@ function Marks(props) {
                   <th scope="col">Name</th>
                   <th scope="col">Subject</th>
                   <th scope="col">Marks</th>
+                  <th scope="col">Rank</th>
                   <th scope="col">Date of Exam</th>
                   <th scope="col"></th>
                 </tr>
@@ -300,8 +294,9 @@ function Marks(props) {
                   <th scope="row">{index + 1}</th>
                   <td>{data.nicNo}</td>
                   <td>{data.name}</td>
-                  <td>{data.subject}</td>
+                  <td>{data.subject.replace("_"," ")}</td>
                   <td>{data.marks}</td>
+                  <td>{data.rank}</td>
                   <td>{data.date?.slice(0,10)}</td>
                   <td>
                     {/*<FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"*/}

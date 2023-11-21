@@ -1,8 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import formHandler from "../../utils/FormHandler";
-import {validateinstitutesetting} from "../../utils/validation";
+import {validateInstituteSetting, validateParentSetting} from "../../utils/validation";
 import PasswordSetting from "../password-setting/password-setting";
+import {setUserDetail, toggleLoader} from "../../redux/actions";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import {getUserId, isInstituteAccount} from "../../utils/Authentication";
+import {toast} from "react-toastify";
 
 function Settings(props) {
 
@@ -14,14 +19,52 @@ function Settings(props) {
         initForm,
         values,
         errors,
-    } = formHandler(institutesetting, validateinstitutesetting);
+    } = formHandler(institutesetting,  validateInstituteSetting);
+    const dispatch = useDispatch();
+const [userData, setUserData] = useState({})
+
 
     function institutesetting() {
-
+    setFormSubmitted(true)
     }
-    console.log(errors)
-    console.log(values)
-    console.log(props.type)
+
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/users/allprofile`)
+            .then((res) => {
+                setUserData(res.data.filter((item) => item._id === getUserId())[0])
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    },[])
+
+    useEffect(() => {
+        initForm(userData);
+    }, [userData]);
+
+
+    useEffect(() => {
+        if(!formSubmitted){
+            return
+        }
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/users/${getUserId()}/profile`, values)
+            .then((res) => {
+                localStorage.setItem("NAME", res.data.name)
+                dispatch(setUserDetail(res.data))
+                toast.success("Profile Updated Successfully")
+            }).catch((err) => {
+            toast.error("Something went wrong")
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setFormSubmitted(false)
+        })
+
+    },[formSubmitted])
+
 
     return (
         <Layout>
@@ -32,7 +75,7 @@ function Settings(props) {
 
                     <div className={"form-container"}>
                         <form  onSubmit={handleSubmit} className={"row student-settings-form"}>
-                            <div className={"col-md-6"}>
+                            {!isInstituteAccount() && <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
                                         Name</label></h6>
@@ -45,8 +88,8 @@ function Settings(props) {
                                     {errors.firstname && <p className={"text-red"}>{errors.firstname}</p>}
 
                                 </div>
-                            </div>
-                            <div className={"col-md-6"}>
+                            </div>}
+                            {!isInstituteAccount() &&<div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Last
                                         Name</label></h6>
@@ -59,7 +102,20 @@ function Settings(props) {
                                     {errors.lastname && <p className={"text-red"}>{errors.lastname}</p>}
 
                                 </div>
-                            </div>
+                            </div>}
+                            {isInstituteAccount() &&<div className={"col-md-6"}>
+                                <div className={"mb-3"}>
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Name</label></h6>
+                                    <input name={"name"} placeholder={"Enter Last Name"}
+                                           className={`form-control ${errors.name ? "border-red" : ""}`}
+                                           id="exampleInputEmail1"
+                                           onChange={handleChange}
+                                           value={values.name || ""}
+                                    />
+                                    {errors.name && <p className={"text-red"}>{errors.name}</p>}
+
+                                </div>
+                            </div>}
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Contact

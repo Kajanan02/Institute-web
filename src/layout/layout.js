@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Bell from "../assets/bell-icon.svg";
 import Msg from "../assets/msg-icon.svg";
 import Profile from "../assets/layoutDefaultProfile.jpg";
@@ -6,10 +6,11 @@ import SideClose from "../assets/carbon_side-panel-close.svg";
 import FeatherIcon from 'feather-icons-react';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
-import {changeToggle} from "../redux/actions";
+import {changeToggle, setUserDetail, toggleLoader} from "../redux/actions";
 import {
+    getInstituteId,
     getName,
-    getRoleName, isAdminAccount, isAppointmentAccess,
+    getRoleName, getUserId, isAdminAccount, isAppointmentAccess,
     isCareerAccess,
     isInstituteAccount,
     isParentAccount, isReportAccess, isStudentAccount,
@@ -17,6 +18,8 @@ import {
 } from "../utils/Authentication";
 import Career from "../assets/career-logo.svg";
 import NotificationBox from './NotificationBox';
+import axios from "axios";
+import {toast} from "react-toastify";
 
 function Layout({children}) {
 
@@ -26,7 +29,6 @@ function Layout({children}) {
     const open = useSelector(state => {
         return state.setting.toggle
     });
-
     const [showNotification, setShowNotification] = useState(false);
     const [notifications, setNotifications] = useState([
       {
@@ -85,6 +87,10 @@ function Layout({children}) {
         read: false,
       },
     ]);
+
+    const userData = useSelector(state => {
+        return state.userDetail.data
+    });
   
     const toggleNotification = () => {
       setShowNotification(!showNotification);
@@ -133,7 +139,47 @@ function Layout({children}) {
         }
     }
 
-    console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID)
+    useEffect(() => {
+        if(isInstituteAccount() && getUserId()){
+            dispatch(toggleLoader(false))
+            axios.get(`${process.env.REACT_APP_HOST}/users/${getUserId()}/profile`)
+                .then((res) => {
+                  let userData = res.data
+                    dispatch(setUserDetail(userData))
+                }).catch((err) => {
+                console.log(err)
+                toast.error("Something went wrong")
+            }).finally(() => {
+              dispatch(toggleLoader(false))
+            })
+        }else if(isStudentAccount() && getUserId()){
+            dispatch(toggleLoader(false))
+            //{{baseUrl}}/institute/64a8ec4c0c9f2a365061f338/student/64f38ca524b79dfa5745aa81
+            axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getUserId()}`)
+                .then((res) => {
+                    let userData = res.data
+                    dispatch(setUserDetail(userData))
+                }).catch((err) => {
+                console.log(err)
+                toast.error("Something went wrong")
+            }).finally(() => {
+              dispatch(toggleLoader(false))
+            })
+        } else if(isParentAccount() && getUserId()){
+            dispatch(toggleLoader(false))
+            //{{baseUrl}}/institute/64a8ec4c0c9f2a365061f338/parent/65535d095851b30e84e1dc38
+            axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/parent/${getUserId()}`)
+                .then((res) => {
+                    let userData = res.data
+                    dispatch(setUserDetail(userData))
+                }).catch((err) => {
+                console.log(err)
+                toast.error("Something went wrong")
+            }).finally(() => {
+              dispatch(toggleLoader(false))
+            })
+        }
+    }, []);
 
     return (
         <div className="container-fluid">
@@ -325,7 +371,7 @@ function Layout({children}) {
                                         </a>
                                     </li>
                                     <li className="nav-item pe-2 flex-column nav-profile">
-                                        <p className="nav-profileName mb-0">{getName()}<br />
+                                        <p className="nav-profileName mb-0">{userData.name}<br />
                                             <small className="text-muted mt-0 mb-0 py-0 nav-profileName nav-profileRole">{getRoleName()}</small>
                                         </p>
                                     </li>
