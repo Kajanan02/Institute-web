@@ -7,6 +7,7 @@ import axios from 'axios';
 import {toast} from "react-toastify";
 import {useDispatch, useSelector} from "react-redux";
 import { isEmpty } from 'underscore';
+import {getUserName} from "../../utils/Authentication";
 
 function AppointmentForm(props) {
     const [appointmentList, setAppointmentList] = useState([])
@@ -73,7 +74,7 @@ function AppointmentForm(props) {
             return
         }
         // http://localhost:5000/api/institute/:instituteId/student/:studentId/appointment
-        
+        values.parentName = getUserName()
         axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/Appointment` , values)
             .then((res) => {
                 console.log(res.data)
@@ -257,13 +258,13 @@ function AppointmentForm(props) {
                 >
                     Decline
                 </button>
-                 <button
-                    type="button"
-                    className={"btn btn-warning"}
-                    onClick={()=>statusUpdate("REQUESTED")}
-                >
-                    Request
-                </button>
+                {/* <button*/}
+                {/*    type="button"*/}
+                {/*    className={"btn btn-warning"}*/}
+                {/*    onClick={()=>statusUpdate("REQUESTED")}*/}
+                {/*>*/}
+                {/*    Request*/}
+                {/*</button>*/}
                 </div>}
                 {props.type === "Add" &&<button
                     type="button"

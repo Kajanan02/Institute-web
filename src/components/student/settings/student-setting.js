@@ -8,6 +8,8 @@ import {validateStudentSettings} from "../../../utils/validation";
 import {validateStudentPasswordSettings} from "../../../utils/validation";
 import PasswordSetting from "../../password-setting/password-setting";
 import axios from "axios";
+import {useSelector} from "react-redux";
+import {isStudentAccount} from "../../../utils/Authentication";
 
 function StudentSetting(props) {
     const [modalType, setModalType] = useState("view")
@@ -28,6 +30,10 @@ function StudentSetting(props) {
         values,
         errors,
     } = formHandler(isStudentSetting, validateStudentSettings);
+
+    const userData = useSelector(state => {
+        return state.userDetail.data
+    });
 
     function isStudentSetting() {
         // if (currentStep === 1) {
@@ -65,16 +71,22 @@ function StudentSetting(props) {
     const handleChangeNicBack = (file) => {
         setNicBack(file);
     };
+    useEffect(() => {
+        initForm(userData);
+    }, [userData]);
 
-    // useEffect(() => {
-    //     axios.get(`${process.env.REACT_APP_HOST}/users/${localStorage.getItem("STUDENT_ID")}`)
-    // }, []);
+    console.log(values)
+
+
+    useEffect(() => {
+        // axios.get(`${process.env.REACT_APP_HOST}/users/${localStorage.getItem("STUDENT_ID")}`)
+    }, []);
 
     return (
         <Layout>
             <div className={"container"}>
                 <div className={"container-widget"}>
-                    <div><h3 className={"content-heading pb-4"}>Students Settings</h3></div>
+                    <div><h3 className={"content-heading pb-4"}>{isStudentAccount() ? "Students" : "Parent"} Settings</h3></div>
                     <div className={"form-container"}>
                         <form className={"row student-settings-form"} onSubmit={handleSubmit}>
                             <div className={"col-md-6"}>
@@ -82,27 +94,16 @@ function StudentSetting(props) {
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
                                         Name</label></h6>
                                     <input type="text" name={"firstname"}
-                                           className={`form-control form-input ${errors.firstname ? "border-red" : ""}`}
+                                           className={`form-control form-input ${errors.name ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.name || ""}
                                            id="exampleInputfName"
                                            placeholder={"Enter First name"}
                                     />
-                                    {errors.firstname && <p className={"text-red"}>{errors.firstname}</p>}
+                                    {errors.name && <p className={"text-red"}>{errors.name}</p>}
                                 </div>
                             </div>
-                            <div className={"col-md-6"}>
-                                <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Last
-                                        Name</label></h6>
-                                    <input type="text" name={"lastname"}
-                                           id="exampleInputlName"
-                                           placeholder={"Enter Last name"}
-                                           className={`form-control ${errors.lastname ? "border-red" : ""}`}
-                                           onChange={handleChange}
-                                    />
-                                    {errors.lastname && <p className={"text-red"}>{errors.lastname}</p>}
-                                </div>
-                            </div>
+
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1"

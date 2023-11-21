@@ -193,7 +193,7 @@ function MarksForm(props) {
                                                 name={"subject"}
                                                 aria-label="Default select example">
                                             <option hidden>Subjects</option>
-                                            <option value="COMBINED MATHEMATICS">Combined Mathematics</option>
+                                            <option value="COMBINED_MATHEMATICS">Combined Mathematics</option>
                                             <option value="PHYSICS">Physics</option>
                                             <option value="CHEMISTRY">Chemistry</option>
                                             <option value="ICT">ICT</option>

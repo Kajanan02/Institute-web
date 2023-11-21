@@ -25,3 +25,10 @@ export const resetConfirmationDialog = () => {
     };
 };
 
+export const setUserDetail = (userDetail) => {
+    return {
+        type: "USER_DETAIL",
+        payload: userDetail
+    };
+}
+

@@ -122,7 +122,7 @@ function Appointment(props) {
 
                                 <td>{data.date?.slice(0,10)}</td>
                                 <td>{data.time}</td>
-                                {(localStorage.getItem('ROLE') === "2") &&<td>{data.studentId?.parentId}</td>}
+                                {(localStorage.getItem('ROLE') === "2") &&<td>{data?.parentName}</td>}
                                 {(localStorage.getItem('ROLE') === "2")&&<td>{ data.studentId?.name}</td>}
                                 <td>{data.studentId?.nicNo}</td>
                                 <td>

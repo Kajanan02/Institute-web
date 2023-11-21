@@ -7,30 +7,33 @@ import {toggleLoader} from "../../../redux/actions";
 import {marksData} from "./marksData";
 import C3Chart from "react-c3js";
 import * as d3 from "d3";
+import {rankMarks} from "../../../utils/utils";
+import {getInstituteId, getStudentId} from "../../../utils/Authentication";
 
 function Report(props) {
 
-    const [marksList, setMarksList] = useState(marksData)
+    const [marksList, setMarksList] = useState([])
+    const [marksListAll, setMarksListAll] = useState([])
     const [dataSet, setDataSet] = useState({});
     const [loadGraph, setLoadGraph] = useState(false);
     const [graph,setGraph] = useState(false);
-
-    // const instituteId = "64a8ec4c0c9f2a365061f338"
-    // const studentId = localStorage.getItem("STUDENT_ID")
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
 
-    // useEffect(() => {
-    //     dispatch(toggleLoader(true))
-    //     axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/marks`)
-    //         .then((res) => {
-    //             setMarksList(res.data)
-    //         }).catch((err) => {
-    //         console.log(err)
-    //     }).finally(() => {
-    //         dispatch(toggleLoader(false))
-    //     })
-    // }, [])
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/getAllMarks`)
+            .then((res) => {
+                let data = rankMarks(res.data,"rank")
+                let filteredData = data.filter((item) => item.studentId === getStudentId())
+                setMarksList(filteredData)
+                setMarksListAll(filteredData)
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [])
 
     console.log(marksList)
     console.log(marksList[0])
@@ -167,18 +170,16 @@ function Report(props) {
                                 <th scope="col">Subject</th>
                                 <th scope="col">Marks</th>
                                 <th scope="col">Rank</th>
-                                <th scope="col"></th>
                             </tr>
                             </thead>
                             <tbody>
                             {marksList.map((data, index) => (<tr>
                                 <th scope="row">{index + 1}</th>
-                                <td>{data.Date}</td>
+                                <td>{data.date?.slice(0,10)}</td>
                                 <td>{data.subject.replace("_"," ")}</td>
                                 <td>{data.marks}</td>
                                 <td>{data.rank}</td>
-                                <td>
-                                </td>
+
                             </tr>))}
                             </tbody>
                         </table>
