@@ -61,37 +61,37 @@ function Login(props) {
     return (
         <div class="login-body">
             <div className="login-small">
-                <div class="login-image">
+                <div className="login-image">
                     <img className={"ms-5"} src={Logo} alt=""/>
                 </div>
                 <div className="login-head"><b>HI,Welcome back EDUZENT</b></div>
             </div>
             <div className={"login-container"}>
-                <div class="login-img">
+                <div className="login-img">
                     <img src={BANNER} alt="Login-Banner"/>
                 </div>
-                <div class="full-container">
+                <div className="full-container">
                     <div className="login-sig">
                         <b>Sign in to EDUZENT</b>
                     </div>
                     <div className={"login-nuser"}>
-                        New user? <a class="login-sign" href="http://127.0.0.1:5500/index.html">Create an account</a>
+                        New user? <a className="login-sign" href="http://127.0.0.1:5500/index.html">Create an account</a>
                     </div>
                     <br/>
-                    <div class="login-form-inner">
-                        <form action="#" class="full-container form-login">
-                            <div class="login-field">
+                    <div className="login-form-inner">
+                        <form action="#" className="full-container form-login">
+                            <div className="login-field">
                                 <input className={`form-control ${errors.username ? "border-red" : ""}`} type="text"
                                        name={"username"} onChange={handleChange} placeholder="Username"/>
                             </div>
                             {errors.username && <p className={"text-red"}>{errors.username}</p>}
-                            <div class="login-field">
+                            <div className="login-field">
                                 <input className={`form-control ${errors.password ? "border-red" : ""}`} type="password"
                                        name={"password"} onChange={handleChange} placeholder="Password"/>
                             </div>
                             {errors.password && <p className={"text-red"}>{errors.password}</p>}
                             <br/>
-                            <a class="login-forgot" href="">Forgot Password?</a>
+                            <a className="login-forgot" href="">Forgot Password?</a>
 
                             <div className="login-field login-btn">
                                 <div className="login-login-btn-layer">

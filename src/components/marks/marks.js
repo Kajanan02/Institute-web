@@ -290,7 +290,7 @@ function Marks(props) {
                 </tr>
               </thead>
               <tbody>
-                {marksList.map((data, index) => (<tr>
+                {marksList.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt)).map((data, index) => (<tr>
                   <th scope="row">{index + 1}</th>
                   <td>{data.nicNo}</td>
                   <td>{data.name}</td>
