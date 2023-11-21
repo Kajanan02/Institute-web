@@ -85,7 +85,7 @@ function Appointment(props) {
                                         <form className="d-flex" role="search">
                                             
                                             {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
-                                            <input className="form-control me-2 w-50" onChange={handleSearch} type="search" placeholder="Search"
+                                            <input className="form-control appointment_btn me-2 w-50" onChange={handleSearch} type="search" placeholder="Search"
                                        aria-label="Search"/>
                                         </form>
                                     </div>
@@ -122,7 +122,7 @@ function Appointment(props) {
 
                                 <td>{data.date?.slice(0,10)}</td>
                                 <td>{data.time}</td>
-                                {(localStorage.getItem('ROLE') === "2") &&<td>{data?.parentName}</td>}
+                                {(localStorage.getItem('ROLE') === "2") &&<td>{data.parentName}</td>}
                                 {(localStorage.getItem('ROLE') === "2")&&<td>{ data.studentId?.name}</td>}
                                 <td>{data.studentId?.nicNo}</td>
                                 <td>

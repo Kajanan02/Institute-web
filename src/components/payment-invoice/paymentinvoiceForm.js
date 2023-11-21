@@ -134,7 +134,7 @@ function StatepaymentForm(props) {
 
                                     </div>
                                 </div>}
-                                {props.type === "Add" && <div className={"col-md-12"}>
+                                {<div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className="form-label">Student NIC</label>
@@ -232,8 +232,7 @@ function StatepaymentForm(props) {
 
                                 <div className={"col-md-12"}>
                                     <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className="form-label d-block">Profile
-                                            Picture</label>
+                                        <label htmlFor="exampleInputEmail1" className="form-label d-block">Payment Slip</label>
                                         <FileUploader handleChange={handleChangeSlip}>
                                             <div className={"file-uploader-container"}>
                                                 <img src={uploadIcon} width={"27%"}/>

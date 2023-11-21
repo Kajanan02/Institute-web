@@ -340,7 +340,7 @@ body {
 
 .table-btn-container {
     display: flex;
-    gap: 8px;
+    gap: 4px;
     flex-flow: wrap;
 }
 
@@ -1422,6 +1422,10 @@ form .login-btn input[type="submit"] {
     opacity: 1;
 
 }
+.appointment_btn{
+    margin-left: 200px !important;
+    text-align: center;
+}
 
 .student-carousel {
     /* margin-top: 40px; */
@@ -1642,6 +1646,19 @@ form .login-btn input[type="submit"] {
     background-color: white !important;
     cursor: not-allowed! important;
 }
+.logo{
+    display: flex;
+}
+.edulogo{
+    /*display: flex;*/
+    /*align-content: flex-start;*/
+    padding: 8px 0px 0px 0px;
+}
+.logosvg{
+    padding-top: 10px;
+    width: 48px;
+    height: 48px;
+}
 
 
 .notification-box {
@@ -1657,7 +1674,7 @@ form .login-btn input[type="submit"] {
     max-height: 700px;
     overflow-y: auto;
 }
-  
+
 .notification-header {
     display: flex;
     justify-content: space-between;
@@ -1666,19 +1683,19 @@ form .login-btn input[type="submit"] {
     border-radius: 8px 8px 0 0;
     align-items: center;
 }
-  
+
 .notification-header h3 {
     font-size: 16px;
     margin: 0;
 }
-  
+
 .notification-header button {
     background: none;
     border: none;
     font-size: 20px;
     cursor: pointer;
 }
-  
+
 .notification-header .mark-all-read-button {
     background: none;
     border: none;
@@ -1687,45 +1704,45 @@ form .login-btn input[type="submit"] {
     cursor: pointer;
     padding: 5px;
 }
-  
+
 .notification-list {
     list-style: none;
     padding: 10px;
     margin: 0;
 }
-  
+
 .notification-list li {
     padding: 5px 0;
     cursor: pointer;
     border-bottom: 1px solid #ccc;
 }
-  
+
 .notification-item {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 }
-  
+
 .notification-content {
     flex: 1;
     padding: 4px;
 }
-  
+
 .notification-heading {
     font-size: 16px;
     font-weight: bold;
 }
-  
+
 .notification-text {
     max-height: 48px;
     overflow: hidden;
     transition: max-height 0.3s;
 }
-  
+
 .notification-text.expanded {
     max-height: none;
 }
-  
+
 .notification-actions {
     display: flex;
     align-items: center !important;
@@ -1742,29 +1759,29 @@ form .login-btn input[type="submit"] {
     vertical-align: super;
     color: #00AB55;
 }
-  
+
 .toggle-expand-button {
     background: none;
     border: none;
     cursor: pointer;
     margin-left: 180px;
 }
-  
+
 .toggle-expand-button:hover svg {
     transform: rotate(180deg);
 }
-  
+
 .notification-time {
     font-size: 14px;
     color: #777;
     margin-right: 5px;
 }
-  
+
 .notification-type {
     font-size: 14px;
     color: #777;
 }
-  
+
 .notification-list li.read:hover {
     background-color: #5be49b33;
 }
@@ -1788,7 +1805,7 @@ form .login-btn input[type="submit"] {
         overflow-y: auto;
     }
 }
- 
+
 .notification-open .nav-item {
     border-left: 2px solid #00AB55;
     border-right: 2px solid #00AB55;
