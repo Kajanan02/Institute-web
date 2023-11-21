@@ -5,14 +5,39 @@ import {paymentData} from "./damiData";
 import StatepaymentForm from "./paymentinvoiceForm";
 import {isInstituteAccount, isParentAccount} from "../../utils/Authentication";
 import AddPaymentForm from "../student/add-payment-student";
+import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
+import axios from 'axios';
+import {useDispatch, useSelector} from "react-redux";
+import {values, pick, filter, pluck} from "underscore";
+import {toast} from "react-toastify";
 
 
 function PaymentInvoice(props) {
-    const [paymentList, setpaymentList] = useState(paymentData)
+    const [paymentList, setPaymentList] = useState([])
+    const [paymentAllList, setPaymentAllList] = useState([])
     const [modalType, setModalType] = useState("view")
     const [modalShow, setModalShow] = useState(false);
     const [studentModalShow, setStudentModalShow] = useState(false);
+    const [selectedPayment, setSelectedPayment] = useState({})
+    const [update, setUpdate] = useState(false);
+    const instituteId = localStorage.getItem("USER_ID");
+    const studentId = localStorage.getItem("STUDENT_ID");
+    const dispatch = useDispatch();
 
+
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+        //router.route('/:instituteId/fees').get(getFeesAll);
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/fees`)
+            .then((res) => {
+                    setPaymentList(res.data) 
+                    setPaymentAllList(res.data) 
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [update])
 
     return (
         <Layout>
@@ -28,7 +53,6 @@ function PaymentInvoice(props) {
                                         <form className="d-flex" role="search">
                                             <input className="form-control me-2" type="search" placeholder="Search"
                                                    aria-label="Search"/>
-                                            <button className="btn btn-outline-success" type="submit">Search</button>
                                         </form>
                                     </div>
                                 </div>
@@ -64,8 +88,7 @@ function PaymentInvoice(props) {
                             <tr className={"position-sticky top-0 pt-1 h-45"}>
 
                                 <th scope="col">No</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Time</th>
+                                <th scope="col">Month</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Method</th>
                                 <th scope="col">Reg.No</th>
@@ -76,12 +99,10 @@ function PaymentInvoice(props) {
                             <tbody>
                             {paymentList.map((data, index) => (<tr key={index + "asd"}>
                                 <th scope="row">{index + 1}</th>
-
-                                <td>{data.date}</td>
-                                <td>{data.Time}</td>
-                                <td>{data.student_name}</td>
-                                <td>{data.Method}</td>
-                                <td>{data.Reg}</td>
+                                <td>{data.month}</td>
+                                <td>{data.name}</td>
+                                <td>{data.method}</td>
+                                <td>{data.studentNicNo}</td>
                                 <td>
                                     <div className={"appointment_state"}
                                          onClick={() => {
@@ -115,12 +136,16 @@ function PaymentInvoice(props) {
                 show={modalShow}
                 type={modalType}
                 onHide={() => setModalShow(false)}
+                selectedPayment={selectedPayment}
+                update={()=> setUpdate(!update)}
             />
-            <AddPaymentForm
+            {/* <AddPaymentForm
                 show={studentModalShow}
                 type={modalType}
+                selectedPayment={selectedPayment}
+                update={()=> setUpdate(!update)}
                 onHide={() => setStudentModalShow(false)}
-                />
+                /> */}
         </Layout>
     );
 }
