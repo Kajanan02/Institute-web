@@ -120,7 +120,7 @@ const [userData, setUserData] = useState({})
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Contact
                                         No</label></h6>
-                                    <input name={"name"} placeholder={"Enter  Contact No"}
+                                    <input name={"phoneNumber"} placeholder={"Enter  Contact No"}
                                            className={`form-control ${errors.phoneNumber ? "border-red" : ""}`}
                                            id="exampleInputEmail1"
                                            onChange={handleChange}
@@ -134,7 +134,7 @@ const [userData, setUserData] = useState({})
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Address
                                     </label></h6>
-                                    <input name={"name"} placeholder={"Enter Address"}
+                                    <input name={"address"} placeholder={"Enter Address"}
                                            className={`form-control ${errors.address ? "border-red" : ""}`}
                                            id="exampleInputEmail1"
                                            onChange={handleChange}

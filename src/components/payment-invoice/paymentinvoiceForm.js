@@ -1,29 +1,45 @@
 import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
-import {validateStatepayment} from "../../utils/validation";
+import {validateStatePayment} from "../../utils/validation";
 import FeatherIcon from "feather-icons-react";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
 import {toggleLoader} from "../../redux/actions";
 import axios from "axios";
 import {useDispatch} from "react-redux";
+import {toast} from "react-toastify";
+import { isEmpty } from 'underscore';
+import {Typeahead} from "react-bootstrap-typeahead";
+import {find, pluck} from "underscore";
+import { getInstituteId, getStudentId, isInstituteAccount ,getUserId} from '../../utils/Authentication';
+import {isParentAccount} from "../../utils/Authentication";
+import { Link } from 'react-router-dom';
+import {changeToggle, setUserDetail} from "../../redux/actions";
+import PaymentModal from "./paymentModal";
+
 
 function StatepaymentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [modalType, setModalType] = useState("view")
+    const [studentId, setStudentId] = useState(null)
     const [modalShow, setModalShow] = useState(false);
     const [directPayment, setDirectPayment] = useState(false);
+    const [onlinePayment, setOnlinePayment] = useState(false);
     const [paymentSlip, setPaymentSlip] = useState(null);
     const [profilePic, setProfilePic] = useState(null);
+    const [isSubmit, setIsSubmit] = useState(false);
+    const instituteId = localStorage.getItem("USER_ID");
+    const [studentsList, setStudentsList] = useState([]);
+    const [singleSelections, setSingleSelections] = useState([]);
+    
 
     const dispatch = useDispatch();
 
 
     const handleChangeSlip = (file) => {
         setPaymentSlip(file);
-        // imageUpload(file, "profilePic")
+        imageUpload(file, "paymentSlip")
     };
 
 
@@ -34,14 +50,100 @@ function StatepaymentForm(props) {
         initForm,
         values,
         errors,
-    } = formHandler(statepayment, validateStatepayment);
+    } = formHandler(statePayment, validateStatePayment);
 
-    function statepayment() {
+    function statePayment() {
+        setIsSubmit(true)
+    }
+
+    function resetForm(){
+        initForm({})
+        setSingleSelections([])
 
     }
 
+    useEffect(()=>{
+        if(isInstituteAccount()){
+            setDirectPayment(true)
+        }
+    },[])
+
+    useEffect(()=>{
+        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)){
+           
+            initForm(props.selectedPayment)
+            setSingleSelections([props.selectedPayment.studentNicNo])
+        }
+    },[props.type,props.selectedPayment])
+    useEffect(()=>{
+        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)){
+           
+            initForm(props.selectedPayment)
+            setSingleSelections([props.selectedPayment.studentNicNo])
+        }
+    },[props.type,props.selectedPayment])
+
+    function statusUpdate(status){
+        values.status = status
+        console.log(props.selectedPayment)
+        console.log(props.selectedPayment._id)
+
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentId}/fees/${props.selectedPayment._id}`, values)
+        // router.route('/:instituteId/student/:studentId/fees/:id').put(editFees);
+            .then((res) => {
+                console.log(res.data)
+                toast.success(`Successfully Updated`)
+                props.update()
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+          setIsSubmit(false)
+            resetForm()
+            props.onHide()
+        })
+
+    }
+    
+
+    useEffect(() => {
+        if (!isSubmit || props.type !== "Add") {
+            return
+        }
+        // http://localhost:5000/api/institute/:instituteId/student/:studentId/appointment
+        values.method= isInstituteAccount() ? "INSTITUTE" : "DIRECT_PAYMENT"
+        values.status=isInstituteAccount() ? "PAID" :"REQUESTED"
+        let student
+        if(isParentAccount()){
+            student = localStorage.getItem("STUDENT_ID")
+        }
+
+        
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${isParentAccount() ? student :studentId}/fees` , values)
+            .then((res) => {
+                console.log(res.data)
+                props.update()
+                props.onHide();
+                toast.success(`Successfully Payment Created`)
+            }).catch((err) => {
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            resetForm()
+            // if (parentSubmit) {
+            //     setStudentId(null);
+            //     props.onHide()
+
+            // }
+        })
+    }, [isSubmit]);
+
     console.log(errors)
     console.log(values)
+
     function imageUpload(file, key) {
         console.log("Fille")
 
@@ -56,17 +158,58 @@ function StatepaymentForm(props) {
                 setValue({[key]: res.data.url})
             }).finally(() => dispatch(toggleLoader(false)))
     }
+    
+   
 
+    
+    
+
+    // useEffect(() => {
+    //     // Initialize the form values when the modal is shown
+    //     if (props.show) {
+    //         initForm({});
+
+    //         setFormSubmitted(false);
+    //     }
+    // }, [props.show]);
+    // console.log(directPayment)
 
     useEffect(() => {
-        // Initialize the form values when the modal is shown
-        if (props.show) {
-            initForm({});
-
-            setFormSubmitted(false);
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/getAllStudents`)
+            .then((res) => {
+                setStudentsList(res.data)
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [])
+    useEffect(() => {
+        if(!isParentAccount()){
+            return
         }
-    }, [props.show]);
-    console.log(directPayment)
+        dispatch(toggleLoader(true))
+        let studentID = localStorage.getItem("STUDENT_ID")
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentID}`)
+        .then((res) => {
+            
+            let userData = res.data
+            console.log(userData);
+            console.log(userData._id);
+            setValue({name:userData.name})
+            setValue({studentNicNo:userData.nicNo})
+            setSingleSelections([userData.nicNo])
+
+
+        }).catch((err) => {
+        console.log(err)
+        toast.error("Something went wrong")
+    }).finally(() => {
+      dispatch(toggleLoader(false))
+    })
+    }, [])
+    console.log(values);
 
     return (
         <Modal
@@ -80,9 +223,11 @@ function StatepaymentForm(props) {
             <Modal.Header closeButton onHide={() => {
                 if (!formSubmitted) {
                     initForm({});
+                    setSingleSelections([])
                 }
-                setDirectPayment(false)
-
+                if(!isInstituteAccount()) {
+                    setDirectPayment(false)
+                }
             }}>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {<Modal.Title id="contained-modal-title-vcenter">
@@ -94,7 +239,7 @@ function StatepaymentForm(props) {
             </Modal.Header>
             <Modal.Body scrollable>
 
-                {props.type === "Add" && !directPayment && <div className={"d-flex justify-content-around"}>
+                {props.type === "Add" && !directPayment && !onlinePayment && <div className={"d-flex justify-content-around"}>
                     <button type="button" className={"btn-payment-method"}
                             onClick={() => {
                                 setDirectPayment(true)
@@ -104,96 +249,59 @@ function StatepaymentForm(props) {
                     </button>
                     <button type="button" className={"btn-payment-method"}
                             onClick={() => {
-                                // setModalType("Add");
-                                // setModalShow(true)
+                                setOnlinePayment(true)
                             }}>
                         {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
                         Online Payment
                     </button>
 
                 </div>}
-                {directPayment && <form onSubmit={handleSubmit}>
+                {(directPayment || (["View", "State",].includes(props.type))) && <form onSubmit={handleSubmit}>
                     <div>
                         <div className={"pop-up-form-container"}>
                             <div className={"row"}>
-                                {<div
-                                    className={`  ${["View", "State"].includes(props.type) ? " col-md-6" : "col-md-12"}  `}>
+                            <div className={"col-md-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student NIC No</label>
+                                        <Typeahead
+                                            id="basic-typeahead-single"
+                                            labelKey="name"
+                                            className={`disabled-white ${errors.regNO ? "border-red" : ""}`}
+                                            onChange={(res)=> {
+                                                console.log(res);
+                                                setValue({studentId:res[0]})
+                                                setValue({name:find(studentsList,{nicNo:res[0]})?.name})
+                                                setValue({studentNicNo:res[0]})
+                                                setSingleSelections(res)
+                                                setStudentId(find(studentsList,{nicNo:res[0]})?._id)
+                                            }}
+                                            options={pluck(studentsList,"nicNo")}
+                                            placeholder="Choose a state..."
+                                            selected={singleSelections}
+                                            disabled={["View", "State"].includes(props.type)}
+                                        />
+                                        {errors.regNO && <p className={"text-red"}>{errors.regNO}</p>}
+
+                                    </div>
+                                </div>
+                                {(directPayment || (["View", "State",].includes(props.type))) &&<div
+                                    className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student
                                             Name</label>
-                                        <input name={"studentName"} placeholder={"Enter Parent Name"}
-                                               className={`form-control ${errors.studentName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
+                                        <input name={"studentName"} placeholder={"Enter Student Name"}
+                                         className={`form-control  ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                              // className={`form-control ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
-                                               value={values.studentName || ""}
+                                               value={values.name || ""}
+                                            //    disabled={true}
 
                                                disabled={["View", "State"].includes(props.type)}
                                         />
-                                        {errors.studentName && <p className={"text-red"}>{errors.studentName}</p>}
+                                        {errors.name && <p className={"text-red"}>{errors.name}</p>}
 
-                                    </div>
-                                </div>}
-                                {<div className={"col-md-12"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className="form-label">Student NIC</label>
-                                        <input name={"studentNIC"} placeholder={"Enter Topic"}
-                                               className={`form-control ${errors.studentNIC ? "border-red" : ""} `}
-                                               id="exampleInputEmail5"
-                                               onChange={handleChange}
-                                               value={values.studentNIC || ""}
-                                               aria-describedby="emailHelp"/>
-                                        {errors.studentNIC && <p className={"text-red"}>{errors.studentNIC}</p>}
-                                    </div>
-                                </div>}
-
-                                {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Reg.No</label>
-                                        <input name={"regNo"} placeholder={"Enter Reg No"}
-                                               className={`form-control ${errors.regNo ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
-                                               id="exampleInputEmail5"
-                                               onChange={handleChange}
-                                               value={values.regNo || ""}
-
-                                               disabled={["View", "State"].includes(props.type)}
-                                        />
-                                        {errors.regNo && <p className={"text-red"}>{errors.regNo}</p>}
-
-                                    </div>
-                                </div>}
-
-
-                                {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Date </label>
-                                        <input id="startDate"
-                                               className={`form-control ${errors.date ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
-                                               onChange={handleChange}
-                                               name={"date"}
-                                               value={values.date || ""}
-                                               type="date"
-
-                                               disabled={["View", "State"].includes(props.type)}/>
-                                        {errors.date && <p className={"text-red"}>{errors.date}</p>}
-                                    </div>
-                                </div>}
-                                {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Time </label>
-                                        <input id="startTime"
-                                               className={`form-control ${errors.time ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
-                                               onChange={handleChange}
-                                               name={"time"}
-                                               value={values.time || ""}
-                                               type="time"
-
-                                               disabled={["View", "State"].includes(props.type)}/>
-                                        {errors.time && <p className={"text-red"}>{errors.time}</p>}
                                     </div>
                                 </div>}
 
@@ -202,37 +310,67 @@ function StatepaymentForm(props) {
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment
                                             Method</label>
-                                        <input name={"paymentMethod"} placeholder={"Enter Payment Method"}
-                                               className={`form-control ${errors.paymentMethod ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
+                                        <input name={"method"} placeholder={"Enter Payment Method"}
+                                               className={`form-control ${errors.method ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
-                                               value={values.paymentMethod || ""}
+                                               value={values.method || ""}
                                                aria-describedby="emailHelp"
 
                                                disabled={["View", "State"].includes(props.type)}/>
-                                        {errors.paymentMethod && <p className={"text-red"}>{errors.paymentMethod}</p>}
+                                        {errors.method && <p className={"text-red"}>{errors.method}</p>}
                                     </div>
                                 </div>}
+
+                                <div className={"col-md-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1"
+                                            className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Month</label>
+                                        <select className={`form-control ${errors.month ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                            onChange={handleChange}
+                                            value={values.month || ""}
+                                            name={"month"}
+                                            aria-label="Default select example"
+                                            disabled={["View", "State"].includes(props.type)}>
+                                            <option hidden>Month</option>
+                                            <option value="JANUARY">January</option>
+                                            <option value="FEBRUARY">February</option>
+                                            <option value="MARCH">March</option>
+                                            <option value="APRIL">April</option>
+                                            <option value="MAY">May</option>
+                                            <option value="JUNE">June</option>
+                                            <option value="JULY">July</option>
+                                            <option value="AUGUST">August</option>
+                                            <option value="SEPTEMBER">September</option>
+                                            <option value="OCTOBER">October</option>
+                                            <option value="NOVEMBER">November</option>
+                                            <option value="DECEMBER">December</option>
+                                            
+                                        </select>
+                                        {errors.month && <p className={"text-red"}>{errors.month}</p>}
+                                    </div>
+                                </div>
+
                                 {<div
-                                    className={`  ${["View", "State"].includes(props.type) ? " col-md-6" : "col-md-12"}  `}>
+                                     className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Amount</label>
-                                        <input name={"amount"} placeholder={"Enter Amount"}
-                                               className={`form-control ${errors.amount ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
+                                        <input name={"feesAmount"} placeholder={"Enter Amount"}
+                                               className={`form-control ${errors.feesAmount ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
-                                               value={values.amount || ""}
+                                               value={values.feesAmount || ""}
                                                aria-describedby="emailHelp"
 
                                                disabled={["View", "State"].includes(props.type)}/>
-                                        {errors.amount && <p className={"text-red"}>{errors.amount}</p>}
+                                        {errors.feesAmount && <p className={"text-red"}>{errors.feesAmount}</p>}
                                     </div>
                                 </div>}
 
-                                <div className={"col-md-12"}>
+                                {(isInstituteAccount()  && (directPayment || ([ "View"].includes(props.type))))|| (isParentAccount()  && (directPayment)) && <div className={"col-md-12"}>
                                     <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className="form-label d-block">Payment Slip</label>
+                                        <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>
                                         <FileUploader handleChange={handleChangeSlip}>
                                             <div className={"file-uploader-container"}>
                                                 <img src={uploadIcon} width={"27%"}/>
@@ -249,15 +387,26 @@ function StatepaymentForm(props) {
                                             </div>
                                         </FileUploader>
                                     </div>
-                                </div>
+                                </div>}
+                                {values.paymentSlip &&["View","State"].includes(props.type)&&
+                                    <div className={"col-md-12"}>
+                                        <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>     
+                                    <img src={values.paymentSlip} className='w-100' alt="Nature"/>
+                                    </div>
+                                }
 
                             </div>
                         </div>
                     </div>
 
                 </form>}
+                {onlinePayment &&<PaymentModal
+                    orderId={45896588}
+                    name="Just For You Mom Ribbon Cake"
+                    amount="4500"
+                />}
             </Modal.Body>
-            { directPayment && <Modal.Footer>
+            { (directPayment || (["View", "State",].includes(props.type))) && <Modal.Footer>
 
 
                 <button
@@ -267,6 +416,10 @@ function StatepaymentForm(props) {
                         if (!formSubmitted) { // Prevent hiding the modal if the form is submitted
                             props.onHide();
                             initForm({});
+                            setSingleSelections([])
+                            if(!isInstituteAccount()) {
+                                setDirectPayment(false)
+                            }
                         }
                         setDirectPayment(false)
                     }}
@@ -275,22 +428,23 @@ function StatepaymentForm(props) {
                 </button>
 
 
-                {props.type === "State" && <button
+                {isInstituteAccount() && props.type === "State" && <button
                     type="button"
                     className={"btn btn-success"}
-                    onClick={handleSubmit}
+                    onClick={()=>statusUpdate("APPROVED")}
                 >
-                    Paid
+                    Approved
                 </button>}
-                {props.type === "State" && <button
+                
+                {isInstituteAccount() &&props.type === "State" && <button
                     type="button"
                     className={"btn btn-danger"}
-                    onClick={handleSubmit}
+                    onClick={()=>statusUpdate("DECLINE")}
                 >
-                    Pending
+                    Decline
                 </button>}
 
-                {props.type !== "Add" && <button
+                {props.type !== "State" && directPayment&&<button
                     type="button"
                     className={"btn btn-success"}
                     onClick={handleSubmit}

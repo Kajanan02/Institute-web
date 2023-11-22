@@ -1308,6 +1308,27 @@ form .login-btn input[type="submit"] {
     background-color: rgba(34, 197, 94, 0.16);
 }
 
+.payment_state {
+    height: 24px;
+    min-width: 24px;
+    line-height: 0;
+    border-radius: 6px;
+    cursor: default;
+    -webkit-box-align: center;
+    align-items: center;
+    white-space: nowrap;
+    display: inline-flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    text-transform: capitalize;
+    padding: 0px 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    color: rgb(183, 110, 0);
+    background-color: rgba(255, 171, 0, 0.16);
+}
+
 .broadcast-image {
     width: 100%;
     height: 100%;
@@ -1858,5 +1879,33 @@ form .login-btn input[type="submit"] {
     box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
     color: rgba(0, 0, 0, 0.65);
     transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .login-img img{
+        width: 100% !important;
+        height: auto !important;
+    }
+    .full-container{
+        margin: auto;
+        margin-bottom: 24px;
+    }
+    .login-sig{
+        margin: auto;
+        text-align: center;
+    }
+    .login-head{
+        margin: auto;
+    }
+    .sa-modal-bg-inner{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .broadcast_sub_container{
+        flex-flow: wrap;
+    }
+
 }
 
