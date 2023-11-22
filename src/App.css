@@ -1860,3 +1860,31 @@ form .login-btn input[type="submit"] {
     transform: translateY(0);
 }
 
+@media (max-width: 768px) {
+    .login-img img{
+        width: 100% !important;
+        height: auto !important;
+    }
+    .full-container{
+        margin: auto;
+        margin-bottom: 24px;
+    }
+    .login-sig{
+        margin: auto;
+        text-align: center;
+    }
+    .login-head{
+        margin: auto;
+    }
+    .sa-modal-bg-inner{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .broadcast_sub_container{
+        flex-flow: wrap;
+    }
+
+}
+
