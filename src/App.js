@@ -28,7 +28,12 @@ import Institute from "./components/institute/institute";
 import Career from "./components/admin/Career/career";
 import React, {useEffect, useState} from "react";
 import mqtt from "mqtt";
-import LeaderBoard from "./components/admin/Leaderboard/LeaderBoard";
+import LeaderBoard from "./components/admin/Leaderboard/Leaderboard";
+import { Payhere, AccountCategory } from '@payhere-js-sdk/client';
+
+
+Payhere.init(process.env.REACT_APP_PAYHERE_MERCHANT_ID, AccountCategory.SANDBOX);
+
 
 
 function App() {

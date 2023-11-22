@@ -16,6 +16,7 @@ import { getInstituteId, getStudentId, isInstituteAccount ,getUserId} from '../.
 import {isParentAccount} from "../../utils/Authentication";
 import { Link } from 'react-router-dom';
 import {changeToggle, setUserDetail} from "../../redux/actions";
+import PaymentModal from "./paymentModal";
 
 
 function StatepaymentForm(props) {
@@ -24,6 +25,7 @@ function StatepaymentForm(props) {
     const [studentId, setStudentId] = useState(null)
     const [modalShow, setModalShow] = useState(false);
     const [directPayment, setDirectPayment] = useState(false);
+    const [onlinePayment, setOnlinePayment] = useState(false);
     const [paymentSlip, setPaymentSlip] = useState(null);
     const [profilePic, setProfilePic] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
@@ -56,7 +58,15 @@ function StatepaymentForm(props) {
 
     function resetForm(){
         initForm({})
+        setSingleSelections([])
+
     }
+
+    useEffect(()=>{
+        if(isInstituteAccount()){
+            setDirectPayment(true)
+        }
+    },[])
 
     useEffect(()=>{
         if(["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)){
@@ -103,8 +113,7 @@ function StatepaymentForm(props) {
             return
         }
         // http://localhost:5000/api/institute/:instituteId/student/:studentId/appointment
-        values.method="DIRECT_PAYMENT"
-
+        values.method= isInstituteAccount() ? "INSTITUTE" : "DIRECT_PAYMENT"
         values.status=isInstituteAccount() ? "PAID" :"REQUESTED"
         let student
         if(isParentAccount()){
@@ -214,9 +223,11 @@ function StatepaymentForm(props) {
             <Modal.Header closeButton onHide={() => {
                 if (!formSubmitted) {
                     initForm({});
+                    setSingleSelections([])
                 }
-                setDirectPayment(false)
-
+                if(!isInstituteAccount()) {
+                    setDirectPayment(false)
+                }
             }}>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {<Modal.Title id="contained-modal-title-vcenter">
@@ -228,7 +239,7 @@ function StatepaymentForm(props) {
             </Modal.Header>
             <Modal.Body scrollable>
 
-                {props.type === "Add" && !directPayment && <div className={"d-flex justify-content-around"}>
+                {props.type === "Add" && !directPayment && !onlinePayment && <div className={"d-flex justify-content-around"}>
                     <button type="button" className={"btn-payment-method"}
                             onClick={() => {
                                 setDirectPayment(true)
@@ -238,8 +249,7 @@ function StatepaymentForm(props) {
                     </button>
                     <button type="button" className={"btn-payment-method"}
                             onClick={() => {
-                                // setModalType("Add");
-                                // setModalShow(true)
+                                setOnlinePayment(true)
                             }}>
                         {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
                         Online Payment
@@ -261,6 +271,7 @@ function StatepaymentForm(props) {
                                                 console.log(res);
                                                 setValue({studentId:res[0]})
                                                 setValue({name:find(studentsList,{nicNo:res[0]})?.name})
+                                                setValue({studentNicNo:res[0]})
                                                 setSingleSelections(res)
                                                 setStudentId(find(studentsList,{nicNo:res[0]})?._id)
                                             }}
@@ -377,7 +388,7 @@ function StatepaymentForm(props) {
                                         </FileUploader>
                                     </div>
                                 </div>}
-                                {["View"].includes(props.type)&&
+                                {values.paymentSlip &&["View","State"].includes(props.type)&&
                                     <div className={"col-md-12"}>
                                         <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>     
                                     <img src={values.paymentSlip} className='w-100' alt="Nature"/>
@@ -389,6 +400,11 @@ function StatepaymentForm(props) {
                     </div>
 
                 </form>}
+                {onlinePayment &&<PaymentModal
+                    orderId={45896588}
+                    name="Just For You Mom Ribbon Cake"
+                    amount="4500"
+                />}
             </Modal.Body>
             { (directPayment || (["View", "State",].includes(props.type))) && <Modal.Footer>
 
@@ -400,6 +416,10 @@ function StatepaymentForm(props) {
                         if (!formSubmitted) { // Prevent hiding the modal if the form is submitted
                             props.onHide();
                             initForm({});
+                            setSingleSelections([])
+                            if(!isInstituteAccount()) {
+                                setDirectPayment(false)
+                            }
                         }
                         setDirectPayment(false)
                     }}
@@ -424,7 +444,7 @@ function StatepaymentForm(props) {
                     Decline
                 </button>}
 
-                {directPayment&&<button
+                {props.type !== "State" && directPayment&&<button
                     type="button"
                     className={"btn btn-success"}
                     onClick={handleSubmit}

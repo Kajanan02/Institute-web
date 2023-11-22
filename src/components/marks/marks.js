@@ -263,11 +263,11 @@ function Marks(props) {
                          uploadExcelFile(file);
                        }}
                 /></form>
-              <label htmlFor={"file-upload"} className={"btn btn-secondary students-dropdown-btn"} type="button"
-                      aria-expanded="false">
-                <FeatherIcon className={"action-icons text-white"} icon={"download"} />
-                Import Data
-              </label>
+              {/*<label htmlFor={"file-upload"} className={"btn btn-secondary students-dropdown-btn"} type="button"*/}
+              {/*        aria-expanded="false">*/}
+              {/*  <FeatherIcon className={"action-icons text-white"} icon={"download"} />*/}
+              {/*  Import Data*/}
+              {/*</label>*/}
               <button className={"btn btn-secondary students-dropdown-btn"} type="button"
                       aria-expanded="false" onClick={exportData}>
                 Export Data
