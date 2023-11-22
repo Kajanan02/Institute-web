@@ -258,12 +258,10 @@ export function validateStudentSettings(values) {
     console.log(values)
     let errors = {};
 
-    if (!values.firstname) {
-        errors.firstname = "Name is Required"
+    if (!values.name) {
+        errors.name = "Name is Required"
     }
-    if (!values.lastname) {
-        errors.lastname = "Name is Required"
-    }
+
     if (!values.nicNo) {
         errors.nicNo = "NIC No is Required"
     }

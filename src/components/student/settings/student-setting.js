@@ -8,8 +8,10 @@ import {validateStudentSettings} from "../../../utils/validation";
 import {validateStudentPasswordSettings} from "../../../utils/validation";
 import PasswordSetting from "../../password-setting/password-setting";
 import axios from "axios";
-import {useSelector} from "react-redux";
-import {isStudentAccount} from "../../../utils/Authentication";
+import {useDispatch, useSelector} from "react-redux";
+import {getInstituteId, getStudentId, getUserId, isStudentAccount} from "../../../utils/Authentication";
+import {setUserDetail, toggleLoader} from "../../../redux/actions";
+import {toast} from "react-toastify";
 
 function StudentSetting(props) {
     const [modalType, setModalType] = useState("view")
@@ -19,8 +21,9 @@ function StudentSetting(props) {
     const [profilePic, setProfilePic] = useState(null);
     const [nicFront, setNicFront] = useState(null);
     const [nicBack, setNicBack] = useState(null);
-    const [currentStep, setCurrentStep] = useState(1);
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const dispatch = useDispatch();
+
     const {
         handleChange,
         handleSubmit,
@@ -36,24 +39,44 @@ function StudentSetting(props) {
     });
 
     function isStudentSetting() {
-        // if (currentStep === 1) {
-        //     resetForm()
-        //     setCurrentStep(2)
-        //     console.log("student Done")
-        // }
-        // if (currentStep === 2) {
-        //     console.log("parent Done")
-        // }
+        setFormSubmitted(true)
     }
+console.log(errors)
 
+   useEffect(()=>{
+       if(!formSubmitted){
+           return
+       }
+       dispatch(toggleLoader(true))
+       axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getStudentId()}`, values)
 
-    // function resetForm() {
-    //     initForm({})
-    //     setProfilePic(null)
-    //     setNicFront(null)
-    //     setNicBack(null)
-    // }
+           .then((res) => {
+               localStorage.setItem("NAME", res.data.name)
+               dispatch(setUserDetail(res.data))
+               toast.success("Profile Updated Successfully")
+           }).catch((err) => {
+           toast.error("Something went wrong")
+           console.log(err)
+       }).finally(() => {
+           dispatch(toggleLoader(false))
+           setFormSubmitted(false)
+       })
 
+   },[formSubmitted])
+    function imageUpload(file, key) {
+        console.log("Fille")
+
+        dispatch(toggleLoader(true))
+        const data = new FormData()
+        data.append("file", file)
+        data.append("upload_preset", "xi7icexi")
+        data.append("cloud_name", "dacrccjrm")
+        axios.put("https://api.cloudinary.com/v1_1/dacrccjrm/image/upload", data)
+            .then((res) => {
+                console.log(res.data.url)
+                setValue({[key]: res.data.url})
+            }).finally(() => dispatch(toggleLoader(false)))
+    }
 
     function multiSelectOnChangeSubjects(selected) {
         setSelectedBuyer(selected);
@@ -62,14 +85,20 @@ function StudentSetting(props) {
 
     const handleChangeProfile = (file) => {
         setProfilePic(file);
+        imageUpload(file, "profilePic")
+
     };
 
     const handleChangeNicFront = (file) => {
         setNicFront(file);
+        imageUpload(file, "nicFront")
+
     };
 
     const handleChangeNicBack = (file) => {
         setNicBack(file);
+        imageUpload(file, "nicBack")
+
     };
     useEffect(() => {
         initForm(userData);
