@@ -431,9 +431,9 @@ function StatepaymentForm(props) {
                 {isInstituteAccount() && props.type === "State" && <button
                     type="button"
                     className={"btn btn-success"}
-                    onClick={()=>statusUpdate("APPROVED")}
+                    onClick={()=>statusUpdate("PAID")}
                 >
-                    Approved
+                    Paid
                 </button>}
                 
                 {isInstituteAccount() &&props.type === "State" && <button

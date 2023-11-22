@@ -177,7 +177,7 @@ function PaymentInvoice(props) {
                                 <td>
                                 <div className={"appointment_state " + (colorChange(data.status)) + (isInstituteAccount() ? " cursor-pointer" : "")}
                                              onClick={() => {
-                                                 if(isParentAccount()) {
+                                                 if(isParentAccount() || data.status === "PAID") {
                                                      return
                                                  }
                                                 let temp = {...data}
