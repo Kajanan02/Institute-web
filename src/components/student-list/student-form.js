@@ -282,7 +282,7 @@ setParentMode(true)
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Parent Contact</label>
-                                        <input type="email" name={"parentContact"} placeholder={"Enter Email"}
+                                        <input type="email" name={"parentContact"} placeholder={"Enter parent Contact"}
                                                value={values.parentContact || ""} onChange={handleChange}
                                                className={`form-control ${errors.parentContact ? "border-red" : ""}`}
                                                id="exampleInputEmail1"
