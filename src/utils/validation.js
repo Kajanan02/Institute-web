@@ -31,7 +31,7 @@ export function validateStudent(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
@@ -76,7 +76,7 @@ export function validateParent(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
@@ -200,7 +200,7 @@ export function validateParentSetting(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     return errors;
@@ -220,7 +220,7 @@ export function validateInstituteSetting(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
 
@@ -273,7 +273,7 @@ export function validateStudentSettings(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
@@ -314,7 +314,7 @@ export function validateinstitute(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.address) {
