@@ -6,9 +6,8 @@ import QrIcon from "../../assets/Qr-icon.svg";
 import axios from "axios";
 import {initialNavigate, loadCredential} from "../../utils/Authentication";
 import {toast} from "react-toastify";
-import {toggleLoader} from "../../redux/actions";
+import {setMqttDetail, toggleLoader} from "../../redux/actions";
 import {useDispatch} from "react-redux";
-import Mqtt from "./mqtt";
 
 function QrScanner(props) {
 
@@ -26,6 +25,7 @@ function QrScanner(props) {
             .then((res) => {
                 console.log(res.data)
                 toast.success("Successfully attendance updated");
+                dispatch(setMqttDetail({"mobileNumber":"0765471338","body":"1","type":"led"}))
                 setLed(true)
 
             }).catch((err) => {
@@ -78,7 +78,7 @@ function QrScanner(props) {
                 </div>
             </div>
             <p>{data}</p>
-        <Mqtt led={led}/>
+        {/*<Mqtt led={led}/>*/}
         </Layout>
     );
 }
