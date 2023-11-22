@@ -357,7 +357,7 @@ function StatepaymentForm(props) {
                                     </div>
                                 </div>}
 
-                                {isInstituteAccount()  && (directPayment || ([ "State"].includes(props.type))) && <div className={"col-md-12"}>
+                                {(isInstituteAccount()  && (directPayment || ([ "View"].includes(props.type))))|| (isParentAccount()  && (directPayment)) && <div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>
                                         <FileUploader handleChange={handleChangeSlip}>

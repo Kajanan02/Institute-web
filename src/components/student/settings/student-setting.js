@@ -8,8 +8,10 @@ import {validateStudentSettings} from "../../../utils/validation";
 import {validateStudentPasswordSettings} from "../../../utils/validation";
 import PasswordSetting from "../../password-setting/password-setting";
 import axios from "axios";
-import {useSelector} from "react-redux";
-import {isStudentAccount} from "../../../utils/Authentication";
+import {useDispatch, useSelector} from "react-redux";
+import {getInstituteId, getStudentId, getUserId, isStudentAccount} from "../../../utils/Authentication";
+import {setUserDetail, toggleLoader} from "../../../redux/actions";
+import {toast} from "react-toastify";
 
 function StudentSetting(props) {
     const [modalType, setModalType] = useState("view")
@@ -19,8 +21,9 @@ function StudentSetting(props) {
     const [profilePic, setProfilePic] = useState(null);
     const [nicFront, setNicFront] = useState(null);
     const [nicBack, setNicBack] = useState(null);
-    const [currentStep, setCurrentStep] = useState(1);
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const dispatch = useDispatch();
+
     const {
         handleChange,
         handleSubmit,
@@ -36,24 +39,44 @@ function StudentSetting(props) {
     });
 
     function isStudentSetting() {
-        // if (currentStep === 1) {
-        //     resetForm()
-        //     setCurrentStep(2)
-        //     console.log("student Done")
-        // }
-        // if (currentStep === 2) {
-        //     console.log("parent Done")
-        // }
+        setFormSubmitted(true)
     }
+console.log(errors)
 
+   useEffect(()=>{
+       if(!formSubmitted){
+           return
+       }
+       dispatch(toggleLoader(true))
+       axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getStudentId()}`, values)
 
-    // function resetForm() {
-    //     initForm({})
-    //     setProfilePic(null)
-    //     setNicFront(null)
-    //     setNicBack(null)
-    // }
+           .then((res) => {
+               localStorage.setItem("NAME", res.data.name)
+               dispatch(setUserDetail(res.data))
+               toast.success("Profile Updated Successfully")
+           }).catch((err) => {
+           toast.error("Something went wrong")
+           console.log(err)
+       }).finally(() => {
+           dispatch(toggleLoader(false))
+           setFormSubmitted(false)
+       })
 
+   },[formSubmitted])
+    function imageUpload(file, key) {
+        console.log("Fille")
+
+        dispatch(toggleLoader(true))
+        const data = new FormData()
+        data.append("file", file)
+        data.append("upload_preset", "xi7icexi")
+        data.append("cloud_name", "dacrccjrm")
+        axios.put("https://api.cloudinary.com/v1_1/dacrccjrm/image/upload", data)
+            .then((res) => {
+                console.log(res.data.url)
+                setValue({[key]: res.data.url})
+            }).finally(() => dispatch(toggleLoader(false)))
+    }
 
     function multiSelectOnChangeSubjects(selected) {
         setSelectedBuyer(selected);
@@ -62,14 +85,20 @@ function StudentSetting(props) {
 
     const handleChangeProfile = (file) => {
         setProfilePic(file);
+        imageUpload(file, "profilePic")
+
     };
 
     const handleChangeNicFront = (file) => {
         setNicFront(file);
+        imageUpload(file, "nicFront")
+
     };
 
     const handleChangeNicBack = (file) => {
         setNicBack(file);
+        imageUpload(file, "nicBack")
+
     };
     useEffect(() => {
         initForm(userData);
@@ -93,13 +122,12 @@ function StudentSetting(props) {
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
                                         Name</label></h6>
-                                    <input type="text" name={"firstname"}
-                                           className={`form-control form-input ${errors.name ? "border-red" : ""}`}
-                                           onChange={handleChange}
-                                           value={values.name || ""}
-                                           id="exampleInputfName"
-                                           placeholder={"Enter First name"}
-                                    />
+                                        <input name={"name"} placeholder={"Enter Name"}
+                                               className={`form-control ${errors.name ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
+                                               onChange={handleChange}
+                                               value={values.name || ""}
+                                        />
                                     {errors.name && <p className={"text-red"}>{errors.name}</p>}
                                 </div>
                             </div>
@@ -108,13 +136,18 @@ function StudentSetting(props) {
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1"
                                                className="settings-form-text">Gender</label></h6>
-                                    <input type="text" name={"gender"} id="exampleInputGender"
-                                           placeholder={"Enter Gender"}
-                                           className={`form-control ${errors.gender ? "border-red" : ""}`}
-                                           onChange={handleChange}
-                                    />
-                                    {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
-                                </div>
+                                    <select className={`form-control ${errors.gender ? "border-red" : ""}`}
+                                                onChange={handleChange}
+                                                value={values.gender || ""}
+                                                name={"gender"}
+                                                aria-label="Default select example">
+                                            <option hidden>Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Not Specified">Not Specified</option>
+                                        </select>
+                                        {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
+                                    </div>
                             </div>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
@@ -124,6 +157,8 @@ function StudentSetting(props) {
                                            placeholder={"Enter Date of birth"}
                                            className={`form-control ${errors.dob ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.dob || ""}
+                                           
                                     />
                                     {errors.dob && <p className={"text-red"}>{errors.dob}</p>}
                                 </div>
@@ -136,6 +171,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter NIC No"}
                                            className={`form-control ${errors.nicNo ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.nicNo || ""}
                                     />
                                     {errors.nicNo && <p className={"text-red"}>{errors.nicNo}</p>}
                                 </div>
@@ -148,6 +184,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter Contact No"}
                                            className={`form-control ${errors.phoneNumber ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.phoneNumber || ""}
                                     />
                                     {errors.phoneNumber && <p className={"text-red"}>{errors.phoneNumber}</p>}
                                 </div>
@@ -160,6 +197,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter Address"}
                                            className={`form-control ${errors.address ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.address || ""}
                                     />
                                     {errors.address && <p className={"text-red"}>{errors.address}</p>}
                                 </div>
@@ -172,6 +210,7 @@ function StudentSetting(props) {
                                            placeholder={"Enter Email"}
                                            className={`form-control ${errors.email ? "border-red" : ""}`}
                                            onChange={handleChange}
+                                           value={values.email || ""}
                                     />
                                     {errors.email && <p className={"text-red"}>{errors.email}</p>}
                                 </div>
