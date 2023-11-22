@@ -1,45 +1,206 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Bell from "../assets/bell-icon.svg";
 import Msg from "../assets/msg-icon.svg";
-import Profile from "../assets/profile-img.svg";
+import Profile from "../assets/layoutDefaultProfile.jpg";
 import SideClose from "../assets/carbon_side-panel-close.svg";
 import FeatherIcon from 'feather-icons-react';
 import {NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from 'react-redux'
-import {changeToggle} from "../redux/actions";
+import {changeToggle, setUserDetail, toggleLoader} from "../redux/actions";
+import Logo from "../../src/assets/eduzon.svg"
+import {
+    getInstituteId,
+    getName,
+    getRoleName, getUserId, isAdminAccount, isAppointmentAccess,
+    isCareerAccess,
+    isInstituteAccount,
+    isParentAccount, isReportAccess, isStudentAccount,
+    signOut
+} from "../utils/Authentication";
+import Career from "../assets/career-logo.svg";
+import NotificationBox from './NotificationBox';
+import axios from "axios";
+import {toast} from "react-toastify";
 
 function Layout({children}) {
 
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
+    const studentId = localStorage.getItem("STUDENT_ID")
     const open = useSelector(state => {
         return state.setting.toggle
     });
+    const [showNotification, setShowNotification] = useState(false);
+    const [notifications, setNotifications] = useState([
+      {
+        heading: 'New message from Alice',
+        text:
+          'Alice sent you a new message. This is a lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '2 hours ago',
+        type: 'Message',
+        read: false,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'You have 3 unread messages',
+        text:
+          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
+        time: '3 hours ago',
+        type: 'Message',
+        read: true,
+      },
+      {
+        heading: 'Meeting at 2 PM today',
+        text: 'You have a meeting scheduled for 2 PM today.',
+        time: 'In 1 hour',
+        type: 'Meeting',
+        read: false,
+      },
+    ]);
+
+    const userData = useSelector(state => {
+        return state.userDetail.data
+    });
+
+    const toggleNotification = () => {
+      setShowNotification(!showNotification);
+    };
+
+    const closeNotification = () => {
+      setShowNotification(false);
+    };
+
+    const markAsRead = (index) => {
+      const updatedNotifications = [...notifications];
+      updatedNotifications[index].read = true;
+      setNotifications(updatedNotifications);
+    };
+
+    const markAllRead = () => {
+      const updatedNotifications = notifications.map((notification) => ({
+        ...notification,
+        read: true,
+      }));
+      setNotifications(updatedNotifications);
+    };
 
     function toggleDrawer() {
         dispatch(changeToggle(!open));
-        // setOpen(!open)
     }
 
-    console.log(open);
-    console.log(show);
+    function homePath() {
+        let id = localStorage.getItem("USER_ID")
+        if (isInstituteAccount()) {
+            return "/"
+        } else if (isStudentAccount() || isParentAccount()) {
+            return "/student"
+        }  else {
+            return "/institute"
+        }
+    }
+    function settingPath() {
+        let id = localStorage.getItem("USER_ID")
+        if (isInstituteAccount()) {
+            return "/settings"
+        } else if (isStudentAccount() || isParentAccount()) {
+            return "/settings/student"
+        }  else {
+            return "/institute"
+        }
+    }
+
+    useEffect(() => {
+        if(isInstituteAccount() && getUserId()){
+            dispatch(toggleLoader(false))
+            axios.get(`${process.env.REACT_APP_HOST}/users/${getUserId()}/profile`)
+                .then((res) => {
+                  let userData = res.data
+                    dispatch(setUserDetail(userData))
+                }).catch((err) => {
+                console.log(err)
+                toast.error("Something went wrong")
+            }).finally(() => {
+              dispatch(toggleLoader(false))
+            })
+        }else if(isStudentAccount() && getUserId()){
+            dispatch(toggleLoader(false))
+            //{{baseUrl}}/institute/64a8ec4c0c9f2a365061f338/student/64f38ca524b79dfa5745aa81
+            axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getUserId()}`)
+                .then((res) => {
+                    let userData = res.data
+                    dispatch(setUserDetail(userData))
+                }).catch((err) => {
+                console.log(err)
+                toast.error("Something went wrong")
+            }).finally(() => {
+              dispatch(toggleLoader(false))
+            })
+        } else if(isParentAccount() && getUserId()){
+            dispatch(toggleLoader(false))
+            //{{baseUrl}}/institute/64a8ec4c0c9f2a365061f338/parent/65535d095851b30e84e1dc38
+            axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/parent/${getUserId()}`)
+                .then((res) => {
+                    let userData = res.data
+                    dispatch(setUserDetail(userData))
+                }).catch((err) => {
+                console.log(err)
+                toast.error("Something went wrong")
+            }).finally(() => {
+              dispatch(toggleLoader(false))
+            })
+        }
+    }, []);
 
     return (
         <div className="container-fluid">
-            <div className="row flex-nowrap">
-                <div
-                    className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-white border-right min-vh-100 trans"}>
+            <div className="row flex-nowrap overflow-auto">
+                <div className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-default border-right min-vh-100 trans"}>
+                    <div className={"logo"}>
+                        {!open && <div className={"edulogo"}>
+                    <img className={"logosvg ms-4"} src={Logo} alt=""/>
+                    </div>}
                     <div className={"close-btn-container mobile-hide"} onClick={toggleDrawer}>
-                        <img src={SideClose} alt="SideClose" className={!!open && "rotate-180"}/>
+                        <img src={SideClose} alt="SideClose" className={!!open ? "rotate-180" :""}/>
                     </div>
-                    <div
-                        className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-4">
+                    </div>
+                    <div className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-4">
 
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active " : "side-menu-item "}
-                                to={"/"}>
+                                to={homePath()}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="home" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={'trans-1'}>Home</div>}
@@ -48,16 +209,16 @@ function Layout({children}) {
                         </div>
 
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isInstituteAccount() && <div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/student"}>
+                                to={"/students"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="users" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Student</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
@@ -70,7 +231,7 @@ function Layout({children}) {
                             </NavLink>
                         </div>
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isInstituteAccount()&&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/marks"}>
@@ -79,9 +240,41 @@ function Layout({children}) {
                                     {!open && <div className={''}>Marks</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
+                        {isAdminAccount()&&<div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/leaderBoard"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
+                                    {!open && <div className={''}>LeaderBoard</div>}
+                                </div>
+                            </NavLink>
+                        </div>}
+                        {isReportAccess() &&<div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={`/report/${studentId}/student`}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
+                                    {!open && <div className={''}>Report</div>}
+                                </div>
+                            </NavLink>
+                        </div>}
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isCareerAccess() &&<div className={"w-100 px-sm-2"}>
+                            <NavLink
+                                className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
+                                to={"/career"}>
+                                <div className={'d-flex'}>
+                                    <FeatherIcon icon="book" className={!open ? 'me-2' : "ms-1"}/>
+                                    {!open && <div className={''}>Career</div>}
+                                </div>
+                            </NavLink>
+                        </div>}
+
+
+                        {isInstituteAccount() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/broadcast"}>
@@ -90,9 +283,9 @@ function Layout({children}) {
                                     {!open && <div className={''}>Broadcast</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isInstituteAccount() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/qr-scanner"}>
@@ -101,9 +294,9 @@ function Layout({children}) {
                                     {!open && <div className={''}>QR Scanner</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isAppointmentAccess()&&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/appointment"}>
@@ -112,36 +305,37 @@ function Layout({children}) {
                                     {!open && <div className={''}>Appointment</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
-                        <div className={"w-100 px-sm-2"}>
+                        {isAppointmentAccess()&&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/payment"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="credit-card" className={!open ? 'me-2' : "ms-1"}/>
-                                    {!open && <div className={''}>Payment & Invoice</div>}
+                                    {!open && <div className={''}>{isInstituteAccount() ? "Payment & Invoice" : "Payment"}</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
                         <div className={'w-100 border-bottom-d1d1d1 mb-3'}/>
 
-                        <div className={"w-100 px-sm-2"}>
+                        {!isAdminAccount() &&<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/settings"}>
+                                to={settingPath()}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="settings" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Settings</div>}
                                 </div>
                             </NavLink>
-                        </div>
+                        </div>}
 
                         <div className={"w-100 px-sm-2"}>
                             <NavLink
+                                onClick={signOut}
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
-                                to={"/logout"}>
+                                to={"/login"}>
                                 <div className={'d-flex'}>
                                     <FeatherIcon icon="log-out" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>Logout</div>}
@@ -153,7 +347,7 @@ function Layout({children}) {
                     </div>
                 </div>
                 <div className="col p-0">
-                    <nav className="navbar navbar-expand-lg bg-white border-bottom-d1d1d1 px-4">
+                    <nav className="navbar navbar-expand-lg bg-default border-bottom-d1d1d1 px-4">
                         <div className="container-fluid nav-iconset flex-nowrap">
                             <button className="navbar-toggler " type="button" onClick={()=>setShow(!show)}>
                                 <span className="navbar-toggler-icon"></span>
@@ -162,22 +356,28 @@ function Layout({children}) {
                             <div className="collapse navbar-collapse " id="">
                                 <ul className="navbar-nav ms-auto align-items-center flex-row">
                                     <li className="nav-item">
-                                        <a className="nav-link active position-relative px-2" aria-current="page"
-                                           href="#">
-                                            <div className="red-dot"/>
-                                            <img src={Bell}/>
+                                        <a className="nav-link active position-relative px-2" aria-current="page" href="#">
+                                            {notifications.some((notification) => !notification.read) && (
+                                            <div className="red-dot" />
+                                            )}
+                                            <img src={Bell} onClick={toggleNotification} />
                                         </a>
                                     </li>
-                                    <li className="nav-item px-2">
-                                        <a className="nav-link  position-relative" aria-current="page" href="#">
+                                    {/*<li className="nav-item px-2">*/}
+                                    {/*    <a className="nav-link  position-relative" aria-current="page" href="#">*/}
 
-                                            <img src={Msg}/></a>
-                                    </li>
+                                    {/*        <img src={Msg}/></a>*/}
+                                    {/*</li>*/}
                                     <li className="nav-item px-2">
                                         <a className="nav-link  position-relative p-0" aria-current="page" href="#">
 
-                                            <img src={Profile}/>
+                                            <img src={Profile} className="rounded-circle user-profile mr-2" />
                                         </a>
+                                    </li>
+                                    <li className="nav-item pe-2 flex-column nav-profile">
+                                        <p className="nav-profileName mb-0">{userData.name}<br />
+                                            <small className="text-muted mt-0 mb-0 py-0 nav-profileName nav-profileRole">{getRoleName()}</small>
+                                        </p>
                                     </li>
 
                                 </ul>
@@ -190,6 +390,14 @@ function Layout({children}) {
                     </div>
                 </div>
             </div>
+            {showNotification && (
+                <NotificationBox
+                    notifications={notifications}
+                    onClose={closeNotification}
+                    markAsRead={markAsRead}
+                    markAllRead={markAllRead}
+                />
+            )}
         </div>
     );
 }

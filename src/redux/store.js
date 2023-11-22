@@ -8,5 +8,8 @@ export const store = createStore(reducer, {
     },
     loader: {
         isLoading: false,
+    },
+    userDetail: {
+        data: {},
     }
 })
