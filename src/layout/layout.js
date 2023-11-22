@@ -241,12 +241,12 @@ function Layout({children}) {
                                 </div>
                             </NavLink>
                         </div>}
-                        {isAdminAccount()&&<div className={"w-100 px-sm-2"}>
+                        {<div className={"w-100 px-sm-2"}>
                             <NavLink
                                 className={({isActive}) => isActive ? "side-menu-item side-menu-active" : "side-menu-item"}
                                 to={"/leaderBoard"}>
                                 <div className={'d-flex'}>
-                                    <FeatherIcon icon="file-text" className={!open ? 'me-2' : "ms-1"}/>
+                                    <FeatherIcon icon="gitlab" className={!open ? 'me-2' : "ms-1"}/>
                                     {!open && <div className={''}>LeaderBoard</div>}
                                 </div>
                             </NavLink>

@@ -32,11 +32,20 @@ const userDetailReducer = (state = {}, action) => {
             return state;
     }
 }
+const mqttDetailReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'MQTT_DETAIL':
+            return {...state, data: action.payload};
+        default:
+            return state;
+    }
+}
 
 const reducers = combineReducers({
     setting: settingReducer,
     loader: loaderReducer,
     userDetail: userDetailReducer,
+    mqttDetail: mqttDetailReducer
 });
 
 export default reducers;

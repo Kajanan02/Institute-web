@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
@@ -6,14 +6,19 @@ import formHandler from "../../utils/FormHandler";
 import { validateEvent } from "../../utils/validation";
 import DtPicker from 'react-calendar-datetime-picker'
 import FeatherIcon from "feather-icons-react";
-import {isAdminAccount, isInstituteAccount} from "../../utils/Authentication";
+import {getInstituteId, isAdminAccount, isInstituteAccount} from "../../utils/Authentication";
+import axios from "axios";
+import {toast} from "react-toastify";
+import {useDispatch} from "react-redux";
+import {toggleLoader} from "../../redux/actions";
 
 const localizer = momentLocalizer(moment)
 
 function Calender(props) {
-
+    const dispatch = useDispatch();
     const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
     const [isModelVisible, setIsModalVisible] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
 
     let events = [
@@ -48,7 +53,7 @@ function Calender(props) {
         },
     ]
 
-    const [eventList, setEventList] = useState(events);
+    const [eventList, setEventList] = useState([]);
 
 
     const eventStyleGetter = (event, start, end, isSelected) => {
@@ -89,8 +94,10 @@ function Calender(props) {
             end: new Date(values.end.year, values.end.month - 1, values.end.day, values.end.hour, values.end.minute, 0),
             // resourceId: 9,
         }
-        setEventList([...eventList, data])
+        // setEventList([...eventList, data])
+        console.log(values)
         setIsModalVisible(false);
+        setIsSubmitted(true)
     }
 
     console.log(eventList)
@@ -112,6 +119,59 @@ function Calender(props) {
             year: date.getFullYear(),
         };
     }
+
+    useEffect(() => {
+        if(!isSubmitted){
+            return
+        }
+        let data = {...values}
+        console.log(values)
+        values.color = values.color ? values.color : '#8E0018FF'
+        data.start = `${values?.start?.year}:${values?.start?.month}:${values?.start?.day}:${values?.start?.hour}:${values?.start?.minute}`
+        data.end = `${values?.end?.year}:${values?.end?.month}:${values?.end?.day}:${values?.end?.hour}:${values?.end?.minute}`
+        dispatch(toggleLoader(true))
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender`, data)
+            .then(()=>toast.success("Successfully Added"))
+            .catch((err)=>toast.error("Something went wrong"))
+            .finally(()=> {
+                dispatch(toggleLoader(false))
+                setIsSubmitted(false)
+            })
+    }, [isSubmitted]);
+
+    useEffect(() =>{
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender`)
+            .then((res)=>{
+                console.log(res.data)
+                let data = res.data.map((data) =>{
+                    let item = {...data}
+                    //     start: new Date(2023, 7, 29, 17, 30, 0),
+                    if(item.start){
+
+                        let start = new Date(item.start)
+                        const year = start?.getFullYear();
+                        const month = Number((start?.getMonth() + 1).toString().padStart(2, '0')) // Adding 1 to month because it's zero-based
+                        const day = Number(start?.getDate().toString().padStart(2, '0'));
+                        const hours = Number(start?.getHours().toString().padStart(2, '0'));
+                        const minutes = Number(start?.getMinutes().toString().padStart(2, '0'));
+                        item.start = {year: year, month: month, day: day, hour: hours, minute: minutes}
+                    } if(item.end) {
+                        let end = new Date(item.end)
+
+                        const year = end.getFullYear();
+                        const month = Number((end.getMonth() + 1).toString().padStart(2, '0')); // Adding 1 to month because it's zero-based
+                        const day = Number(end.getDate().toString().padStart(2, '0'));
+                        const hours = Number(end.getHours().toString().padStart(2, '0'));
+                        const minutes = Number(end.getMinutes().toString().padStart(2, '0'));
+                        item.end = {year: year, month: month, day: day, hour: hours, minute: minutes}
+                    }
+                    return item
+                })
+
+                console.log(data);
+                setEventList(data)
+            })
+    },[])
 
     return (
         <Layout>
@@ -181,8 +241,8 @@ function Calender(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3 ">
                                         <label htmlFor="exampleInputEmail1"
-                                            className="form-label">Start Time</label>
-                                        <DtPicker
+                                            className="form-label" >Start Time</label>
+                                        <DtPicker placeholder={"Enter Start Time"}
                                             inputClass={`form-control ${errors.start ? "border-red" : ""}`}
                                             onChange={(time) => setValue({ start: time })}
                                             withTime
@@ -199,7 +259,7 @@ function Calender(props) {
                                     <div className="mb-3 me-3">
                                         <label htmlFor="exampleInputEmail1"
                                             className="form-label">End Time</label>
-                                        <DtPicker
+                                        <DtPicker placeholder={"Enter End Time"}
                                             inputClass={`form-control ${errors.end ? "border-red" : ""}`}
                                             onChange={(time) => setValue({ end: time })}
                                             withTime
@@ -214,23 +274,23 @@ function Calender(props) {
                                         <label htmlFor="exampleInputEmail1"
                                             className="form-label">Color</label>
                                         <div className={"d-flex gap-3"}>
-                                            <div className={"select-round green-round " + (values.bgColor === "rgb(0 167 111 / 30%)" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "rgb(0 167 111 / 30%)", textColor: "rgb(1 69 46)" })}>
-                                                {values.bgColor === "rgb(0 167 111 / 30%)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round green-round " + (values.color === "#01452EFF" ? "selected-round" : "")} onClick={() => setValue({ color: "#01452EFF", textColor: "rgb(1 69 46)" })}>
+                                                {values.color === "#01452EFF" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round purple-round " + (values.bgColor === "rgb(142 51 255 / 30%)" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "rgb(142 51 255 / 30%)", textColor: "#3c0384" })}>
-                                                {values.bgColor === "rgb(142 51 255 / 30%)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round purple-round " + (values.color === "#3C0384FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#3C0384FF", textColor: "#3c0384" })}>
+                                                {values.color === "#3C0384FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round lightBlue-round " + (values.bgColor === "rgb(0 184 217 / 30%)" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "rgb(0 184 217 / 30%)", textColor: "#015c6c" })}>
-                                                {values.bgColor === "rgb(0 184 217 / 30%)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round lightBlue-round " + (values.color === "#015C6CFF" ? "selected-round" : "")} onClick={() => setValue({ color: "#015C6CFF", textColor: "#015c6c" })}>
+                                                {values.color === "#015C6CFF" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round yellow-round " + (values.bgColor === "rgb(255 171 0 / 30%)" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "rgb(255 171 0 / 30%)", textColor: "#7d5400" })}>
-                                                {values.bgColor === "rgb(255 171 0 / 30%)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round yellow-round " + (values.color === "#7D5400FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#7D5400FF", textColor: "#7d5400" })}>
+                                                {values.color === "#7D5400FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round darkBlue-round " + (values.bgColor === "rgb(0 55 104 / 20%)" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "rgb(0 55 104 / 20%)", textColor: "rgb(0 55 104)" })}>
-                                                {values.bgColor === "rgb(0 55 104 / 20%)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round darkBlue-round " + (values.color === "#003768FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#003768FF", textColor: "rgb(0 55 104)" })}>
+                                                {values.color === "#003768FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round lightGreen-round " + (values.bgColor === "rgb(34 197 94 / 20%)" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "rgb(34 197 94 / 20%)", textColor: "#028633" })}>
-                                                {values.bgColor === "rgb(34 197 94 / 20%)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round lightGreen-round " + (values.color === "#028633FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#028633FF", textColor: "#028633" })}>
+                                                {values.color === "#028633FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
                                             {/*<div className={"select-round orange-round "+ (values.bgColor === "rgb(0, 167, 111)" ? "selected-round" :"")} onClick={()=> setValue({bgColor: "",textColor: ""})}>*/}
                                             {/*    <FeatherIcon className={"text-white"} icon={"check"}/>*/}

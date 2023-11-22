@@ -6,11 +6,23 @@ import studentSlider2 from "../../assets/studentSlider2.png"
 import studentSlider3 from "../../assets/studentSlider3.png"
 import homeimage from "../../assets/homeimage.svg"
 import Carousel from 'react-bootstrap/Carousel';
-import {getName} from "../../utils/Authentication";
+import {getName, isParentAccount, isStudentAccount} from "../../utils/Authentication";
 import Chart from 'react-apexcharts'
+import {useNavigate} from "react-router-dom";
 
 
 function Home(props) {
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(isParentAccount()){
+            navigate("/student")
+        }
+        if(isStudentAccount()){
+            navigate("/student")
+        }
+    }, []);
 
     var options = {
         series: [{

@@ -14,6 +14,7 @@
     "@mui/material": "^5.14.0",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/x-date-pickers": "^6.10.0",
+    "@payhere-js-sdk/client": "^1.0.4",
     "@react-google-maps/api": "^2.19.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

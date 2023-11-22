@@ -1348,13 +1348,12 @@ form .login-btn input[type="submit"] {
 }
 
 .home_card {
-
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-
-    border-radius: 7px !important;
+    border-radius: 18px !important;
     box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
     border: none !important;
-    margin: 6px;
+    margin: 14px;
+    border-left: 10px solid #00AB55 !important;
 }
 
 .card-container {
@@ -1409,7 +1408,6 @@ form .login-btn input[type="submit"] {
 .home-action-icons {
     color: #00AB55;
     width: 20px;
-    margin-left: 30px;
 }
 
 .image-slide {
@@ -1879,5 +1877,43 @@ form .login-btn input[type="submit"] {
     box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px;
     color: rgba(0, 0, 0, 0.65);
     transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .login-img img{
+        width: 100% !important;
+        height: auto !important;
+    }
+    .full-container{
+        margin: auto;
+        margin-bottom: 24px;
+    }
+    .login-sig{
+        margin: auto;
+        text-align: center;
+    }
+    .login-head{
+        margin: auto;
+    }
+    .sa-modal-bg-inner{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .broadcast_sub_container{
+        flex-flow: wrap;
+    }
+
+}
+
+.card-text-msg{
+    color: #000000;
+    opacity: 0.9;
+    font-size: 16px;
+
+}
+.card-text-motive{
+    margin-top: -10px;
 }
 

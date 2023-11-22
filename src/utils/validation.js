@@ -31,7 +31,7 @@ export function validateStudent(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
@@ -39,6 +39,9 @@ export function validateStudent(values) {
     }
     if (!values.dob) {
         errors.dob = "Date of Birth is Required"
+    }
+    if (!values.parentContact) {
+        errors.parentContact = "Parent Contact of Birth is Required"
     }
     if (!values.subjects) {
         errors.subjects = "Subjects is Required"
@@ -76,7 +79,7 @@ export function validateParent(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
@@ -112,6 +115,22 @@ export function validateEvent(values) {
         errors.end = "End Date is Required"
     }
 
+    return errors;
+}
+
+export function validatePayment(values) {
+    console.log(values)
+    let errors = {};
+
+    if (!values.name) {
+        errors.name = "Name is Required"
+    }
+    if (!values.amount) {
+        errors.amount = "Amount is Required"
+    }
+    if (!values.month) {
+        errors.month = "Month is Required"
+    }
     return errors;
 }
 
@@ -172,7 +191,7 @@ export function validateParentSetting(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     return errors;
@@ -192,7 +211,7 @@ export function validateInstituteSetting(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
 
@@ -245,7 +264,7 @@ export function validateStudentSettings(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
@@ -286,7 +305,7 @@ export function validateinstitute(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!/^([+]\d{2})?\d{10}$/.test(values.phoneNumber)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.address) {

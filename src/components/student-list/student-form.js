@@ -281,6 +281,17 @@ setParentMode(true)
                                 </div>
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1" className="form-label">Parent Contact</label>
+                                        <input type="email" name={"parentContact"} placeholder={"Enter parent Contact"}
+                                               value={values.parentContact || ""} onChange={handleChange}
+                                               className={`form-control ${errors.parentContact ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
+                                               aria-describedby="emailHelp"/>
+                                        {errors.parentContact && <p className={"text-red"}>{errors.parentContact}</p>}
+                                    </div>
+                                </div>
+                                <div className={"col-md-6"}>
+                                    <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
                                                className="form-label">Gender</label>
                                         <select className={`form-control ${errors.gender ? "border-red" : ""}`}
