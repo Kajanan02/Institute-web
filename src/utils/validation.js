@@ -115,6 +115,22 @@ export function validateEvent(values) {
     return errors;
 }
 
+export function validatePayment(values) {
+    console.log(values)
+    let errors = {};
+
+    if (!values.name) {
+        errors.name = "Name is Required"
+    }
+    if (!values.amount) {
+        errors.amount = "Amount is Required"
+    }
+    if (!values.month) {
+        errors.month = "Month is Required"
+    }
+    return errors;
+}
+
 export function validateStateappointment(values) {
     console.log(values)
     let errors = {};
