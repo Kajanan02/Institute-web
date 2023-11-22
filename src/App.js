@@ -30,6 +30,7 @@ import React, {useEffect, useState} from "react";
 import mqtt from "mqtt";
 import LeaderBoard from "./components/admin/Leaderboard/Leaderboard";
 import { Payhere, AccountCategory } from '@payhere-js-sdk/client';
+import MqttAuth from "./components/utils-components/mqtt-auth";
 
 
 Payhere.init(process.env.REACT_APP_PAYHERE_MERCHANT_ID, AccountCategory.SANDBOX);
@@ -37,9 +38,13 @@ Payhere.init(process.env.REACT_APP_PAYHERE_MERCHANT_ID, AccountCategory.SANDBOX)
 
 
 function App() {
+
+
+
     return (
         <div className="">
             <Loader/>
+            <MqttAuth/>
             <ConfirmationDialog/>
             <Routes>
                 <Route exact path='/' element={<PrivateRoute/>}>

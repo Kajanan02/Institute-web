@@ -4,9 +4,9 @@ import formHandler from "../../utils/FormHandler";
 import {validatemarks} from "../../utils/validation";
 import MultiSelect from "@khanacademy/react-multi-select";
 import {marksData , subjectData} from "./marksDamiData";
-import {toggleLoader} from "../../redux/actions";
+import {setMqttDetail, toggleLoader} from "../../redux/actions";
 import axios from "axios";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Typeahead} from "react-bootstrap-typeahead";
 import {find, pluck} from "underscore";
 import {toast} from "react-toastify";
@@ -31,6 +31,10 @@ function MarksForm(props) {
         values,
         errors,
     } = formHandler(ismarks, validatemarks);
+
+    const mqtt = useSelector(state => {
+        return state.mqttDetail.data
+    });
 
     function ismarks() {
         setIsSubmit(true)
@@ -87,7 +91,11 @@ function MarksForm(props) {
                 props.update()
                 props.onHide();
                 toast.success(`Successfully Marks created`)
-            }).catch((err) => {
+
+            }).then(()=>{
+           dispatch(setMqttDetail({"mobileNumber":"0765471338","body":values.marks,"type":"msg"}))
+        })
+            .catch((err) => {
             toast.error("Something went wrong")
         }).finally(() => {
             dispatch(toggleLoader(false))
