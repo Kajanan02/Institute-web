@@ -34,6 +34,7 @@ function Login(props) {
                 loadCredential(res.data)
                 dispatch(setUserDetail(res.data))
                 toast.success("Successfully Login");
+                localStorage.setItem("INSTITUTE_ID",res.data._id)
                 if(res.data.role === "3"){
                     console.log(res.data._id)
                   localStorage.setItem("STUDENT_ID",res.data._id)
@@ -41,6 +42,7 @@ function Login(props) {
                 }
                 if(res.data.role === "4"){
                     localStorage.setItem("STUDENT_ID",res.data.studentId)
+                    localStorage.setItem("INSTITUTE_ID",res.data.instituteId)
                 }
                 navigate(initialNavigate(res.data.role));
 

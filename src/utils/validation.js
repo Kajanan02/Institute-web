@@ -138,47 +138,19 @@ export function validateStateappointment(values) {
 }
 
 
-export function validateStatepayment(values) {
+export function validateStatePayment(values) {
     console.log(values)
     let errors = {};
 
-
-    if (!values.studentName) {
-        errors.studentName = "Student Name is Required"
+    
+    if (!values.month) {
+        errors.month = "Month is Required"
     }
-    if (!values.studentNIC) {
-        errors.studentNIC = "Student NIC is Required"
+    if (!values.feesAmount) {
+        errors.feesAmount = 'Amount is Required';
+    } else if (isNaN(values.feesAmount) || parseFloat(values.feesAmount) <= 0) {
+        errors.feesAmount = 'Amount must be a valid positive number';
     }
-
-    if (!values.regNo) {
-        errors.regNo = "Reg.Nois Required"
-    }
-    if (!values.amount) {
-        errors.amount = 'Amount is required';
-    } else if (isNaN(values.amount) || parseFloat(values.amount) <= 0) {
-        errors.amount = 'Amount must be a valid positive number';
-    }
-
-    if (!values.parentName) {
-        errors.parentName = "Parent Name is Required"
-    }
-    if (!values.topic) {
-        errors.topic = "Topic is Required"
-    }
-    if (!values.date) {
-        errors.date = "Date is Required"
-    }
-    if (!values.time) {
-        errors.time = "Time is Required"
-    }
-
-    if (!values.topic) {
-        errors.topic = "Topic is Required"
-    }
-    if (!values.paymentMethod) {
-        errors.paymentMethod = "Paymentcard Method is Required"
-    }
-
 
     return errors;
 }
