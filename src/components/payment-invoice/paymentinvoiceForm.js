@@ -12,19 +12,22 @@ import {toast} from "react-toastify";
 import { isEmpty } from 'underscore';
 import {Typeahead} from "react-bootstrap-typeahead";
 import {find, pluck} from "underscore";
+import { getInstituteId, getStudentId, isInstituteAccount ,getUserId} from '../../utils/Authentication';
+import {isParentAccount} from "../../utils/Authentication";
+import { Link } from 'react-router-dom';
+import {changeToggle, setUserDetail} from "../../redux/actions";
 
 
 function StatepaymentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [modalType, setModalType] = useState("view")
+    const [studentId, setStudentId] = useState(null)
     const [modalShow, setModalShow] = useState(false);
     const [directPayment, setDirectPayment] = useState(false);
     const [paymentSlip, setPaymentSlip] = useState(null);
     const [profilePic, setProfilePic] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
     const instituteId = localStorage.getItem("USER_ID");
-    const studentId = localStorage.getItem("STUDENT_ID");
     const [studentsList, setStudentsList] = useState([]);
     const [singleSelections, setSingleSelections] = useState([]);
     
@@ -34,7 +37,7 @@ function StatepaymentForm(props) {
 
     const handleChangeSlip = (file) => {
         setPaymentSlip(file);
-        // imageUpload(file, "profilePic")
+        imageUpload(file, "paymentSlip")
     };
 
 
@@ -59,18 +62,16 @@ function StatepaymentForm(props) {
         if(["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)){
            
             initForm(props.selectedPayment)
+            setSingleSelections([props.selectedPayment.studentNicNo])
         }
     },[props.type,props.selectedPayment])
-
-    useEffect(() => {
-        if(!props.selectedMarks){
-            return 
+    useEffect(()=>{
+        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)){
+           
+            initForm(props.selectedPayment)
+            setSingleSelections([props.selectedPayment.studentNicNo])
         }
-        props.selectedMarks.date = props.selectedMarks.date.slice(0,10)
-        initForm(props.selectedMarks)
-        setSingleSelections([props.selectedMarks?.nicNo])
-
-    }, [props.selectedMarks])
+    },[props.type,props.selectedPayment])
 
     function statusUpdate(status){
         values.status = status
@@ -78,8 +79,8 @@ function StatepaymentForm(props) {
         console.log(props.selectedPayment._id)
 
         dispatch(toggleLoader(true))
-        //router.route('/:instituteId/student/:studentId/fees/:id').put(editFees);
-        axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/fees/${props.selectedPayment._id}`, values)
+        axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentId}/fees/${props.selectedPayment._id}`, values)
+        // router.route('/:instituteId/student/:studentId/fees/:id').put(editFees);
             .then((res) => {
                 console.log(res.data)
                 toast.success(`Successfully Updated`)
@@ -95,19 +96,28 @@ function StatepaymentForm(props) {
         })
 
     }
+    
 
     useEffect(() => {
         if (!isSubmit || props.type !== "Add") {
             return
         }
         // http://localhost:5000/api/institute/:instituteId/student/:studentId/appointment
+        values.method="DIRECT_PAYMENT"
+
+        values.status=isInstituteAccount() ? "PAID" :"REQUESTED"
+        let student
+        if(isParentAccount()){
+            student = localStorage.getItem("STUDENT_ID")
+        }
+
         
-        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/fees` , values)
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${isParentAccount() ? student :studentId}/fees` , values)
             .then((res) => {
                 console.log(res.data)
                 props.update()
                 props.onHide();
-                toast.success(`Successfully Appointment Created`)
+                toast.success(`Successfully Payment Created`)
             }).catch((err) => {
             toast.error("Something went wrong")
         }).finally(() => {
@@ -140,75 +150,24 @@ function StatepaymentForm(props) {
             }).finally(() => dispatch(toggleLoader(false)))
     }
     
-    useEffect(() => {
-        if (!isSubmit || props.type !== "directPayment") {
-            return
-        }
-        //router.route('/:instituteId/student/:studentId/fees').post(createFees);
-        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/fees` , values)
-            .then((res) => {
-                console.log(res.data)
-                props.update()
-                props.onHide();
-                toast.success(`Successfully Payment Created`)
-            }).catch((err) => {
-            toast.error("Something went wrong")
-        }).finally(() => {
-            dispatch(toggleLoader(false))
-            setIsSubmit(false);
-            resetForm()
-            // if (parentSubmit) {
-            //     setStudentId(null);
-            //     props.onHide()
+   
 
-            // }
-        })
-    }, [isSubmit]);
+    
+    
 
-    useEffect(()=>{
-        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedFees)){
-           
-            initForm(props.selectedFees)
-        }
-    },[props.type,props.selectedFees])
+    // useEffect(() => {
+    //     // Initialize the form values when the modal is shown
+    //     if (props.show) {
+    //         initForm({});
 
-    function statusUpdate(status){
-        values.status = status
-        console.log(props.selectedFees)
-        console.log(props.selectedFees._id)
-
-        dispatch(toggleLoader(true))
-        //router.route('/:instituteId/student/:studentId/fees/:id').put(editFees)
-        axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/fees/${props.selectedFees_id}`, values)
-            .then((res) => {
-                console.log(res.data)
-                toast.success(`Successfully Updated`)
-                props.update()
-            }).catch((err) => {
-            toast.error("Something went wrong")
-        }).finally(() => {
-            dispatch(toggleLoader(false))
-            setIsSubmit(false);
-          setIsSubmit(false)
-            resetForm()
-            props.onHide()
-        })
-
-    }
-
-    useEffect(() => {
-        // Initialize the form values when the modal is shown
-        if (props.show) {
-            initForm({});
-
-            setFormSubmitted(false);
-        }
-    }, [props.show]);
-    console.log(directPayment)
+    //         setFormSubmitted(false);
+    //     }
+    // }, [props.show]);
+    // console.log(directPayment)
 
     useEffect(() => {
         dispatch(toggleLoader(true))
-        axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/getAllStudents`)
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/getAllStudents`)
             .then((res) => {
                 setStudentsList(res.data)
             }).catch((err) => {
@@ -217,6 +176,31 @@ function StatepaymentForm(props) {
             dispatch(toggleLoader(false))
         })
     }, [])
+    useEffect(() => {
+        if(!isParentAccount()){
+            return
+        }
+        dispatch(toggleLoader(true))
+        let studentID = localStorage.getItem("STUDENT_ID")
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentID}`)
+        .then((res) => {
+            
+            let userData = res.data
+            console.log(userData);
+            console.log(userData._id);
+            setValue({name:userData.name})
+            setValue({studentNicNo:userData.nicNo})
+            setSingleSelections([userData.nicNo])
+
+
+        }).catch((err) => {
+        console.log(err)
+        toast.error("Something went wrong")
+    }).finally(() => {
+      dispatch(toggleLoader(false))
+    })
+    }, [])
+    console.log(values);
 
     return (
         <Modal
@@ -274,10 +258,11 @@ function StatepaymentForm(props) {
                                             labelKey="name"
                                             className={`disabled-white ${errors.regNO ? "border-red" : ""}`}
                                             onChange={(res)=> {
-                                               setValue({nicNo:res[0]})
+                                                console.log(res);
+                                                setValue({studentId:res[0]})
                                                 setValue({name:find(studentsList,{nicNo:res[0]})?.name})
-                                                setValue({studentId:find(studentsList,{nicNo:res[0]})?._id})
                                                 setSingleSelections(res)
+                                                setStudentId(find(studentsList,{nicNo:res[0]})?._id)
                                             }}
                                             options={pluck(studentsList,"nicNo")}
                                             placeholder="Choose a state..."
@@ -295,10 +280,12 @@ function StatepaymentForm(props) {
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student
                                             Name</label>
                                         <input name={"studentName"} placeholder={"Enter Student Name"}
-                                               className={`form-control ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
+                                         className={`form-control  ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                              // className={`form-control ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
                                                value={values.name || ""}
+                                            //    disabled={true}
 
                                                disabled={["View", "State"].includes(props.type)}
                                         />
@@ -306,69 +293,6 @@ function StatepaymentForm(props) {
 
                                     </div>
                                 </div>}
-                                {/* {props.type === "Add" && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className="form-label">Student NIC No</label>
-                                        <input name={"studentNIC"} placeholder={"Enter NIC No"}
-                                               className={`form-control ${errors.studentNIC ? "border-red" : ""} `}
-                                               id="exampleInputEmail5"
-                                               onChange={handleChange}
-                                               value={values.studentNIC || ""}
-                                               aria-describedby="emailHelp"/>
-                                        {errors.studentNIC && <p className={"text-red"}>{errors.studentNIC}</p>}
-                                    </div>
-                                </div>} */}
-                                
-
-                                {/* {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Reg.No</label>
-                                        <input name={"regNo"} placeholder={"Enter Reg No"}
-                                               className={`form-control ${errors.regNo ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
-                                               id="exampleInputEmail5"
-                                               onChange={handleChange}
-                                               value={values.regNo || ""}
-
-                                               disabled={["View", "State"].includes(props.type)}
-                                        />
-                                        {errors.regNo && <p className={"text-red"}>{errors.regNo}</p>}
-
-                                    </div>
-                                </div>} */}
-
-
-                                {/* {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Date </label>
-                                        <input id="startDate"
-                                               className={`form-control ${errors.date ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
-                                               onChange={handleChange}
-                                               name={"date"}
-                                               value={values.date || ""}
-                                               type="date"
-
-                                               disabled={["View", "State"].includes(props.type)}/>
-                                        {errors.date && <p className={"text-red"}>{errors.date}</p>}
-                                    </div>
-                                </div>}
-                                {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Time </label>
-                                        <input id="startTime"
-                                               className={`form-control ${errors.time ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
-                                               onChange={handleChange}
-                                               name={"time"}
-                                               value={values.time || ""}
-                                               type="time"
-
-                                               disabled={["View", "State"].includes(props.type)}/>
-                                        {errors.time && <p className={"text-red"}>{errors.time}</p>}
-                                    </div>
-                                </div>} */}
 
                                 {["View", "State"].includes(props.type) && <div className={"col-md-6"}>
                                     <div className="mb-3">
@@ -433,7 +357,7 @@ function StatepaymentForm(props) {
                                     </div>
                                 </div>}
 
-                                <div className={"col-md-12"}>
+                                {isInstituteAccount()  && (directPayment || ([ "State"].includes(props.type))) && <div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>
                                         <FileUploader handleChange={handleChangeSlip}>
@@ -452,7 +376,13 @@ function StatepaymentForm(props) {
                                             </div>
                                         </FileUploader>
                                     </div>
-                                </div>
+                                </div>}
+                                {["View"].includes(props.type)&&
+                                    <div className={"col-md-12"}>
+                                        <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>     
+                                    <img src={values.paymentSlip} className='w-100' alt="Nature"/>
+                                    </div>
+                                }
 
                             </div>
                         </div>
@@ -478,24 +408,18 @@ function StatepaymentForm(props) {
                 </button>
 
 
-                {props.type === "State" && <button
+                {isInstituteAccount() && props.type === "State" && <button
                     type="button"
                     className={"btn btn-success"}
-                    onClick={handleSubmit}
+                    onClick={()=>statusUpdate("APPROVED")}
                 >
-                    Paid
+                    Approved
                 </button>}
-                {props.type === "State" && <button
-                    type="button"
-                    className={"btn btn-warning"}
-                    onClick={handleSubmit}
-                >
-                    Pending
-                </button>}
-                {props.type === "State" && <button
+                
+                {isInstituteAccount() &&props.type === "State" && <button
                     type="button"
                     className={"btn btn-danger"}
-                    onClick={handleSubmit}
+                    onClick={()=>statusUpdate("DECLINE")}
                 >
                     Decline
                 </button>}

@@ -3,13 +3,16 @@ import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import {paymentData} from "./damiData";
 import StatepaymentForm from "./paymentinvoiceForm";
-import {isInstituteAccount, isParentAccount} from "../../utils/Authentication";
+import {getInstituteId, isInstituteAccount, isParentAccount} from "../../utils/Authentication";
 import AddPaymentForm from "../student/add-payment-student";
-import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
+import {toggleConfirmationDialog,setUserDetail, toggleLoader} from "../../redux/actions";
 import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
 import {values, pick, filter, pluck} from "underscore";
 import {toast} from "react-toastify";
+
+
+
 
 
 function PaymentInvoice(props) {
@@ -22,22 +25,57 @@ function PaymentInvoice(props) {
     const [update, setUpdate] = useState(false);
     const instituteId = localStorage.getItem("USER_ID");
     const studentId = localStorage.getItem("STUDENT_ID");
-    const dispatch = useDispatch();
-
-
+    
+    
     useEffect(() => {
         dispatch(toggleLoader(true))
         //router.route('/:instituteId/fees').get(getFeesAll);
-        axios.get(`${process.env.REACT_APP_HOST}/institute/${instituteId}/fees`)
-            .then((res) => {
-                    setPaymentList(res.data) 
-                    setPaymentAllList(res.data) 
-            }).catch((err) => {
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/fees`)
+        .then((res) => {
+            if(isParentAccount()){
+                setPaymentList(res.data.filter((data)=> data.studentId === studentId)) 
+                setPaymentAllList(res.data.filter((data)=> data.studentId === studentId)) 
+            }else{
+                setPaymentList(res.data)
+                setPaymentAllList(res.data)
+
+            }
+            
+        }).catch((err) => {
             console.log(err)
         }).finally(() => {
             dispatch(toggleLoader(false))
         })
     }, [update])
+    
+    const dispatch = useDispatch();
+
+    console.log(selectedPayment);
+
+    function handleSearch(e) {
+        let val = e.target.value;
+        if (val !== "") {
+            let res = filter(paymentAllList, function (item) { return values(pick(item, 'month',  'name', 'method', 'studentNicNo')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase()); });
+            setPaymentList(res);
+            console.log(res)
+        } else {
+            setPaymentList(paymentAllList);
+        }
+    }
+
+    function colorChange(status){
+
+        switch(status){
+            case "APPROVED":
+                return "bg-success text-white"
+            case "DECLINE":
+                return "bg-danger text-white"
+            default:
+                return ""
+            
+        }
+
+    }
 
     return (
         <Layout>
@@ -51,7 +89,7 @@ function PaymentInvoice(props) {
                                 <div className={"appointment-search"}>
                                     <div className="container-fluid">
                                         <form className="d-flex" role="search">
-                                            <input className="form-control me-2" type="search" placeholder="Search"
+                                            <input className="form-control me-2" onChange={handleSearch} type="search" placeholder="Search"
                                                    aria-label="Search"/>
                                         </form>
                                     </div>
@@ -60,11 +98,11 @@ function PaymentInvoice(props) {
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}
                                         onClick={() => {
                                             setModalType("Add");
-                                            if(isParentAccount()) {
-                                            setStudentModalShow(true)
-                                            }else {
+                                            // if(isParentAccount()) {
+                                            // setStudentModalShow(true)
+                                            // }else {
                                                 setModalShow(true)
-                                            }
+                                            // }
                                         }}>
                                     <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                                     Add
@@ -104,30 +142,41 @@ function PaymentInvoice(props) {
                                 <td>{data.method}</td>
                                 <td>{data.studentNicNo}</td>
                                 <td>
-                                    <div className={"appointment_state"}
-                                         onClick={() => {
-                                             if(isParentAccount()) {
-                                                 return
-                                             }
-                                             setModalType("State");
-                                             setModalShow(true)
-                                         }}>{data.state}</div>
+                                <div className={"appointment_state " + (colorChange(data.status))}
+                                             onClick={() => {
+                                                //  if(isParentAccount()) {
+                                                //      return
+                                                //  }
+                                                let temp = {...data}
+                                                temp.date = data.date?.slice(0,10)
+                                                setSelectedPayment(temp)
+                                                setModalShow(true)
+                                                setModalType("State");
+                                         }
+                                    }>{data.status}</div>
 
                                 </td>
 
 
                                 <td className={"table-action"}>
-                                    <div
+                                    <div type="button"
                                         onClick={() => {
                                             setModalType("View");
                                             setModalShow(true)
                                         }}>
-                                        <FeatherIcon className={"action-icons"} icon={"eye"}/>
+                                        <FeatherIcon className={"action-icons"} icon={"eye"} onClick={() => {
+                                            setModalType("View")
+                                            let temp = {...data}
+                                            temp.date = data.date?.slice(0,10)
+                                            setSelectedPayment(temp)
+                                            }}/>
+
                                     </div>
                                 </td>
                             </tr>))}
                             </tbody>
                         </table>
+                        {paymentList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Payment Data Found,Please Add</div>}
                     </div>
                 </div>
             </div>
