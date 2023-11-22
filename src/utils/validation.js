@@ -40,6 +40,9 @@ export function validateStudent(values) {
     if (!values.dob) {
         errors.dob = "Date of Birth is Required"
     }
+    if (!values.parentContact) {
+        errors.parentContact = "Parent Contact of Birth is Required"
+    }
     if (!values.subjects) {
         errors.subjects = "Subjects is Required"
     }
