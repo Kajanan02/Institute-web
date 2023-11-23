@@ -19,6 +19,7 @@ function Calender(props) {
     const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
     const [isModelVisible, setIsModalVisible] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [update, setIsUpdate] = useState(false);
 
 
     let events = [
@@ -121,14 +122,16 @@ function Calender(props) {
     }
 
     useEffect(() => {
-        if(!isSubmitted){
+        if(!isSubmitted || isUpdateAvailable){
             return
         }
+        values.color = values.color ? values.color : '#8E0018FF'
         let data = {...values}
         console.log(values)
-        values.color = values.color ? values.color : '#8E0018FF'
-        data.start = `${values?.start?.year}:${values?.start?.month}:${values?.start?.day}:${values?.start?.hour}:${values?.start?.minute}`
-        data.end = `${values?.end?.year}:${values?.end?.month}:${values?.end?.day}:${values?.end?.hour}:${values?.end?.minute}`
+        data.start = JSON.stringify(values.start)
+        data.end = JSON.stringify(values.end)
+        // data.start = `${values?.start?.year}:${values?.start?.month}:${values?.start?.day}:${values?.start?.hour}:${values?.start?.minute}`
+        // data.end = `${values?.end?.year}:${values?.end?.month}:${values?.end?.day}:${values?.end?.hour}:${values?.end?.minute}`
         console.log(data)
         dispatch(toggleLoader(true))
         axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender`, data)
@@ -137,6 +140,33 @@ function Calender(props) {
             .finally(()=> {
                 dispatch(toggleLoader(false))
                 setIsSubmitted(false)
+                setIsUpdateAvailable(false)
+                setIsUpdate(true)
+
+            })
+    }, [isSubmitted]);
+
+    useEffect(() => {
+        if(!isSubmitted || !isUpdateAvailable){
+            return
+        }
+        values.color = values.color ? values.color : '#8E0018FF'
+        let data = {...values}
+        console.log(values)
+        data.start = JSON.stringify(values.start)
+        data.end = JSON.stringify(values.end)
+        // data.start = `${values?.start?.year}:${values?.start?.month}:${values?.start?.day}:${values?.start?.hour}:${values?.start?.minute}`
+        // data.end = `${values?.end?.year}:${values?.end?.month}:${values?.end?.day}:${values?.end?.hour}:${values?.end?.minute}`
+        console.log(data)
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender/${values._id}`, data)
+            .then(()=>toast.success("Successfully updated"))
+            .catch((err)=>toast.error("Something went wrong"))
+            .finally(()=> {
+                dispatch(toggleLoader(false))
+                setIsSubmitted(false)
+                setIsUpdateAvailable(false)
+                setIsUpdate(true)
             })
     }, [isSubmitted]);
 
@@ -149,22 +179,13 @@ function Calender(props) {
                     //     start: new Date(2023, 7, 29, 17, 30, 0),
                     if(item.start){
 
-                        let start = new Date(item.start)
-                        const year = start?.getFullYear();
-                        const month = Number((start?.getMonth() + 1).toString().padStart(2, '0')) // Adding 1 to month because it's zero-based
-                        const day = Number(start?.getDate().toString().padStart(2, '0'));
-                        const hours = Number(start?.getHours().toString().padStart(2, '0'));
-                        const minutes = Number(start?.getMinutes().toString().padStart(2, '0'));
-                        item.start = {year: year, month: month, day: day, hour: hours, minute: minutes}
+                        let start = JSON.parse(item.start)
+                        item.start = new Date(start.year, start.month - 1, start.day, start.hour, start.minute, 0)
                     } if(item.end) {
-                        let end = new Date(item.end)
+                        let end = JSON.parse(item.end)
+                        item.end = new Date(end.year, end.month - 1, end.day, end.hour, end.minute, 0)
 
-                        const year = end.getFullYear();
-                        const month = Number((end.getMonth() + 1).toString().padStart(2, '0')); // Adding 1 to month because it's zero-based
-                        const day = Number(end.getDate().toString().padStart(2, '0'));
-                        const hours = Number(end.getHours().toString().padStart(2, '0'));
-                        const minutes = Number(end.getMinutes().toString().padStart(2, '0'));
-                        item.end = {year: year, month: month, day: day, hour: hours, minute: minutes}
+
                     }
                     return item
                 })
@@ -172,7 +193,9 @@ function Calender(props) {
                 console.log(data);
                 setEventList(data)
             })
-    },[])
+    },[update])
+
+    console.log(eventList)
 
     return (
         <Layout>
@@ -190,7 +213,7 @@ function Calender(props) {
                         events={eventList}
                         eventPropGetter={eventStyleGetter}
                         onSelectEvent={event => {
-                            if(!isInstituteAccount() || !isAdminAccount()){
+                            if(!isInstituteAccount()){
                                 return;
                             }
                             setIsModalVisible(true);
@@ -200,6 +223,8 @@ function Calender(props) {
                                 title: event.title,
                                 start: getDateInfo(event.start),
                                 end: getDateInfo(event.end),
+                                color: event.color,
+                                _id: event._id,
                             }
                             initForm(value)
                         }}
