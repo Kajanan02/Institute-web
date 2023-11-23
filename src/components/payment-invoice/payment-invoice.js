@@ -99,7 +99,7 @@ function PaymentInvoice(props) {
     function colorChange(status){
 
         switch(status){
-            case "APPROVED":
+            case "PAID":
                 return "bg-success text-white"
             case "DECLINE":
                 return "bg-danger text-white"

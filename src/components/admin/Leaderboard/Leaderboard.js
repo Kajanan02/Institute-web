@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { values, pick, filter, pluck } from "underscore";
 import { toast } from "react-toastify";
 import { rankMarks } from '../../../utils/utils';
+import {isAdminAccount} from "../../../utils/Authentication";
 
 export default function LeaderBoard(props) {
     const [leaderBoardList, setLeaderBoardList] = useState([])
@@ -120,14 +121,14 @@ export default function LeaderBoard(props) {
                             </div>
 
 
-                            <button type="button" className={"btn btn-secondary students-dropdown-btn"}
-                                onClick={() => {
-                                    setModalType("Add");
-                                    setModalShow(true)
-                                }}>
-                                <FeatherIcon className={"action-icons text-white"} icon={"plus"} />
+                            {isAdminAccount() &&<button type="button" className={"btn btn-secondary students-dropdown-btn"}
+                                     onClick={() => {
+                                         setModalType("Add");
+                                         setModalShow(true)
+                                     }}>
+                                <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                                 Add
-                            </button>
+                            </button>}
 
                         </div>
                     </div>

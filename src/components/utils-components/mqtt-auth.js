@@ -26,7 +26,7 @@ function MqttAuth(props) {
                 console.log("msg")
                 client.publish("/ins-subs-msg", JSON.stringify(mqttData));
             }else {
-                client.publish("device-ins/led", "0");
+                client.publish("device-ins/led", "1");
             }
         }
     },[mqttData])
