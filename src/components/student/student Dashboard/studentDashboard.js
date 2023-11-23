@@ -18,7 +18,37 @@ import {pluck, uniq} from "underscore";
 
 function StudentDashboard(props) {
     const [dataSet, setDataSet] = useState({});
+    const [performancee, setPerformance] = useState("");
     const dispatch = useDispatch();
+
+
+    function calculatePerformanceState(input) {
+        if (input >= 90) {
+            return 'Excellent';
+        } else if (input >= 70 && input < 90) {
+            return 'Good';
+        } else if (input >= 50 && input < 70) {
+            return 'Average';
+        } else if (input >= 30 && input < 50) {
+            return 'Below Average';
+        } else {
+            return 'Poor';
+        }
+    }
+
+
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/attendance`)
+            .then((res) => {
+                console.log(res.data)
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    },[])
 
 
 
@@ -45,14 +75,20 @@ function StudentDashboard(props) {
                     })
                     series.push(obj)
                 }
-                console.log(series)
                 setDataSet(series)
+
+                let curentMonthData = filteredData.filter((item) => item.date?.slice(5,7) === (new Date().getMonth()+1).toString() &&  item.studentId === getStudentId())
+                let totalMarksArr = pluck(curentMonthData,"marks")
+                let total = totalMarksArr.reduce((a, b) => a + b, 0)
+                setPerformance(calculatePerformanceState(total/curentMonthData.length))
+                console.log(curentMonthData)
             }).catch((err) => {
             console.log(err)
         }).finally(() => {
             dispatch(toggleLoader(false))
         })
     }, [])
+    console.log(performancee)
     return (
         <div>
 
@@ -119,20 +155,17 @@ function StudentDashboard(props) {
                         <div className={"card home_card"}>
                             <div className={"dashboardStudent p-3"}>
                                 <div className={"admissionCard"}>
-                                <div className={"card-text"}>Total Admissions</div>
-                                <div><FeatherIcon className={"home-action-icons"} icon={"user-plus"} /></div>
-                                <div className={"card-text_total"}>1,200</div></div>
-                                <div className={"admissionCard-Content"}><h6>Discover your path to <br/><FeatherIcon className={"home-action-icons"} icon={"award"} /> success with us. </h6></div>
+                                    <div className={"card-text-motive"}><b>Motive</b> <FeatherIcon className={"home-action-icons ms-3"} icon={"award"} /></div>
+                                    <div className={"card-text-msg"}>Education is the passport to the future, for tomorrow belongs to those who prepare for it today.</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div className={"col-sm-3 mb-3 mb-sm-0"}>
                         <div className={"card home_card"}>
                             <div className={"card-body p-3"}>
-                                <div className={"card-text"}>Monthly Attendance</div>
-                                <div><FeatherIcon className={"home-action-icons"} icon={"user-check"} /></div>
-                                <div className={"card-text_total"}>1,191</div>
-
+                                <div className={"card-text"}><b>Monthly Performance</b></div>
+                                <div><FeatherIcon className={"home-action-icons "} size={50} icon={"user-check"} />  <b className={"ms-3 fs-4"}>{performancee}</b> </div>
                             </div>
                         </div>
                     </div>
@@ -140,10 +173,9 @@ function StudentDashboard(props) {
                         <div className={"card home_card"}>
                             <div className={"card-body "}>
 
-                                <div className={"card-text"}>Upcoming Exam</div>
-                                <div><FeatherIcon className={"home-action-icons"} icon={"dollar-sign"} /></div>
-                                <div className={"card-text_total"}>228,000</div>
-
+                                <div className={"card-text"}><b>Last Attendance</b></div>
+                                <div className={"card-text-msg"}>Date : 19-11-2023</div>
+                                <div className={"card-text-msg"}>Time : 10.05 am</div>
                             </div>
                         </div>
                     </div>

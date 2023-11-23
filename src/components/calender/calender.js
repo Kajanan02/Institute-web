@@ -129,6 +129,7 @@ function Calender(props) {
         values.color = values.color ? values.color : '#8E0018FF'
         data.start = `${values?.start?.year}:${values?.start?.month}:${values?.start?.day}:${values?.start?.hour}:${values?.start?.minute}`
         data.end = `${values?.end?.year}:${values?.end?.month}:${values?.end?.day}:${values?.end?.hour}:${values?.end?.minute}`
+        console.log(data)
         dispatch(toggleLoader(true))
         axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender`, data)
             .then(()=>toast.success("Successfully Added"))
@@ -261,7 +262,11 @@ function Calender(props) {
                                             className="form-label">End Time</label>
                                         <DtPicker
                                             inputClass={`form-control ${errors.end ? "border-red" : ""}`}
-                                            onChange={(time) => setValue({ end: time })}
+                                            onChange={(time,date) => {
+                                                setValue({end: time})
+                                                console.log(date)
+                                                console.log(time)
+                                            }}
                                             withTime
                                             showTimeInput
                                         />

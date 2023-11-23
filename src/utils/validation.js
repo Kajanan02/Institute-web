@@ -1,3 +1,6 @@
+
+const slNICRegExp = /^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[x|X|v|V]$/;
+let contacNum = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g;
 export function validateConfirmationDialog(values) {
     let errors = {};
     if (!values.reason) {
@@ -22,6 +25,8 @@ export function validateStudent(values) {
     }
     if (!values.nicNo) {
         errors.nicNo = "NIC No is Required"
+    }else if(!slNICRegExp.test(values.nicNo)){
+        errors.nicNo = "NIC No is not valid"
     }
     if (!values.address) {
         errors.address = "Address is Required"
@@ -31,7 +36,7 @@ export function validateStudent(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
+    } else if (!values.phoneNumber.match()) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
