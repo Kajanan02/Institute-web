@@ -10,9 +10,10 @@ import {subjectData} from "./damiData";
 import FormStepper from "./FormStepper";
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {toggleLoader} from "../../redux/actions";
+import {setMqttDetail, toggleLoader} from "../../redux/actions";
 import {toast} from "react-toastify";
 import StudentLocationAdd from "./student-location";
+import {isParentAccount, isStudentAccount} from "../../utils/Authentication";
 
 function StudentForm(props) {
     console.log(props)
@@ -131,14 +132,27 @@ setParentMode(true)
                 if (!parentSubmit) {
                     setStudentId(res.data._id)
                 }
+                if(parentSubmit){
+                    let msg = `Parent Account Successfully created your username is ${values.nicNo} and password is 123456`
+                    console.log(msg)
+                    console.log(values.phoneNumber)
+                    dispatch(setMqttDetail({"mobileNumber":values.phoneNumber,"body":msg,"type":"msg"}))
+                }else {
+                    let msg = `Student Account Successfully created your username is ${values.nicNo} and password is 123456`
+                    console.log(msg)
+                    console.log(values.phoneNumber)
+                    dispatch(setMqttDetail({"mobileNumber":values.phoneNumber,"body":msg,"type":"msg"}))
+                }
                 toast.success(`Successfully ${parentSubmit ? 'Parent' : 'Student'} created`)
             }).catch((err) => {
+            console.log(err)
             toast.error("Something went wrong")
         }).finally(() => {
             dispatch(toggleLoader(false))
             setIsSubmit(false);
             setParentSubmit(false)
             resetForm()
+
             if (parentSubmit) {
                 setStudentId(null);
                 props.onHide()
@@ -198,6 +212,7 @@ setParentMode(true)
             <Modal.Header closeButton onHide={() => {
                 if (!formSubmitted) {
                     initForm({});
+                    resetForm()
                 }
             }}>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -279,6 +294,18 @@ setParentMode(true)
                                         {errors.email && <p className={"text-red"}>{errors.email}</p>}
                                     </div>
                                 </div>
+                                {currentStep === 1 &&<div className={"col-md-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1" className="form-label">Parent
+                                            Contact</label>
+                                        <input type="email" name={"parentContact"} placeholder={"Enter parent Contact"}
+                                               value={values.parentContact || ""} onChange={handleChange}
+                                               className={`form-control ${errors.parentContact ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
+                                               aria-describedby="emailHelp"/>
+                                        {errors.parentContact && <p className={"text-red"}>{errors.parentContact}</p>}
+                                    </div>
+                                </div>}
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
@@ -433,6 +460,7 @@ setParentMode(true)
                         if (!formSubmitted) { // Prevent hiding the modal if the form is submitted
                             props.onHide();
                             initForm({});
+                            resetForm()
                         }
                     }}
                 >

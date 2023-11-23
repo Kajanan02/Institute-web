@@ -10,6 +10,7 @@ import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
 import {values, pick, filter, pluck} from "underscore";
 import {toast} from "react-toastify";
+import {useLocation, useNavigate, useNavigation, useSearchParams} from "react-router-dom";
 
 
 
@@ -25,8 +26,40 @@ function PaymentInvoice(props) {
     const [update, setUpdate] = useState(false);
     const instituteId = localStorage.getItem("USER_ID");
     const studentId = localStorage.getItem("STUDENT_ID");
-    
-    
+    const navigation = useNavigate();
+    const userData = useSelector(state => {
+        return state.userDetail.data
+    });
+
+    console.log(userData)
+    const params = useLocation();
+
+    console.log(params)
+    console.log(props)
+
+    useEffect(() => {
+        if(params?.search && isParentAccount() && userData?.studentId?.name){
+            let values = {}
+            values.name = userData?.studentId?.name
+            values.studentNicNo = userData?.studentId?.nicNo
+            values.month = "MARCH"
+            values.feesAmount = 1500
+            values.status = "PAID"
+            values.method = "ONLINE"
+
+            axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentId}/fees` , values)
+                .then((res) => {
+                    toast.success(`Successfully Payment added`)
+                    navigation("/payment")
+                }).catch((err) => {
+                toast.error("Something went wrong")
+            }).finally(() => {
+                dispatch(toggleLoader(false))
+                setUpdate(!update)
+            })
+        }
+    }, [userData]);
+
     useEffect(() => {
         dispatch(toggleLoader(true))
         //router.route('/:instituteId/fees').get(getFeesAll);
@@ -66,7 +99,7 @@ function PaymentInvoice(props) {
     function colorChange(status){
 
         switch(status){
-            case "APPROVED":
+            case "PAID":
                 return "bg-success text-white"
             case "DECLINE":
                 return "bg-danger text-white"
@@ -142,11 +175,11 @@ function PaymentInvoice(props) {
                                 <td>{data.method}</td>
                                 <td>{data.studentNicNo}</td>
                                 <td>
-                                <div className={"appointment_state " + (colorChange(data.status))}
+                                <div className={"appointment_state " + (colorChange(data.status)) + (isInstituteAccount() ? " cursor-pointer" : "")}
                                              onClick={() => {
-                                                //  if(isParentAccount()) {
-                                                //      return
-                                                //  }
+                                                 if(isParentAccount() || data.status === "PAID") {
+                                                     return
+                                                 }
                                                 let temp = {...data}
                                                 temp.date = data.date?.slice(0,10)
                                                 setSelectedPayment(temp)

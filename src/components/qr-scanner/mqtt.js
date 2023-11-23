@@ -36,6 +36,7 @@ function Mqtt(props) {
 
     const mqttPublish = (context) => {
         if (client) {
+            console.log(client)
             // const { topic, qos, payload } = context;
             // client.publish(topic, payload, { qos }, error => {
             //     if (error) {
