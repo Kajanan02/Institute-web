@@ -36,7 +36,7 @@ export function validateStudent(values) {
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
-    } else if (!values.phoneNumber.match()) {
+    } else if (!values.phoneNumber.match(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g)) {
         errors.phoneNumber = 'Contact No is not valid';
     }
     if (!values.gender) {
