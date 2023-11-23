@@ -1,17 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Bell from "../assets/bell-icon.svg";
 import Msg from "../assets/msg-icon.svg";
 import Profile from "../assets/layoutDefaultProfile.jpg";
 import SideClose from "../assets/carbon_side-panel-close.svg";
 import FeatherIcon from 'feather-icons-react';
-import {NavLink} from "react-router-dom";
-import {useDispatch, useSelector} from 'react-redux'
-import {changeToggle, setUserDetail, toggleLoader} from "../redux/actions";
+import { NavLink } from "react-router-dom";
+import {find, pluck} from "underscore";
+import { useDispatch, useSelector } from 'react-redux'
+import { changeToggle, setUserDetail, toggleLoader } from "../redux/actions";
 import Logo from "../../src/assets/eduzon.svg"
 import {
     getInstituteId,
     getName,
-    getRoleName, getUserId, isAdminAccount, isAppointmentAccess,
+    getRoleName, getStudentId, getUserId, isAdminAccount, isAppointmentAccess,
     isCareerAccess,
     isInstituteAccount,
     isParentAccount, isReportAccess, isStudentAccount,
@@ -26,93 +27,73 @@ function Layout({children}) {
 
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
-    const studentId = localStorage.getItem("STUDENT_ID")
+    const [notificationsList, setNotificationsList] = useState([])
+    const instituteId = localStorage.getItem("USER_ID");
+    const [studentsList, setStudentsList] = useState([]);
+    const [studentId, setStudentId] = useState(null)
+    const [update, setUpdate] = useState(false);
     const open = useSelector(state => {
         return state.setting.toggle
     });
     const [showNotification, setShowNotification] = useState(false);
     const [notifications, setNotifications] = useState([
-      {
-        heading: 'New message from Alice',
-        text:
-          'Alice sent you a new message. This is a lengthy message that will be truncated, and you can click "Show More" to see the full message.',
-        time: '2 hours ago',
-        type: 'Message',
-        read: false,
-      },
-      {
-        heading: 'You have 3 unread messages',
-        text:
-          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
-        time: '3 hours ago',
-        type: 'Message',
-        read: true,
-      },
-      {
-        heading: 'You have 3 unread messages',
-        text:
-          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
-        time: '3 hours ago',
-        type: 'Message',
-        read: true,
-      },
-      {
-        heading: 'You have 3 unread messages',
-        text:
-          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
-        time: '3 hours ago',
-        type: 'Message',
-        read: true,
-      },
-      {
-        heading: 'You have 3 unread messages',
-        text:
-          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
-        time: '3 hours ago',
-        type: 'Message',
-        read: true,
-      },
-      {
-        heading: 'You have 3 unread messages',
-        text:
-          'You have 3 unread messages in your inbox. This is another lengthy message that will be truncated, and you can click "Show More" to see the full message.',
-        time: '3 hours ago',
-        type: 'Message',
-        read: true,
-      },
-      {
-        heading: 'Meeting at 2 PM today',
-        text: 'You have a meeting scheduled for 2 PM today.',
-        time: 'In 1 hour',
-        type: 'Meeting',
-        read: false,
-      },
+        
     ]);
+
+    useEffect(() => {
+        if (!isInstituteAccount)
+            dispatch(toggleLoader(true))
+        // router.route('/:instituteId/student/:studentId/broadcast').get(studentNotification);
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getStudentId()}/broadcast`)
+            .then((res) => {
+                console.log(res.data)
+                setNotifications(res.data)
+                setNotificationsList(res.data)
+
+
+            }).catch((err) => {
+                console.log(err)
+            }).finally(() => {
+                dispatch(toggleLoader(false))
+            })
+    }, [update])
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/getAllStudents`)
+            .then((res) => {
+                setStudentId(res.data)
+                setStudentId(find(studentsList,{nicNo:res[0]})?._id)
+            }).catch((err) => {
+                console.log(err)
+            }).finally(() => {
+                dispatch(toggleLoader(false))
+            })
+    }, [])
 
     const userData = useSelector(state => {
         return state.userDetail.data
     });
 
     const toggleNotification = () => {
-      setShowNotification(!showNotification);
+        setShowNotification(!showNotification);
     };
 
     const closeNotification = () => {
-      setShowNotification(false);
+        setShowNotification(false);
     };
 
     const markAsRead = (index) => {
-      const updatedNotifications = [...notifications];
-      updatedNotifications[index].read = true;
-      setNotifications(updatedNotifications);
+        const updatedNotifications = [...notifications];
+        updatedNotifications[index].read = true;
+        setNotifications(updatedNotifications);
     };
 
     const markAllRead = () => {
-      const updatedNotifications = notifications.map((notification) => ({
-        ...notification,
-        read: true,
-      }));
-      setNotifications(updatedNotifications);
+        const updatedNotifications = notifications.map((notification) => ({
+            ...notification,
+            read: true,
+        }));
+        setNotifications(updatedNotifications);
     };
 
     function toggleDrawer() {
@@ -145,14 +126,14 @@ function Layout({children}) {
             dispatch(toggleLoader(false))
             axios.get(`${process.env.REACT_APP_HOST}/users/${getUserId()}/profile`)
                 .then((res) => {
-                  let userData = res.data
+                    let userData = res.data
                     dispatch(setUserDetail(userData))
                 }).catch((err) => {
-                console.log(err)
-                toast.error("Something went wrong")
-            }).finally(() => {
-              dispatch(toggleLoader(false))
-            })
+                    console.log(err)
+                    toast.error("Something went wrong")
+                }).finally(() => {
+                    dispatch(toggleLoader(false))
+                })
         }else if(isStudentAccount() && getUserId()){
             dispatch(toggleLoader(false))
             //{{baseUrl}}/institute/64a8ec4c0c9f2a365061f338/student/64f38ca524b79dfa5745aa81
@@ -161,11 +142,11 @@ function Layout({children}) {
                     let userData = res.data
                     dispatch(setUserDetail(userData))
                 }).catch((err) => {
-                console.log(err)
-                toast.error("Something went wrong")
-            }).finally(() => {
-              dispatch(toggleLoader(false))
-            })
+                    console.log(err)
+                    toast.error("Something went wrong")
+                }).finally(() => {
+                    dispatch(toggleLoader(false))
+                })
         } else if(isParentAccount() && getUserId()){
             dispatch(toggleLoader(false))
             //{{baseUrl}}/institute/64a8ec4c0c9f2a365061f338/parent/65535d095851b30e84e1dc38
@@ -174,11 +155,11 @@ function Layout({children}) {
                     let userData = res.data
                     dispatch(setUserDetail(userData))
                 }).catch((err) => {
-                console.log(err)
-                toast.error("Something went wrong")
-            }).finally(() => {
-              dispatch(toggleLoader(false))
-            })
+                    console.log(err)
+                    toast.error("Something went wrong")
+                }).finally(() => {
+                    dispatch(toggleLoader(false))
+                })
         }
     }, []);
 
@@ -188,11 +169,11 @@ function Layout({children}) {
                 <div className={(!open ? " col-xl-2" : " w-100px") + (!show ? " mobile-navbar-hide " :" mobile-show ") + " col-auto col-md-1 px-0 bg-default border-right min-vh-100 trans"}>
                     <div className={"logo"}>
                         {!open && <div className={"edulogo"}>
-                    <img className={"logosvg ms-4"} src={Logo} alt=""/>
-                    </div>}
-                    <div className={"close-btn-container mobile-hide"} onClick={toggleDrawer}>
-                        <img src={SideClose} alt="SideClose" className={!!open ? "rotate-180" :""}/>
-                    </div>
+                            <img className={"logosvg ms-4"} src={Logo} alt=""/>
+                        </div>}
+                        <div className={"close-btn-container mobile-hide"} onClick={toggleDrawer}>
+                            <img src={SideClose} alt="SideClose" className={!!open ? "rotate-180" :""}/>
+                        </div>
                     </div>
                     <div className="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 text-white pt-4">
 
@@ -352,13 +333,13 @@ function Layout({children}) {
                             <button className="navbar-toggler " type="button" onClick={()=>setShow(!show)}>
                                 <span className="navbar-toggler-icon"></span>
                             </button>
-                            
+
                             <div className="collapse navbar-collapse " id="">
                                 <ul className="navbar-nav ms-auto align-items-center flex-row">
                                     <li className="nav-item">
                                         <a className="nav-link active position-relative px-2" aria-current="page" href="#">
                                             {notifications.some((notification) => !notification.read) && (
-                                            <div className="red-dot" />
+                                                <div className="red-dot" />
                                             )}
                                             <img src={Bell} onClick={toggleNotification} />
                                         </a>

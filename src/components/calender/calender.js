@@ -267,8 +267,8 @@ function Calender(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3 ">
                                         <label htmlFor="exampleInputEmail1"
-                                            className="form-label">Start Time</label>
-                                        <DtPicker
+                                            className="form-label" >Start Time</label>
+                                        <DtPicker placeholder={"Enter Start Time"}
                                             inputClass={`form-control ${errors.start ? "border-red" : ""}`}
                                             onChange={(time) => setValue({ start: time })}
                                             withTime
@@ -285,7 +285,7 @@ function Calender(props) {
                                     <div className="mb-3 me-3">
                                         <label htmlFor="exampleInputEmail1"
                                             className="form-label">End Time</label>
-                                        <DtPicker
+                                        <DtPicker placeholder={"Enter End Time"}
                                             inputClass={`form-control ${errors.end ? "border-red" : ""}`}
                                             onChange={(time,date) => {
                                                 setValue({end: time})
