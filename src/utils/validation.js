@@ -100,7 +100,7 @@ export function validateParent(values) {
     return errors;
 }
 
-export function validatePay(values){
+export function validatePay(values) {
     let errors = {};
     return errors;
 
@@ -166,7 +166,7 @@ export function validateStatePayment(values) {
     console.log(values)
     let errors = {};
 
-    
+
     if (!values.month) {
         errors.month = "Month is Required"
     }
@@ -211,8 +211,18 @@ export function validateInstituteSetting(values) {
     if (!values.address) {
         errors.address = "Address is Required"
     }
-    if (values.email && !/\S+@\S+\.\S+/.test(values.email)) {
-        errors.email = 'Email is not valid';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!values.email) {
+        errors.email = "Email is required";
+    } else if (!emailRegex.test(values.email)) {
+        errors.email = "Invalid email format";
+    } else {
+        // Additional conditions to reject specific email addresses
+        const rejectedEmails = ["example@rejected.com", "another@rejected.com"];
+        if (rejectedEmails.includes(values.email)) {
+            errors.email = "This email address is not allowed";
+        }
     }
     if (!values.phoneNumber) {
         errors.phoneNumber = 'Contact No is required';
@@ -290,7 +300,7 @@ export function validateStudentPasswordSettings(values) {
     }
     if (!values.confirmPassword) {
         errors.confirmPassword = "Please enter current password"
-    }else if(values.newPassword !== values.confirmPassword){
+    } else if (values.newPassword !== values.confirmPassword) {
         errors.confirmPassword = "Password does not match"
     }
     return errors;
@@ -351,7 +361,7 @@ export function validateLeaderBoard(values) {
     console.log(values)
     let errors = {};
 
-    if (!values.regNo) {
+        if (!values.regNo) {
         errors.regNo = "Reg No is Required"
     }
     if (!values.subject) {
@@ -362,6 +372,26 @@ export function validateLeaderBoard(values) {
     } else if (isNaN(values.marks) || parseFloat(values.marks) <= 0) {
         errors.marks = 'Marks must be a valid positive number';
     }
+
+    return errors;
+}
+
+export function validateBroadcast(values) {
+    console.log(values)
+    let errors = {};
+
+
+
+    if (!values.messageTopic) {
+        errors.messageTopic = "Topic is Required"
+    }
+    if (!values.message) {
+        errors.message = "Message is Required"
+    }
+    if (!values.sender) {
+        errors.sender = "Sender is Required"
+    }
+
 
     return errors;
 }
