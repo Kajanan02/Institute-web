@@ -25,7 +25,7 @@ function QrScanner(props) {
             .then((res) => {
                 console.log(res.data)
                 toast.success("Successfully attendance updated");
-                dispatch(setMqttDetail({"mobileNumber":"0765471338","body":"1","type":"led"}))
+                dispatch(setMqttDetail({"mobileNumber":"0765471338","body":"1"}))
                 setLed(true)
 
             }).catch((err) => {
@@ -77,7 +77,7 @@ function QrScanner(props) {
                     <button className={"btn btn-secondary marks-dropdown-btn mt-4 px-5 py-2"} onClick={()=> setCameraVisible(!cameraVisible)}><img src={QrIcon} className={"me-3"} width={"25px"}/> Scan QR Code</button>
                 </div>
             </div>
-            <p>{data}</p>
+            <p onClick={()=> setData("No result")}>{data}</p>
         {/*<Mqtt led={led}/>*/}
         </Layout>
     );

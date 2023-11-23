@@ -5,7 +5,7 @@ import {validateStatePayment} from "../../utils/validation";
 import FeatherIcon from "feather-icons-react";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
-import {toggleLoader} from "../../redux/actions";
+import {setMqttDetail, toggleLoader} from "../../redux/actions";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
@@ -22,6 +22,7 @@ import PaymentModal from "./paymentModal";
 function StatepaymentForm(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
     const [formSubmitted, setFormSubmitted] = useState(false);
+    const [parentContact, setParentContact] = useState(null);
     const [studentId, setStudentId] = useState(null)
     const [modalShow, setModalShow] = useState(false);
     const [directPayment, setDirectPayment] = useState(false);
@@ -35,6 +36,7 @@ function StatepaymentForm(props) {
     
 
     const dispatch = useDispatch();
+    console.log(parentContact)
 
 
     const handleChangeSlip = (file) => {
@@ -127,6 +129,9 @@ function StatepaymentForm(props) {
                 props.update()
                 props.onHide();
                 toast.success(`Successfully Payment Created`)
+                let msg = values.name + " is successfully paid " + values.feesAmount + " for " + values.month + " month"
+                dispatch(setMqttDetail({"mobileNumber":parentContact,"body":msg,"type":"msg"}))
+
             }).catch((err) => {
             toast.error("Something went wrong")
         }).finally(() => {
@@ -272,6 +277,7 @@ function StatepaymentForm(props) {
                                                 setValue({studentId:res[0]})
                                                 setValue({name:find(studentsList,{nicNo:res[0]})?.name})
                                                 setValue({studentNicNo:res[0]})
+                                                setParentContact(find(studentsList,{nicNo:res[0]})?.parentContact)
                                                 setSingleSelections(res)
                                                 setStudentId(find(studentsList,{nicNo:res[0]})?._id)
                                             }}
@@ -444,7 +450,7 @@ function StatepaymentForm(props) {
                     Decline
                 </button>}
 
-                {props.type !== "State" && directPayment&&<button
+                {props.type !== "State" && props.type !== "View" && directPayment&&<button
                     type="button"
                     className={"btn btn-success"}
                     onClick={handleSubmit}
