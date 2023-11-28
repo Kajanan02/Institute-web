@@ -19,6 +19,7 @@ import {pluck, uniq} from "underscore";
 function StudentDashboard(props) {
     const [dataSet, setDataSet] = useState({});
     const [performancee, setPerformance] = useState("");
+    const [attendanceData, setAttendance] = useState(new Date());
     const dispatch = useDispatch();
 
 
@@ -36,13 +37,20 @@ function StudentDashboard(props) {
         }
     }
 
+    console.log(attendanceData)
+
 
     useEffect(() => {
         dispatch(toggleLoader(true))
 
         axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/attendance`)
             .then((res) => {
-                console.log(res.data)
+                let studentAttendance = res.data.filter((item) => item.studentId === getStudentId())
+                let sortData = studentAttendance.sort((a,b)=> new Date(b.date) - new Date(a.date))
+                if(sortData.length > 0){
+                    setAttendance(new Date(sortData[0].date))
+                }
+                console.log(sortData)
             }).catch((err) => {
             console.log(err)
         }).finally(() => {
@@ -174,8 +182,8 @@ function StudentDashboard(props) {
                             <div className={"card-body "}>
 
                                 <div className={"card-text"}><b>Last Attendance</b></div>
-                                <div className={"card-text-msg"}>Date : 19-11-2023</div>
-                                <div className={"card-text-msg"}>Time : 10.05 am</div>
+                                <div className={"card-text-msg"}>Date : {attendanceData.toISOString().split('T')[0]}</div>
+                                <div className={"card-text-msg"}>Time : {attendanceData.getHours() + " : " + attendanceData.getMinutes()}</div>
                             </div>
                         </div>
                     </div>
