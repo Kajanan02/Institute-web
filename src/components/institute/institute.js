@@ -2,10 +2,11 @@ import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from "feather-icons-react";
 import InstituteForm from "./instituteForm";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import {instituteData} from "../institute/instituteDamiData";
 import axios from "axios";
+import {toast} from "react-toastify";
 // import {appointmentData} from "../appointment/damiData";
 
 
@@ -15,7 +16,14 @@ function Institute(props) {
     const [modalShow, setModalShow] = useState(false);
     const [update, setUpdate] = useState(false);
     const [selectedInstitute, setSelectedInstitute] = useState(null)
+    const [selectedInstituteId, setSelectedInstituteId] = useState(null)
     const users = localStorage.getItem("USER_ID");
+
+    const dispatch = useDispatch();
+
+    const confirmationDialog = useSelector(state => {
+        return state.setting.confirmationDialog
+    });
 
     useEffect(() => {
         dispatch(toggleLoader(true))
@@ -28,31 +36,36 @@ function Institute(props) {
             dispatch(toggleLoader(false))
         })
     }, [update])
-
-    function handleDelete() {
+    function handleDelete(id) {
+        setSelectedInstituteId(id)
         dispatch(toggleConfirmationDialog({
             isVisible: true,
             confirmationHeading: ('ARE YOU SURE YOU WANT TO DELETE THIS DETAILS'),
             confirmationDescription: ('THE DELETE ACTION WILL REMOVE THE THIS DETAILS')
         }));
     }
-    // const [List, setMarksList] = useState([{ No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3},
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 },
-    // { No: 0o1, Reg: 200012345678, name: "Harsh", email: "Physics", contact: 80, address: 0o3 }])
-    // console.log(marksList)
-    // console.log(marksList[0])
 
-    const dispatch = useDispatch();
+    useEffect(()=>{
+        if (!confirmationDialog || !confirmationDialog.onSuccess || !selectedInstituteId) {
+            console.log("asdf")
+            return;
+        }
+        console.log("asdasd")
+        dispatch(toggleLoader(true))
+        axios.delete(`${process.env.REACT_APP_HOST}/users/${selectedInstituteId}/deleteUser`)
+            .then((res) => {
+                setUpdate(!update)
+                toast.success(`Successfully Deleted`)
+
+                setUpdate(!update)
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setSelectedInstituteId(null)
+        })
+    },[confirmationDialog])
+
     return (
         <Layout>
                 <div className={"container"}>
@@ -139,7 +152,7 @@ function Institute(props) {
                                                      }}/>
 
 
-                                        <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={handleDelete}/>
+                                        <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={()=>handleDelete(data._id)}/>
                                     </td>
                                 </tr>))}
                                 </tbody>

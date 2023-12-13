@@ -184,8 +184,9 @@ function Calender(props) {
                     } if(item.end) {
                         let end = JSON.parse(item.end)
                         item.end = new Date(end.year, end.month - 1, end.day, end.hour, end.minute, 0)
-
-
+                    }
+                    if(item.color){
+                        item.bgColor = item.color
                     }
                     return item
                 })
@@ -304,29 +305,29 @@ function Calender(props) {
                                         <label htmlFor="exampleInputEmail1"
                                             className="form-label">Color</label>
                                         <div className={"d-flex gap-3"}>
-                                            <div className={"select-round green-round " + (values.color === "#01452EFF" ? "selected-round" : "")} onClick={() => setValue({ color: "#01452EFF", textColor: "rgb(1 69 46)" })}>
-                                                {values.color === "#01452EFF" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round green-round " + (values.color === "rgba(1,69,46,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(1,69,46,0.3)", textColor: "rgba(1,69,46,0.3)" })}>
+                                                {values.color === "rgba(1,69,46,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round purple-round " + (values.color === "#3C0384FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#3C0384FF", textColor: "#3c0384" })}>
-                                                {values.color === "#3C0384FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round purple-round " + (values.color === "rgba(60,3,132,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(60,3,132,0.3)", textColor: "rgba(60,3,132,0.3)" })}>
+                                                {values.color === "rgba(60,3,132,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round lightBlue-round " + (values.color === "#015C6CFF" ? "selected-round" : "")} onClick={() => setValue({ color: "#015C6CFF", textColor: "#015c6c" })}>
-                                                {values.color === "#015C6CFF" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round lightBlue-round " + (values.color === "rgba(1,92,108,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(1,92,108,0.3)", textColor: "rgba(1,92,108,0.3)" })}>
+                                                {values.color === "rgba(1,92,108,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round yellow-round " + (values.color === "#7D5400FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#7D5400FF", textColor: "#7d5400" })}>
-                                                {values.color === "#7D5400FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round yellow-round " + (values.color === "rgba(125,84,0,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(125,84,0,0.3)", textColor: "rgba(125,84,0,0.3)" })}>
+                                                {values.color === "rgba(125,84,0,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round darkBlue-round " + (values.color === "#003768FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#003768FF", textColor: "rgb(0 55 104)" })}>
-                                                {values.color === "#003768FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round darkBlue-round " + (values.color === "rgba(0,55,104,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(0,55,104,0.3)", textColor: "rgba(0,55,104,0.3)" })}>
+                                                {values.color === "rgba(0,55,104,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
-                                            <div className={"select-round lightGreen-round " + (values.color === "#028633FF" ? "selected-round" : "")} onClick={() => setValue({ color: "#028633FF", textColor: "#028633" })}>
-                                                {values.color === "#028633FF" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round lightGreen-round " + (values.color === "rgba(2,134,51,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(2,134,51,0.3)", textColor: "rgba(2,134,51,0.3)" })}>
+                                                {values.color === "rgba(2,134,51,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
                                             {/*<div className={"select-round orange-round "+ (values.bgColor === "rgb(0, 167, 111)" ? "selected-round" :"")} onClick={()=> setValue({bgColor: "",textColor: ""})}>*/}
                                             {/*    <FeatherIcon className={"text-white"} icon={"check"}/>*/}
                                             {/*</div>*/}
-                                            <div className={"select-round red-round " + (values.bgColor === "#ff56304d" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "#ff56304d", textColor: "#6f1501" })}>
-                                                {values.bgColor === "#ff56304d" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div className={"select-round red-round " + (values.bgColor === "#FF56304D" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "#FF56304D", textColor: "#FF56304D" })}>
+                                                {values.bgColor === "#FF56304D" && <FeatherIcon className={"text-white"} icon={"check"} />}
                                             </div>
                                         </div>
 

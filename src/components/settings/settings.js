@@ -77,7 +77,7 @@ const [userData, setUserData] = useState({})
                         <form  onSubmit={handleSubmit} className={"row student-settings-form"}>
                             {!isInstituteAccount() && <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">
                                         Name</label></h6>
                                     <input name={"name"} placeholder={"Enter First Name"}
                                            className={`form-control ${errors.firstname ? "border-red" : ""}`}

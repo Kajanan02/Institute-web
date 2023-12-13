@@ -8,9 +8,11 @@ import AddPaymentForm from "../student/add-payment-student";
 import {toggleConfirmationDialog,setUserDetail, toggleLoader} from "../../redux/actions";
 import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
-import {values, pick, filter, pluck} from "underscore";
+import {values, pick, filter, pluck, uniq} from "underscore";
 import {toast} from "react-toastify";
 import {useLocation, useNavigate, useNavigation, useSearchParams} from "react-router-dom";
+import Chart from "react-apexcharts";
+import {monthArray} from "../../utils/utils";
 
 
 
@@ -24,6 +26,8 @@ function PaymentInvoice(props) {
     const [studentModalShow, setStudentModalShow] = useState(false);
     const [selectedPayment, setSelectedPayment] = useState({})
     const [update, setUpdate] = useState(false);
+    const [graph, setGraph] = useState(false);
+    const [graphData, setGraphData] = useState(false);
     const instituteId = localStorage.getItem("USER_ID");
     const studentId = localStorage.getItem("STUDENT_ID");
     const navigation = useNavigate();
@@ -42,7 +46,7 @@ function PaymentInvoice(props) {
             let values = {}
             values.name = userData?.studentId?.name
             values.studentNicNo = userData?.studentId?.nicNo
-            values.month = "MARCH"
+            values.month = "NOVEMBER"
             values.feesAmount = 1500
             values.status = "PAID"
             values.method = "ONLINE"
@@ -71,6 +75,30 @@ function PaymentInvoice(props) {
             }else{
                 setPaymentList(res.data)
                 setPaymentAllList(res.data)
+                let temp = []
+                let subList = uniq(pluck(res.data,"month"))
+
+                console.log(subList)
+                for (const subListElement of monthArray) {
+
+                    if(subList.includes(subListElement)){
+                        let data = {}
+                        // data.name = subListElement
+                        let totalArr = res.data.filter((item) => item.month === subListElement).map((item) => {
+                            return item.feesAmount
+                        })
+                        let total = totalArr.reduce((a, b) => a + Number(b), 0)
+                        data.x = subListElement
+                        data.y = total.toString()
+
+                        console.log(data)
+
+                        temp.push(data)
+                    }
+                }
+
+                console.log(temp)
+                setGraphData([{name:"Payment",data:temp}])
 
             }
             
@@ -80,6 +108,8 @@ function PaymentInvoice(props) {
             dispatch(toggleLoader(false))
         })
     }, [update])
+
+    console.log(graphData)
     
     const dispatch = useDispatch();
 
@@ -109,6 +139,37 @@ function PaymentInvoice(props) {
         }
 
     }
+
+    const optionsGraph = {
+        chart: {
+            height: 350,
+            // type: 'area'
+        },
+        dataLabels: {
+            enabled: true
+        },
+        colors:['#00b957','#008ffb','#ad00b9'],
+        fill: {
+            type: 'gradient',
+            gradient: {
+                opacityFrom: 0.7,
+                opacityTo: 0.4,
+            }
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            type: 'category',
+        },
+        tooltip: {
+            backgroundColor: '#ff0000',
+            x: {
+                format: 'month'
+            },
+        },
+    };
+
 
     return (
         <Layout>
@@ -143,16 +204,16 @@ function PaymentInvoice(props) {
 
                                 {isInstituteAccount() &&<button type="button" className={"btn btn-secondary students-dropdown-btn "}
                                     // data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                         onClick={() => setModalType("graph")}>
+                                         onClick={() => setGraph(!graph)}>
                                     {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"} />*/}
-                                    Graph
+                                    {graph ? "Table" : "Graph"}
                                 </button>}
 
                             </div>
                         </div>
                     </div>
 
-                    <div className={"table-container p-2 pt-0 "}>
+                    {!graph && <div className={"table-container p-2 pt-0 "}>
                         <table className={"table table-hover table-striped sa-table-width"}>
 
                             <thead>
@@ -175,42 +236,53 @@ function PaymentInvoice(props) {
                                 <td>{data.method}</td>
                                 <td>{data.studentNicNo}</td>
                                 <td>
-                                <div className={"appointment_state " + (colorChange(data.status)) + (isInstituteAccount() ? " cursor-pointer" : "")}
-                                             onClick={() => {
-                                                 if(isParentAccount() || data.status === "PAID") {
-                                                     return
-                                                 }
-                                                let temp = {...data}
-                                                temp.date = data.date?.slice(0,10)
-                                                setSelectedPayment(temp)
-                                                setModalShow(true)
-                                                setModalType("State");
-                                         }
-                                    }>{data.status}</div>
+                                    <div
+                                        className={"appointment_state " + (colorChange(data.status)) + (isInstituteAccount() ? " cursor-pointer" : "")}
+                                        onClick={() => {
+                                            if (isParentAccount() || data.status === "PAID") {
+                                                return
+                                            }
+                                            let temp = {...data}
+                                            temp.date = data.date?.slice(0, 10)
+                                            setSelectedPayment(temp)
+                                            setModalShow(true)
+                                            setModalType("State");
+                                        }
+                                        }>{data.status}</div>
 
                                 </td>
 
 
                                 <td className={"table-action"}>
                                     <div type="button"
-                                        onClick={() => {
-                                            setModalType("View");
-                                            setModalShow(true)
-                                        }}>
+                                         onClick={() => {
+                                             setModalType("View");
+                                             setModalShow(true)
+                                         }}>
                                         <FeatherIcon className={"action-icons"} icon={"eye"} onClick={() => {
                                             setModalType("View")
                                             let temp = {...data}
-                                            temp.date = data.date?.slice(0,10)
+                                            temp.date = data.date?.slice(0, 10)
                                             setSelectedPayment(temp)
-                                            }}/>
+                                        }}/>
 
                                     </div>
                                 </td>
                             </tr>))}
                             </tbody>
                         </table>
-                        {paymentList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Payment Data Found,Please Add</div>}
-                    </div>
+                        {paymentList.length === 0 &&
+                            <div className={"text-center py-5 fw-bold"}>No Payment Data Found,Please Add</div>}
+                    </div>}
+
+                    {graph && <div className={"row m-1 p-2 mt-4"}>
+                        <div className={"default-container"}>
+
+                            {graphData.length > 0 &&
+                                <Chart options={optionsGraph} series={graphData} type="area" width={"100%"}
+                                       height={320}/>}
+                        </div>
+                    </div>}
                 </div>
             </div>
 

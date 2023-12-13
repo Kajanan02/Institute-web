@@ -9,7 +9,13 @@ import {validateStudentPasswordSettings} from "../../../utils/validation";
 import PasswordSetting from "../../password-setting/password-setting";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {getInstituteId, getStudentId, getUserId, isStudentAccount} from "../../../utils/Authentication";
+import {
+    getInstituteId,
+    getStudentId,
+    getUserId,
+    isParentAccount,
+    isStudentAccount
+} from "../../../utils/Authentication";
 import {setUserDetail, toggleLoader} from "../../../redux/actions";
 import {toast} from "react-toastify";
 
@@ -149,7 +155,7 @@ console.log(errors)
                                         {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
                                     </div>
                             </div>
-                            <div className={"col-md-6"}>
+                            {!isParentAccount()&&<div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Date
                                         of Birth</label></h6>
@@ -158,11 +164,11 @@ console.log(errors)
                                            className={`form-control ${errors.dob ? "border-red" : ""}`}
                                            onChange={handleChange}
                                            value={values.dob || ""}
-                                           
+
                                     />
                                     {errors.dob && <p className={"text-red"}>{errors.dob}</p>}
                                 </div>
-                            </div>
+                            </div>}
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">NIC
