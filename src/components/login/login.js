@@ -76,9 +76,9 @@ function Login(props) {
                     <div className="login-sig">
                         <b>Sign in to EDUZENT</b>
                     </div>
-                    <div className={"login-nuser"}>
-                        New user? <a className="login-sign" href="http://127.0.0.1:5500/index.html">Create an account</a>
-                    </div>
+                    {/*<div className={"login-nuser"}>*/}
+                    {/*    New user? <a className="login-sign" href="http://127.0.0.1:5500/index.html">Create an account</a>*/}
+                    {/*</div>*/}
                     <br/>
                     <div className="login-form-inner">
                         <form action="#" className="full-container form-login">
@@ -93,7 +93,7 @@ function Login(props) {
                             </div>
                             {errors.password && <p className={"text-red"}>{errors.password}</p>}
                             <br/>
-                            <a className="login-forgot" href="">Forgot Password?</a>
+                            {/*<a className="login-forgot" href="">Forgot Password?</a>*/}
 
                             <div className="login-field login-btn">
                                 <div className="login-login-btn-layer">

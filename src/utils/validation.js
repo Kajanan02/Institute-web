@@ -1,3 +1,4 @@
+import {isParentAccount} from "./Authentication";
 
 const slNICRegExp = /^(?:19|20)?\d{2}[0-9]{10}|[0-9]{9}[x|X|v|V]$/;
 let contacNum = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/g;
@@ -21,7 +22,9 @@ export function validateStudent(values) {
     let errors = {};
 
     if (!values.name) {
-        errors.name = "Name is Required"
+        errors.name = " Name is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.name)) {
+        errors.name = "Invalid Name Format";
     }
     if (!values.nicNo) {
         errors.nicNo = "NIC No is Required"
@@ -71,7 +74,9 @@ export function validateParent(values) {
     let errors = {};
 
     if (!values.name) {
-        errors.name = "Name is Required"
+        errors.name = " Name is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.name)) {
+        errors.name = "Invalid Name Format";
     }
     if (!values.nicNo) {
         errors.nicNo = "NIC No is Required"
@@ -128,7 +133,9 @@ export function validatePayment(values) {
     let errors = {};
 
     if (!values.name) {
-        errors.name = "Name is Required"
+        errors.name = " Name is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.name)) {
+        errors.name = "Invalid Name Format";
     }
     if (!values.amount) {
         errors.amount = "Amount is Required"
@@ -206,7 +213,9 @@ export function validateInstituteSetting(values) {
     let errors = {};
 
     if (!values.name) {
-        errors.name = " First Name is Required"
+        errors.name =  "Name is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.name)) {
+        errors.name = "Invalid Name Format";
     }
     if (!values.address) {
         errors.address = "Address is Required"
@@ -265,7 +274,9 @@ export function validateStudentSettings(values) {
     let errors = {};
 
     if (!values.name) {
-        errors.name = "Name is Required"
+        errors.name = "First Name is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.name)) {
+        errors.name = "Invalid Name Format";
     }
 
     if (!values.nicNo) {
@@ -285,7 +296,7 @@ export function validateStudentSettings(values) {
     if (!values.gender) {
         errors.gender = "Gender is Required"
     }
-    if (!values.dob) {
+    if (!isParentAccount() && !values.dob) {
         errors.dob = "Date of Birth is Required"
     }
     return errors;
@@ -312,10 +323,14 @@ export function validateinstitute(values) {
 
 
     if (!values.name) {
-        errors.name = "Name is Required"
+        errors.name = "First Name is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.name)) {
+        errors.name = "Invalid Name Format";
     }
 
-    if (!values.email && !/\S+@\S+\.\S+/.test(values.email)) {
+    if (!values.email) {
+        errors.email = 'Email is required';
+    }else  if(values.email && !/\S+@\S+\.\S+/.test(values.email)) {
         errors.email = 'Email is not valid';
     }
     if (!values.phoneNumber) {
@@ -334,17 +349,27 @@ export function validateCareer(values) {
 
 
     if (!values.course) {
-        errors.course = "Course is Required"
+        errors.course = " Course is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.course)) {
+        errors.course = "Invalid Course Format";
     }
     if (!values.degreeProgramme) {
-        errors.degreeProgramme = "Degree Programme is Required"
+        errors.degreeProgramme = " Degree Programme is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.degreeProgramme)) {
+        errors.degreeProgramme = "Invalid Degree Programme Format";
     }
     if (!values.availableUniversities) {
-        errors.availableUniversities = "Available Universities is Required"
+        errors.availableUniversities = " Available Universities is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.availableUniversities)) {
+        errors.availableUniversities = "Invalid Available Universities Format";
     }
     if (!values.medium) {
-        errors.medium = "Medium of Instructions is Required"
+        errors.medium = "medium is Required";
+    } else if (!/^[A-Za-z\s'-]+$/.test(values.medium)) {
+        errors.medium = "Invalid medium Format";
     }
+
+
     if (!values.duration) {
         errors.duration = "Duration is required";
     } else if (!values.duration.match(/^[1-8]$/)) {

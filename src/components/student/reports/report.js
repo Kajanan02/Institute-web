@@ -80,7 +80,6 @@ function Report(props) {
 
                                     <li><a className={"dropdown-item cursor-pointer"} onClick={()=>setMarksList(filterDataByKey(marksListAll,"All"))}>All</a></li>
                                     {uniq(pluck(marksListAll,"subject")).map((item,index)=> <li><a className={"dropdown-item cursor-pointer"} key={index+item} onClick={()=>setMarksList(filterDataByKey(marksListAll,item))}>{item.replace("_"," ")}</a></li>)}
-                                    <li><a className={"dropdown-item"} href="#">Chemistry</a></li>
                                 </ul>
                             </div>}
 

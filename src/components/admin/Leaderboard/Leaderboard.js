@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Layout from "../../../layout/layout";
 import FeatherIcon from "feather-icons-react";
-import { mapObject } from "underscore";
+import {mapObject, uniq} from "underscore";
 import LeaderBoardForm from "./leaderBoardForm";
 // import {leaderBoardData} from "./leaderBoardDamidata";
 import { toggleConfirmationDialog, toggleLoader } from "../../../redux/actions";
@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { values, pick, filter, pluck } from "underscore";
 import { toast } from "react-toastify";
-import { rankMarks } from '../../../utils/utils';
+import {filterDataByKey, rankMarks} from '../../../utils/utils';
 import {isAdminAccount} from "../../../utils/Authentication";
 
 export default function LeaderBoard(props) {
@@ -112,11 +112,9 @@ export default function LeaderBoard(props) {
                                     Subject {/* Change this text to your desired label */}
                                 </button>
                                 <ul className={"dropdown-menu dropdown-menu-dark"}>
-                                    <li><a className={"dropdown-item"} href="#">Combined Mathematics</a></li>
-                                    <li><a className={"dropdown-item"} href="#">Physics</a></li>
-                                    <li><a className={"dropdown-item"} href="#">Chemistry</a></li>
-                                    <li><a className={"dropdown-item"} href="#">ICT</a></li>
-                                    <li><a className={"dropdown-item"} href="#">Bio Science</a></li>
+                                    <li><a className={"dropdown-item cursor-pointer"} onClick={()=>setLeaderBoardList(filterDataByKey(leaderBoardAllList,"All"))}>All</a></li>
+                                    {uniq(pluck(leaderBoardAllList,"subject")).map((item,index)=> <li><a className={"dropdown-item cursor-pointer"} key={index+item} onClick={()=>setLeaderBoardList(filterDataByKey(leaderBoardAllList,item))}>{item.replace("_"," ")}</a></li>)}
+
                                 </ul>
                             </div>
 
