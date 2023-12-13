@@ -130,6 +130,8 @@ function StatepaymentForm(props) {
                 props.onHide();
                 toast.success(`Successfully Payment Created`)
                 let msg = values.name + " is successfully paid " + values.feesAmount + " for " + values.month + " month"
+                console.log(msg)
+                console.log(parentContact)
                 dispatch(setMqttDetail({"mobileNumber":parentContact,"body":msg,"type":"msg"}))
 
             }).catch((err) => {

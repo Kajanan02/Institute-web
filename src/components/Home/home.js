@@ -47,7 +47,7 @@ function Home(props) {
             // type: 'area'
         },
         dataLabels: {
-            enabled: false
+            enabled: true
         },
         colors:['#00b957'],
         fill: {
