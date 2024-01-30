@@ -66,7 +66,7 @@ function Login(props) {
                 <div className="login-image">
                     <img className={"ms-5"} src={Logo} alt=""/>
                 </div>
-                <div className="login-head"><b>HI,Welcome back EDUZENT</b></div>
+                <div className="login-head"><b>HI,Welcome back EduForge</b></div>
             </div>
             <div className={"login-container"}>
                 <div className="login-img">
@@ -74,7 +74,7 @@ function Login(props) {
                 </div>
                 <div className="full-container">
                     <div className="login-sig">
-                        <b>Sign in to EDUZENT</b>
+                        <b>Sign in to EduForge</b>
                     </div>
                     {/*<div className={"login-nuser"}>*/}
                     {/*    New user? <a className="login-sign" href="http://127.0.0.1:5500/index.html">Create an account</a>*/}
