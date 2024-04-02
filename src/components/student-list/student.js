@@ -8,7 +8,7 @@ import {toggleConfirmationDialog, toggleLoader} from "../../redux/actions";
 import {ExportToCsv} from "export-to-csv";
 import axios from "axios";
 import {toast} from "react-toastify";
-import {values,pick,filter} from "underscore";
+import {filter, pick, values} from "underscore";
 
 function Students(props) {
 
@@ -43,8 +43,6 @@ function Students(props) {
     }, [update])
 
 
-
-
     function handleDelete(id) {
         dispatch(toggleConfirmationDialog({
             isVisible: true,
@@ -57,7 +55,7 @@ function Students(props) {
 
     console.log(confirmationDialog)
     console.log(deletedId)
-    useEffect(()=>{
+    useEffect(() => {
         if (!confirmationDialog || !confirmationDialog.onSuccess) {
             console.log("asdf")
             return;
@@ -66,7 +64,7 @@ function Students(props) {
         dispatch(toggleLoader(true))
         axios.delete(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${deletedId}`)
             .then((res) => {
-             setUpdate(!update)
+                setUpdate(!update)
                 toast.success(`Successfully Deleted`)
 
             }).catch((err) => {
@@ -75,7 +73,7 @@ function Students(props) {
             dispatch(toggleLoader(false))
             setDeletedId(null)
         })
-    },[confirmationDialog])
+    }, [confirmationDialog])
 
     function exportData() {
         const data = [];
@@ -83,11 +81,11 @@ function Students(props) {
             data.push({
                 "Name": student.name,
                 "Date of Birth": student.dob,
-                "Gender":student.gender,
+                "Gender": student.gender,
                 "NIC No": student.nicNo,
                 "Address ": student.address,
-                "Subjects ": student.subjects.map(e => e.replace("_"," ")).join(","),
-                "Joined Date":student.createdAt.slice(0,10),
+                "Subjects ": student.subjects.map(e => e.replace("_", " ")).join(","),
+                "Joined Date": student.createdAt.slice(0, 10),
                 "Email": student.email ? student.email : " - ",
             });
         });
@@ -100,7 +98,7 @@ function Students(props) {
             title: "Student Details",
             useBom: true,
             noDownload: false,
-            headers: ["Name", "Date of Birth", "Gender", "NIC No", "Address ", "Subjects ", "Joined Date","Email"],
+            headers: ["Name", "Date of Birth", "Gender", "NIC No", "Address ", "Subjects ", "Joined Date", "Email"],
             filename: "StudentDetails",
             nullToEmptyString: true,
         };
@@ -112,7 +110,9 @@ function Students(props) {
     function handleSearch(e) {
         let val = e.target.value;
         if (val !== "") {
-            let res = filter(studentsAllist, function (item) { return values(pick(item, 'name',  'gender', 'createdAt','nicNo')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase()); });
+            let res = filter(studentsAllist, function (item) {
+                return values(pick(item, 'name', 'gender', 'createdAt', 'nicNo')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase());
+            });
             setStudentsList(res);
             console.log(res)
         } else {
@@ -128,7 +128,8 @@ function Students(props) {
                         <div><h3 className={"content-heading"}>Students Details</h3></div>
                         <div className={"students-dropdown-container d-flex justify-content-end pb-3"}>
                             <div className={"table-btn-container"}>
-                                <input className="form-control w-50" onChange={handleSearch} type="search" placeholder="Search"
+                                <input className="form-control w-50" onChange={handleSearch} type="search"
+                                       placeholder="Search"
                                        aria-label="Search"/>
 
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}
@@ -175,7 +176,7 @@ function Students(props) {
                                 <td>{data.nicNo}</td>
                                 <td>{data.name}</td>
                                 <td>{data.gender}</td>
-                                <td>{data.createdAt?.slice(0,10)}</td>
+                                <td>{data.createdAt?.slice(0, 10)}</td>
                                 <td className={"table-action"}>
 
 
@@ -195,7 +196,8 @@ function Students(props) {
                             </tr>))}
                             </tbody>
                         </table>
-                        {studentsList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Student Data Found,Please Add</div>}
+                        {studentsList.length === 0 &&
+                            <div className={"text-center py-5 fw-bold"}>No Student Data Found,Please Add</div>}
                     </div>
                 </div>
             </div>
@@ -204,7 +206,7 @@ function Students(props) {
                 show={modalShow}
                 type={modalType}
                 onHide={() => setModalShow(false)}
-                update={()=>setUpdate(!update)}
+                update={() => setUpdate(!update)}
                 selectedStudent={selectedStudent}
             />
 

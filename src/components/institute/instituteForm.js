@@ -8,6 +8,7 @@ import {toggleLoader} from "../../redux/actions";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
+
 // import MultiSelect from "@khanacademy/react-multi-select";
 
 
@@ -15,7 +16,6 @@ function InstituteForm(props) {
     const [profilePic, setProfilePic] = useState(null);
     const [isSubmit, setIsSubmit] = useState(false);
     const [updateInstitute, setUpdateInstitute] = useState(false);
-
 
 
     // const [selectedBuyer, setSelectedBuyer] = useState([]);
@@ -35,10 +35,12 @@ function InstituteForm(props) {
         setIsSubmit(true)
 
     }
+
     function resetForm() {
         initForm({})
         setProfilePic(null)
     }
+
     function imageUpload(file, key) {
         console.log("Fille")
 
@@ -60,8 +62,8 @@ function InstituteForm(props) {
         imageUpload(file, "profilePic")
     };
 
-    useEffect(()=>{
-        if(!isSubmit || props.type !== "Edit"){
+    useEffect(() => {
+        if (!isSubmit || props.type !== "Edit") {
             return
         }
         dispatch(toggleLoader(true))
@@ -80,15 +82,15 @@ function InstituteForm(props) {
             props.onHide()
         })
 
-    },[isSubmit])
+    }, [isSubmit])
 
-    useEffect(()=>{
-        if(!props.selectedInstitute){
+    useEffect(() => {
+        if (!props.selectedInstitute) {
             return
         }
         initForm(props.selectedInstitute)
 
-    },[props.selectedInstitute])
+    }, [props.selectedInstitute])
 
     useEffect(() => {
         if (!isSubmit || props.type !== "Add") {
@@ -141,9 +143,9 @@ function InstituteForm(props) {
                 }
             }}>
                 {<Modal.Title id="contained-modal-title-vcenter">
-                    {props.type === "Add" &&<div> Add Institute Details</div>}
-                    {props.type === "View" &&<div> View Institute Details</div>}
-                    {props.type === "Edit" &&<div> Edit Institute Details</div>}
+                    {props.type === "Add" && <div> Add Institute Details</div>}
+                    {props.type === "View" && <div> View Institute Details</div>}
+                    {props.type === "Edit" && <div> Edit Institute Details</div>}
                 </Modal.Title>}
             </Modal.Header>
             <Modal.Body scrollable>
@@ -154,10 +156,10 @@ function InstituteForm(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${props.type === "View"  ? " profile-view-text " : ""}`}>
+                                               className={`form-label ${props.type === "View" ? " profile-view-text " : ""}`}>
                                             Name</label>
                                         <input name={"name"} placeholder={"Enter Name"}
-                                               className={` form-control  ${errors.name ? "border-red" : ""} ${props.type === "View"  ? " form-control:disabled" : ""}  `}
+                                               className={` form-control  ${errors.name ? "border-red" : ""} ${props.type === "View" ? " form-control:disabled" : ""}  `}
 
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
@@ -173,10 +175,10 @@ function InstituteForm(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${props.type === "View"  ? " profile-view-text " : ""}`}>
+                                               className={`form-label ${props.type === "View" ? " profile-view-text " : ""}`}>
                                             Email</label>
                                         <input name={"email"} placeholder={"Enter Email"}
-                                               className={` form-control  ${errors.email ? "border-red" : ""} ${props.type === "View"  ? " form-control:disabled" : ""}  `}
+                                               className={` form-control  ${errors.email ? "border-red" : ""} ${props.type === "View" ? " form-control:disabled" : ""}  `}
 
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
@@ -208,10 +210,10 @@ function InstituteForm(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${props.type === "View"  ? " profile-view-text " : ""}`}>
+                                               className={`form-label ${props.type === "View" ? " profile-view-text " : ""}`}>
                                             Contact No</label>
                                         <input name={"phoneNumber"} placeholder={"Enter Phone No"}
-                                               className={` form-control  ${errors.phoneNumber ? "border-red" : ""} ${props.type === "View"  ? " form-control:disabled" : ""}  `}
+                                               className={` form-control  ${errors.phoneNumber ? "border-red" : ""} ${props.type === "View" ? " form-control:disabled" : ""}  `}
 
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
@@ -228,10 +230,10 @@ function InstituteForm(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${props.type === "View"  ? " profile-view-text " : ""}`}>
+                                               className={`form-label ${props.type === "View" ? " profile-view-text " : ""}`}>
                                             Address</label>
                                         <input name={"address"} placeholder={"Enter Address"}
-                                               className={` form-control  ${errors.address ? "border-red" : ""} ${props.type === "View"  ? " form-control:disabled" : ""}  `}
+                                               className={` form-control  ${errors.address ? "border-red" : ""} ${props.type === "View" ? " form-control:disabled" : ""}  `}
 
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
@@ -245,7 +247,7 @@ function InstituteForm(props) {
 
                                     </div>
                                 </div>
-                                {props.type === "View" &&values?.profilePic &&<div className={"col-6"}>
+                                {props.type === "View" && values?.profilePic && <div className={"col-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
                                                className="form-label profile-view-text">Profile pic:&nbsp;</label>
@@ -259,29 +261,30 @@ function InstituteForm(props) {
                                                 borderRadius: 12,
                                                 cursor: 'pointer',
                                             }}
-                                          />
+                                        />
                                     </div>
-                                </div>}                                {props.type !== "View" &&<div className={"col-md-12"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className={`form-label d-block ${props.type !== "View" ? "" : ""}`}>Profile
-                                            Picture</label>
-                                         <FileUploader handleChange={handleChangeProfile}>
-                                            <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
-                                                {!profilePic?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
-                                                    <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
-                                                }
-                                            </div>
-                                        </FileUploader>
-                                    </div>
-                                </div>}
+                                </div>} {props.type !== "View" && <div className={"col-md-12"}>
+                                <div className="mb-3">
+                                    <label htmlFor="exampleInputEmail1"
+                                           className={`form-label d-block ${props.type !== "View" ? "" : ""}`}>Profile
+                                        Picture</label>
+                                    <FileUploader handleChange={handleChangeProfile}>
+                                        <div className={"file-uploader-container"}>
+                                            <img src={uploadIcon} width={"27%"}/>
+                                            {!profilePic?.name ? <div>
+                                                    <div className={"fw-semibold my-2"}>Drop or Select file
+                                                    </div>
+                                                    <div className={""}>Drop files here or click <span
+                                                        className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                        your machine
+                                                    </div>
+                                                </div> :
+                                                <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
+                                            }
+                                        </div>
+                                    </FileUploader>
+                                </div>
+                            </div>}
 
 
                             </div>
@@ -303,7 +306,7 @@ function InstituteForm(props) {
                     Cancel
                 </button>
 
-                {props.type === "Add" &&<button
+                {props.type === "Add" && <button
                     type="button"
                     className={"btn btn-secondary students-dropdown-btn"}
                     onClick={handleSubmit}

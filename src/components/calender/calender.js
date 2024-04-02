@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
-import { Calendar, momentLocalizer } from 'react-big-calendar'
+import {Calendar, momentLocalizer} from 'react-big-calendar'
 import moment from 'moment'
 import formHandler from "../../utils/FormHandler";
-import { validateEvent } from "../../utils/validation";
+import {validateEvent} from "../../utils/validation";
 import DtPicker from 'react-calendar-datetime-picker'
 import FeatherIcon from "feather-icons-react";
 import {getInstituteId, isAdminAccount, isInstituteAccount} from "../../utils/Authentication";
@@ -105,12 +105,13 @@ function Calender(props) {
 
     function resetForm() {
         const values = {};
-        initForm({ ...values });
+        initForm({...values});
         Object.keys(values).forEach((key) => delete values[key]);
         deleteErrors(errors);
         setIsModalVisible(false);
         setIsUpdateAvailable(false);
     }
+
     function getDateInfo(date) {
         return {
             day: date.getDate(),
@@ -122,7 +123,7 @@ function Calender(props) {
     }
 
     useEffect(() => {
-        if(!isSubmitted || isUpdateAvailable){
+        if (!isSubmitted || isUpdateAvailable) {
             return
         }
         values.color = values.color ? values.color : '#8E0018FF'
@@ -135,9 +136,9 @@ function Calender(props) {
         console.log(data)
         dispatch(toggleLoader(true))
         axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender`, data)
-            .then(()=>toast.success("Successfully Added"))
-            .catch((err)=>toast.error("Something went wrong"))
-            .finally(()=> {
+            .then(() => toast.success("Successfully Added"))
+            .catch((err) => toast.error("Something went wrong"))
+            .finally(() => {
                 dispatch(toggleLoader(false))
                 setIsSubmitted(false)
                 setIsUpdateAvailable(false)
@@ -147,7 +148,7 @@ function Calender(props) {
     }, [isSubmitted]);
 
     useEffect(() => {
-        if(!isSubmitted || !isUpdateAvailable){
+        if (!isSubmitted || !isUpdateAvailable) {
             return
         }
         values.color = values.color ? values.color : '#8E0018FF'
@@ -160,9 +161,9 @@ function Calender(props) {
         console.log(data)
         dispatch(toggleLoader(true))
         axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender/${values._id}`, data)
-            .then(()=>toast.success("Successfully updated"))
-            .catch((err)=>toast.error("Something went wrong"))
-            .finally(()=> {
+            .then(() => toast.success("Successfully updated"))
+            .catch((err) => toast.error("Something went wrong"))
+            .finally(() => {
                 dispatch(toggleLoader(false))
                 setIsSubmitted(false)
                 setIsUpdateAvailable(false)
@@ -170,22 +171,23 @@ function Calender(props) {
             })
     }, [isSubmitted]);
 
-    useEffect(() =>{
+    useEffect(() => {
         axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/calender`)
-            .then((res)=>{
+            .then((res) => {
                 console.log(res.data)
-                let data = res.data.map((data) =>{
+                let data = res.data.map((data) => {
                     let item = {...data}
                     //     start: new Date(2023, 7, 29, 17, 30, 0),
-                    if(item.start){
+                    if (item.start) {
 
                         let start = JSON.parse(item.start)
                         item.start = new Date(start.year, start.month - 1, start.day, start.hour, start.minute, 0)
-                    } if(item.end) {
+                    }
+                    if (item.end) {
                         let end = JSON.parse(item.end)
                         item.end = new Date(end.year, end.month - 1, end.day, end.hour, end.minute, 0)
                     }
-                    if(item.color){
+                    if (item.color) {
                         item.bgColor = item.color
                     }
                     return item
@@ -194,7 +196,7 @@ function Calender(props) {
                 console.log(data);
                 setEventList(data)
             })
-    },[update])
+    }, [update])
 
     console.log(eventList)
 
@@ -202,11 +204,12 @@ function Calender(props) {
         <Layout>
             <div className={"container"}>
                 <div className={"d-flex justify-content-end my-4"}>
-                    {(isInstituteAccount() || isAdminAccount()) &&<button className={"btn btn-secondary marks-dropdown-btn mt-4 px-4 py-2"}
-                             onClick={() => setIsModalVisible(!isModelVisible)}>+ Add
-                    </button>}
+                    {(isInstituteAccount() || isAdminAccount()) &&
+                        <button className={"btn btn-secondary marks-dropdown-btn mt-4 px-4 py-2"}
+                                onClick={() => setIsModalVisible(!isModelVisible)}>+ Add
+                        </button>}
                 </div>
-                <div className={"calender-container " + (!isInstituteAccount() ? "mt-5":"")}>
+                <div className={"calender-container " + (!isInstituteAccount() ? "mt-5" : "")}>
                     <div>
                     </div>
                     <Calendar
@@ -214,7 +217,7 @@ function Calender(props) {
                         events={eventList}
                         eventPropGetter={eventStyleGetter}
                         onSelectEvent={event => {
-                            if(!isInstituteAccount()){
+                            if (!isInstituteAccount()) {
                                 return;
                             }
                             setIsModalVisible(true);
@@ -231,7 +234,7 @@ function Calender(props) {
                         }}
                         startAccessor="start"
                         endAccessor="end"
-                        style={{ height: '80vh', width: '80vw' }}
+                        style={{height: '80vh', width: '80vw'}}
                     />
                 </div>
 
@@ -243,8 +246,8 @@ function Calender(props) {
 
                                     {!isUpdateAvailable ? "Add Event" : "Edit Event"} </span>
                                 <div className="sa-popup-close-icon"
-                                    onClick={resetForm}>
-                                    <FeatherIcon className={"sa-modal-close-icon"} icon={"x"} />
+                                     onClick={resetForm}>
+                                    <FeatherIcon className={"sa-modal-close-icon"} icon={"x"}/>
                                 </div>
                             </div>
                             <div className="sa-popup-content px-3">
@@ -253,12 +256,12 @@ function Calender(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3 me-3">
                                         <label htmlFor="exampleInputEmail1"
-                                            className="form-label">Title</label>
+                                               className="form-label">Title</label>
                                         <input name={"title"} placeholder={"Enter Name"}
-                                            className={`form-control ${errors.title ? "border-red" : ""}`}
-                                            id="exampleInputEmail1"
-                                            onChange={handleChange}
-                                            value={values.title || ""}
+                                               className={`form-control ${errors.title ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
+                                               onChange={handleChange}
+                                               value={values.title || ""}
                                         />
                                         {errors.title && <p className={"text-red"}>{errors.title}</p>}
 
@@ -268,13 +271,13 @@ function Calender(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3 ">
                                         <label htmlFor="exampleInputEmail1"
-                                            className="form-label" >Start Time</label>
+                                               className="form-label">Start Time</label>
                                         <DtPicker placeholder={"Enter Start Time"}
-                                            inputClass={`form-control ${errors.start ? "border-red" : ""}`}
-                                            onChange={(time) => setValue({ start: time })}
-                                            withTime
-                                            initValue={values.start}
-                                            showTimeInput
+                                                  inputClass={`form-control ${errors.start ? "border-red" : ""}`}
+                                                  onChange={(time) => setValue({start: time})}
+                                                  withTime
+                                                  initValue={values.start}
+                                                  showTimeInput
                                         />
                                         {errors.start && <p className={"text-red"}>{errors.start}</p>}
 
@@ -285,16 +288,16 @@ function Calender(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3 me-3">
                                         <label htmlFor="exampleInputEmail1"
-                                            className="form-label">End Time</label>
+                                               className="form-label">End Time</label>
                                         <DtPicker placeholder={"Enter End Time"}
-                                            inputClass={`form-control ${errors.end ? "border-red" : ""}`}
-                                            onChange={(time,date) => {
-                                                setValue({end: time})
-                                                console.log(date)
-                                                console.log(time)
-                                            }}
-                                            withTime
-                                            showTimeInput
+                                                  inputClass={`form-control ${errors.end ? "border-red" : ""}`}
+                                                  onChange={(time, date) => {
+                                                      setValue({end: time})
+                                                      console.log(date)
+                                                      console.log(time)
+                                                  }}
+                                                  withTime
+                                                  showTimeInput
                                         />
                                         {errors.end && <p className={"text-red"}>{errors.end}</p>}
 
@@ -303,31 +306,73 @@ function Calender(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3 me-3">
                                         <label htmlFor="exampleInputEmail1"
-                                            className="form-label">Color</label>
+                                               className="form-label">Color</label>
                                         <div className={"d-flex gap-3"}>
-                                            <div className={"select-round green-round " + (values.color === "rgba(1,69,46,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(1,69,46,0.3)", textColor: "rgba(1,69,46,0.3)" })}>
-                                                {values.color === "rgba(1,69,46,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div
+                                                className={"select-round green-round " + (values.color === "rgba(1,69,46,0.3)" ? "selected-round" : "")}
+                                                onClick={() => setValue({
+                                                    color: "rgba(1,69,46,0.3)",
+                                                    textColor: "rgba(1,69,46,0.3)"
+                                                })}>
+                                                {values.color === "rgba(1,69,46,0.3)" &&
+                                                    <FeatherIcon className={"text-white"} icon={"check"}/>}
                                             </div>
-                                            <div className={"select-round purple-round " + (values.color === "rgba(60,3,132,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(60,3,132,0.3)", textColor: "rgba(60,3,132,0.3)" })}>
-                                                {values.color === "rgba(60,3,132,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div
+                                                className={"select-round purple-round " + (values.color === "rgba(60,3,132,0.3)" ? "selected-round" : "")}
+                                                onClick={() => setValue({
+                                                    color: "rgba(60,3,132,0.3)",
+                                                    textColor: "rgba(60,3,132,0.3)"
+                                                })}>
+                                                {values.color === "rgba(60,3,132,0.3)" &&
+                                                    <FeatherIcon className={"text-white"} icon={"check"}/>}
                                             </div>
-                                            <div className={"select-round lightBlue-round " + (values.color === "rgba(1,92,108,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(1,92,108,0.3)", textColor: "rgba(1,92,108,0.3)" })}>
-                                                {values.color === "rgba(1,92,108,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div
+                                                className={"select-round lightBlue-round " + (values.color === "rgba(1,92,108,0.3)" ? "selected-round" : "")}
+                                                onClick={() => setValue({
+                                                    color: "rgba(1,92,108,0.3)",
+                                                    textColor: "rgba(1,92,108,0.3)"
+                                                })}>
+                                                {values.color === "rgba(1,92,108,0.3)" &&
+                                                    <FeatherIcon className={"text-white"} icon={"check"}/>}
                                             </div>
-                                            <div className={"select-round yellow-round " + (values.color === "rgba(125,84,0,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(125,84,0,0.3)", textColor: "rgba(125,84,0,0.3)" })}>
-                                                {values.color === "rgba(125,84,0,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div
+                                                className={"select-round yellow-round " + (values.color === "rgba(125,84,0,0.3)" ? "selected-round" : "")}
+                                                onClick={() => setValue({
+                                                    color: "rgba(125,84,0,0.3)",
+                                                    textColor: "rgba(125,84,0,0.3)"
+                                                })}>
+                                                {values.color === "rgba(125,84,0,0.3)" &&
+                                                    <FeatherIcon className={"text-white"} icon={"check"}/>}
                                             </div>
-                                            <div className={"select-round darkBlue-round " + (values.color === "rgba(0,55,104,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(0,55,104,0.3)", textColor: "rgba(0,55,104,0.3)" })}>
-                                                {values.color === "rgba(0,55,104,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div
+                                                className={"select-round darkBlue-round " + (values.color === "rgba(0,55,104,0.3)" ? "selected-round" : "")}
+                                                onClick={() => setValue({
+                                                    color: "rgba(0,55,104,0.3)",
+                                                    textColor: "rgba(0,55,104,0.3)"
+                                                })}>
+                                                {values.color === "rgba(0,55,104,0.3)" &&
+                                                    <FeatherIcon className={"text-white"} icon={"check"}/>}
                                             </div>
-                                            <div className={"select-round lightGreen-round " + (values.color === "rgba(2,134,51,0.3)" ? "selected-round" : "")} onClick={() => setValue({ color: "rgba(2,134,51,0.3)", textColor: "rgba(2,134,51,0.3)" })}>
-                                                {values.color === "rgba(2,134,51,0.3)" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div
+                                                className={"select-round lightGreen-round " + (values.color === "rgba(2,134,51,0.3)" ? "selected-round" : "")}
+                                                onClick={() => setValue({
+                                                    color: "rgba(2,134,51,0.3)",
+                                                    textColor: "rgba(2,134,51,0.3)"
+                                                })}>
+                                                {values.color === "rgba(2,134,51,0.3)" &&
+                                                    <FeatherIcon className={"text-white"} icon={"check"}/>}
                                             </div>
                                             {/*<div className={"select-round orange-round "+ (values.bgColor === "rgb(0, 167, 111)" ? "selected-round" :"")} onClick={()=> setValue({bgColor: "",textColor: ""})}>*/}
                                             {/*    <FeatherIcon className={"text-white"} icon={"check"}/>*/}
                                             {/*</div>*/}
-                                            <div className={"select-round red-round " + (values.bgColor === "#FF56304D" ? "selected-round" : "")} onClick={() => setValue({ bgColor: "#FF56304D", textColor: "#FF56304D" })}>
-                                                {values.bgColor === "#FF56304D" && <FeatherIcon className={"text-white"} icon={"check"} />}
+                                            <div
+                                                className={"select-round red-round " + (values.bgColor === "#FF56304D" ? "selected-round" : "")}
+                                                onClick={() => setValue({
+                                                    bgColor: "#FF56304D",
+                                                    textColor: "#FF56304D"
+                                                })}>
+                                                {values.bgColor === "#FF56304D" &&
+                                                    <FeatherIcon className={"text-white"} icon={"check"}/>}
                                             </div>
                                         </div>
 
@@ -337,13 +382,14 @@ function Calender(props) {
                             </div>
                             <div className="sa-popup-footer">
                                 <div className={"d-flex justify-content-between"}>
-                                    <FeatherIcon className={"text-red cursor-pointer"} icon={"trash-2"} />
+                                    <FeatherIcon className={"text-red cursor-pointer"} icon={"trash-2"}/>
                                     <div>
 
 
-                                        <button type="button" className="btn btn-secondary" onClick={resetForm}>Cancel</button>
+                                        <button type="button" className="btn btn-secondary" onClick={resetForm}>Cancel
+                                        </button>
                                         <button type="submit"
-                                            className="btn btn-secondary ms-3 px-3 marks-dropdown-btn">{isUpdateAvailable ? "Update" : "Save"}</button>
+                                                className="btn btn-secondary ms-3 px-3 marks-dropdown-btn">{isUpdateAvailable ? "Update" : "Save"}</button>
                                     </div>
                                 </div>
 

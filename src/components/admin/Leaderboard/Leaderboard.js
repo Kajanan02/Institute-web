@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../../layout/layout";
 import FeatherIcon from "feather-icons-react";
-import {mapObject, uniq} from "underscore";
+import {filter, pick, pluck, uniq, values} from "underscore";
 import LeaderBoardForm from "./leaderBoardForm";
 // import {leaderBoardData} from "./leaderBoardDamidata";
-import { toggleConfirmationDialog, toggleLoader } from "../../../redux/actions";
+import {toggleConfirmationDialog, toggleLoader} from "../../../redux/actions";
 import axios from 'axios';
-import { useDispatch, useSelector } from "react-redux";
-import { values, pick, filter, pluck } from "underscore";
-import { toast } from "react-toastify";
+import {useDispatch, useSelector} from "react-redux";
+import {toast} from "react-toastify";
 import {filterDataByKey, rankMarks} from '../../../utils/utils';
 import {isAdminAccount} from "../../../utils/Authentication";
 
@@ -53,17 +52,19 @@ export default function LeaderBoard(props) {
                 toast.success(`Successfully Deleted`)
 
             }).catch((err) => {
-                console.log(err)
-            }).finally(() => {
-                dispatch(toggleLoader(false))
-                setDeletedId(null)
-            })
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setDeletedId(null)
+        })
     }, [confirmationDialog])
 
     function handleSearch(e) {
         let val = e.target.value;
         if (val !== "") {
-            let res = filter(leaderBoardAllList, function (item) { return values(pick(item, 'regNo', 'name', 'instituteName', 'subject', 'marks', 'rank')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase()); });
+            let res = filter(leaderBoardAllList, function (item) {
+                return values(pick(item, 'regNo', 'name', 'instituteName', 'subject', 'marks', 'rank')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase());
+            });
             setLeaderBoardList(res);
             console.log(res)
         } else {
@@ -75,7 +76,7 @@ export default function LeaderBoard(props) {
         dispatch(toggleLoader(true));
         axios.get(`${process.env.REACT_APP_HOST}/getAllLeaderBoards`)
             .then((res) => {
-                let rankedData =rankMarks(res.data,"rank") 
+                let rankedData = rankMarks(res.data, "rank")
                 setLeaderBoardList(rankedData);
                 setLeaderBoardAllList(rankedData);
             })
@@ -86,7 +87,6 @@ export default function LeaderBoard(props) {
                 dispatch(toggleLoader(false));
             });
     }, [update]);
-
 
 
     return (
@@ -102,50 +102,59 @@ export default function LeaderBoard(props) {
                                     <form className="d-flex" role="search">
 
                                         {/* <button className="btn btn-outline-success" type="submit">Search</button> */}
-                                        <input className="form-control me-2" onChange={handleSearch} type="search" placeholder="Search"
-                                            aria-label="Search" />
+                                        <input className="form-control me-2" onChange={handleSearch} type="search"
+                                               placeholder="Search"
+                                               aria-label="Search"/>
                                     </form>
                                 </div>
                             </div>
                             <div className={"dropdown"}>
-                                <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button className={"btn btn-secondary dropdown-toggle marks-dropdown-btn"} type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
                                     Subject {/* Change this text to your desired label */}
                                 </button>
                                 <ul className={"dropdown-menu dropdown-menu-dark"}>
-                                    <li><a className={"dropdown-item cursor-pointer"} onClick={()=>setLeaderBoardList(filterDataByKey(leaderBoardAllList,"All"))}>All</a></li>
-                                    {uniq(pluck(leaderBoardAllList,"subject")).map((item,index)=> <li><a className={"dropdown-item cursor-pointer"} key={index+item} onClick={()=>setLeaderBoardList(filterDataByKey(leaderBoardAllList,item))}>{item.replace("_"," ")}</a></li>)}
+                                    <li><a className={"dropdown-item cursor-pointer"}
+                                           onClick={() => setLeaderBoardList(filterDataByKey(leaderBoardAllList, "All"))}>All</a>
+                                    </li>
+                                    {uniq(pluck(leaderBoardAllList, "subject")).map((item, index) => <li><a
+                                        className={"dropdown-item cursor-pointer"} key={index + item}
+                                        onClick={() => setLeaderBoardList(filterDataByKey(leaderBoardAllList, item))}>{item.replace("_", " ")}</a>
+                                    </li>)}
 
                                 </ul>
                             </div>
 
 
-                            {isAdminAccount() &&<button type="button" className={"btn btn-secondary students-dropdown-btn"}
-                                     onClick={() => {
-                                         setModalType("Add");
-                                         setModalShow(true)
-                                     }}>
-                                <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
-                                Add
-                            </button>}
+                            {isAdminAccount() &&
+                                <button type="button" className={"btn btn-secondary students-dropdown-btn"}
+                                        onClick={() => {
+                                            setModalType("Add");
+                                            setModalShow(true)
+                                        }}>
+                                    <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
+                                    Add
+                                </button>}
 
                         </div>
                     </div>
                     <div className={"table-container"}>
-                        <table className={"table table-hover table-striped"} >
+                        <table className={"table table-hover table-striped"}>
                             <thead className={"top-0 position-sticky h-45"}>
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Reg.No</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Institute Name</th>
-                                    <th scope="col">Subject</th>
-                                    <th scope="col">Marks</th>
-                                    <th scope="col">Rank</th>
-                                    <th scope="col"></th>
-                                </tr>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Reg.No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Institute Name</th>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Marks</th>
+                                <th scope="col">Rank</th>
+                                <th scope="col"></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {leaderBoardList.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt)).map((data, index) => (<tr key={index + "asd"}>
+                            {leaderBoardList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((data, index) => (
+                                <tr key={index + "asd"}>
                                     <th scope="row">{index + 1}</th>
                                     <td>{data.regNo}</td>
                                     <td>{data.name}</td>
@@ -155,18 +164,20 @@ export default function LeaderBoard(props) {
                                     <td>{data.rank}</td>
                                     <td>
                                         <FeatherIcon className={"action-icons"} icon={"edit"}
-                                            onClick={() => {
-                                                setSelectedLeaderBoard(data)
-                                                setModalType("Edit");
-                                                setModalShow(true)
-                                            }} />
+                                                     onClick={() => {
+                                                         setSelectedLeaderBoard(data)
+                                                         setModalType("Edit");
+                                                         setModalShow(true)
+                                                     }}/>
 
-                                        <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={() => handleDelete(data._id)} />
+                                        <FeatherIcon className={"action-icons text-red"} icon={"trash-2"}
+                                                     onClick={() => handleDelete(data._id)}/>
                                     </td>
                                 </tr>))}
                             </tbody>
                         </table>
-                        {leaderBoardList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Leader Board Data Found,Please Add</div>}
+                        {leaderBoardList.length === 0 &&
+                            <div className={"text-center py-5 fw-bold"}>No Leader Board Data Found,Please Add</div>}
 
                     </div>
                 </div>

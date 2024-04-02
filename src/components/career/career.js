@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Layout from "../../../layout/layout";
 import {careerData} from "./damiData";
 import FeatherIcon from 'feather-icons-react';
 import CareerForm from "./careerForm";
-import {isParentAccount} from "../../../utils/Authentication";
 
 function Career(props) {
     const [careerList, setcareerList] = useState(careerData)
@@ -46,14 +45,14 @@ function Career(props) {
                             <thead>
                             <tr className={"position-sticky top-0 pt-1 h-45"}>
                                 <th scope="col">No</th>
-                                <th scope="col">Course </th>
+                                <th scope="col">Course</th>
                                 <th scope="col">Degree Programme</th>
                                 <th scope="col">Available Universities</th>
                                 {/* <th scope="col">description</th>                                 */}
                                 <th scope="col">Duration</th>
-                                <th scope="col"> </th>
-                                
-                               
+                                <th scope="col"></th>
+
+
                             </tr>
                             </thead>
                             <tbody>
@@ -74,12 +73,13 @@ function Career(props) {
                                 <td className={"table-action"}>
 
                                     <div type="button"
-                                            onClick={() => {
-                                                setModalType("View");
-                                                setModalShow(true)
-                                            }}>
-                                                
-                                        <FeatherIcon className={"action-icons"} icon={"eye"} onClick={() => setModalType("View")}/>
+                                         onClick={() => {
+                                             setModalType("View");
+                                             setModalShow(true)
+                                         }}>
+
+                                        <FeatherIcon className={"action-icons"} icon={"eye"}
+                                                     onClick={() => setModalType("View")}/>
 
                                     </div>
 
@@ -96,8 +96,8 @@ function Career(props) {
                 show={modalShow}
                 type={modalType}
                 onHide={() => setModalShow(false)}
-            />  
-               
+            />
+
             {/* </div> */}
         </Layout>
     );
