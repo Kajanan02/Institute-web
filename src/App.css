@@ -935,11 +935,6 @@ body {
 
 /*//Login*/
 
-
-.login-body {
-    min-height: 100vh;
-    margin-top: 160px;
-}
 .login-sig {
     overflow: hidden;
     max-width: 410px;
@@ -1038,7 +1033,6 @@ form .login-btn input[type="submit"] {
 
 .login-image {
     text-align: left;
-    margin-top: -150px;
 }
 
 .login-image img {

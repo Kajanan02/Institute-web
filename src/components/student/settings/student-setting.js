@@ -2,28 +2,17 @@ import React, {useEffect, useState} from 'react';
 import Layout from "../../../layout/layout";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../../assets/uplod-icon.svg";
-import {subjectData} from "../../student-list/damiData";
 import formHandler from "../../../utils/FormHandler";
 import {validateStudentSettings} from "../../../utils/validation";
-import {validateStudentPasswordSettings} from "../../../utils/validation";
 import PasswordSetting from "../../password-setting/password-setting";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
-import {
-    getInstituteId,
-    getStudentId,
-    getUserId,
-    isParentAccount,
-    isStudentAccount
-} from "../../../utils/Authentication";
+import {getInstituteId, getStudentId, isParentAccount, isStudentAccount} from "../../../utils/Authentication";
 import {setUserDetail, toggleLoader} from "../../../redux/actions";
 import {toast} from "react-toastify";
 
 function StudentSetting(props) {
-    const [modalType, setModalType] = useState("view")
-    const [modalShow, setModalShow] = useState(false);
-    const [selectedBuyer, setSelectedBuyer] = useState([]);
-    const buyerOption = subjectData;
+
     const [profilePic, setProfilePic] = useState(null);
     const [nicFront, setNicFront] = useState(null);
     const [nicBack, setNicBack] = useState(null);
@@ -33,7 +22,6 @@ function StudentSetting(props) {
     const {
         handleChange,
         handleSubmit,
-        handlePasswordSubmit,
         setValue,
         initForm,
         values,
@@ -47,28 +35,30 @@ function StudentSetting(props) {
     function isStudentSetting() {
         setFormSubmitted(true)
     }
-console.log(errors)
 
-   useEffect(()=>{
-       if(!formSubmitted){
-           return
-       }
-       dispatch(toggleLoader(true))
-       axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getStudentId()}`, values)
+    console.log(errors)
 
-           .then((res) => {
-               localStorage.setItem("NAME", res.data.name)
-               dispatch(setUserDetail(res.data))
-               toast.success("Profile Updated Successfully")
-           }).catch((err) => {
-           toast.error("Something went wrong")
-           console.log(err)
-       }).finally(() => {
-           dispatch(toggleLoader(false))
-           setFormSubmitted(false)
-       })
+    useEffect(() => {
+        if (!formSubmitted) {
+            return
+        }
+        dispatch(toggleLoader(true))
+        axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getStudentId()}`, values)
 
-   },[formSubmitted])
+            .then((res) => {
+                localStorage.setItem("NAME", res.data.name)
+                dispatch(setUserDetail(res.data))
+                toast.success("Profile Updated Successfully")
+            }).catch((err) => {
+            toast.error("Something went wrong")
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setFormSubmitted(false)
+        })
+
+    }, [formSubmitted])
+
     function imageUpload(file, key) {
         console.log("Fille")
 
@@ -84,10 +74,7 @@ console.log(errors)
             }).finally(() => dispatch(toggleLoader(false)))
     }
 
-    function multiSelectOnChangeSubjects(selected) {
-        setSelectedBuyer(selected);
-        setValue({subjects: selected});
-    }
+
 
     const handleChangeProfile = (file) => {
         setProfilePic(file);
@@ -121,19 +108,21 @@ console.log(errors)
         <Layout>
             <div className={"container"}>
                 <div className={"container-widget"}>
-                    <div><h3 className={"content-heading pb-4"}>{isStudentAccount() ? "Students" : "Parent"} Settings</h3></div>
+                    <div><h3
+                        className={"content-heading pb-4"}>{isStudentAccount() ? "Students" : "Parent"} Settings</h3>
+                    </div>
                     <div className={"form-container"}>
                         <form className={"row student-settings-form"} onSubmit={handleSubmit}>
                             <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">First
                                         Name</label></h6>
-                                        <input name={"name"} placeholder={"Enter Name"}
-                                               className={`form-control ${errors.name ? "border-red" : ""}`}
-                                               id="exampleInputEmail1"
-                                               onChange={handleChange}
-                                               value={values.name || ""}
-                                        />
+                                    <input name={"name"} placeholder={"Enter Name"}
+                                           className={`form-control ${errors.name ? "border-red" : ""}`}
+                                           id="exampleInputEmail1"
+                                           onChange={handleChange}
+                                           value={values.name || ""}
+                                    />
                                     {errors.name && <p className={"text-red"}>{errors.name}</p>}
                                 </div>
                             </div>
@@ -143,19 +132,19 @@ console.log(errors)
                                     <h6><label htmlFor="exampleInputEmail1"
                                                className="settings-form-text">Gender</label></h6>
                                     <select className={`form-control ${errors.gender ? "border-red" : ""}`}
-                                                onChange={handleChange}
-                                                value={values.gender || ""}
-                                                name={"gender"}
-                                                aria-label="Default select example">
-                                            <option hidden>Gender</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Not Specified">Not Specified</option>
-                                        </select>
-                                        {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
-                                    </div>
+                                            onChange={handleChange}
+                                            value={values.gender || ""}
+                                            name={"gender"}
+                                            aria-label="Default select example">
+                                        <option hidden>Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Not Specified">Not Specified</option>
+                                    </select>
+                                    {errors.gender && <p className={"text-red"}>{errors.gender}</p>}
+                                </div>
                             </div>
-                            {!isParentAccount()&&<div className={"col-md-6"}>
+                            {!isParentAccount() && <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Date
                                         of Birth</label></h6>
@@ -228,7 +217,7 @@ console.log(errors)
                                         Picture</label></h6>
                                     <FileUploader handleChange={handleChangeProfile}>
                                         <div className={"file-uploader-container"}>
-                                            <img src={uploadIcon} width={"27%"}/>
+                                            <img src={uploadIcon} width={"27%"} alt={"uploadIcon"}/>
                                             {!profilePic?.name ? <div>
                                                     <div className={"fw-semibold my-2"}>Drop or Select file
                                                     </div>
@@ -272,7 +261,7 @@ console.log(errors)
                                         Back</label></h6>
                                     <FileUploader handleChange={handleChangeNicBack}>
                                         <div className={"file-uploader-container"}>
-                                            <img src={uploadIcon} width={"27%"}/>
+                                            <img src={uploadIcon} width={"27%"} alt={"uploadIcon"}/>
                                             {!nicBack?.name ? <div>
                                                     <div className={"fw-semibold my-2"}>Drop or Select file
                                                     </div>

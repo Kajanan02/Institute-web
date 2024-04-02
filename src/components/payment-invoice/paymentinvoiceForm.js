@@ -2,20 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
 import {validateStatePayment} from "../../utils/validation";
-import FeatherIcon from "feather-icons-react";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
 import {setMqttDetail, toggleLoader} from "../../redux/actions";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import {toast} from "react-toastify";
-import { isEmpty } from 'underscore';
+import {find, isEmpty, pluck} from 'underscore';
 import {Typeahead} from "react-bootstrap-typeahead";
-import {find, pluck} from "underscore";
-import { getInstituteId, getStudentId, isInstituteAccount ,getUserId} from '../../utils/Authentication';
-import {isParentAccount} from "../../utils/Authentication";
-import { Link } from 'react-router-dom';
-import {changeToggle, setUserDetail} from "../../redux/actions";
+import {getInstituteId, isInstituteAccount, isParentAccount} from '../../utils/Authentication';
 import PaymentModal from "./paymentModal";
 
 
@@ -33,7 +28,7 @@ function StatepaymentForm(props) {
     const instituteId = localStorage.getItem("USER_ID");
     const [studentsList, setStudentsList] = useState([]);
     const [singleSelections, setSingleSelections] = useState([]);
-    
+
 
     const dispatch = useDispatch();
     console.log(parentContact)
@@ -58,41 +53,41 @@ function StatepaymentForm(props) {
         setIsSubmit(true)
     }
 
-    function resetForm(){
+    function resetForm() {
         initForm({})
         setSingleSelections([])
 
     }
 
-    useEffect(()=>{
-        if(isInstituteAccount()){
+    useEffect(() => {
+        if (isInstituteAccount()) {
             setDirectPayment(true)
         }
-    },[])
+    }, [])
 
-    useEffect(()=>{
-        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)){
-           
+    useEffect(() => {
+        if (["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)) {
+
             initForm(props.selectedPayment)
             setSingleSelections([props.selectedPayment.studentNicNo])
         }
-    },[props.type,props.selectedPayment])
-    useEffect(()=>{
-        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)){
-           
+    }, [props.type, props.selectedPayment])
+    useEffect(() => {
+        if (["View", "State"].includes(props.type) && !isEmpty(props.selectedPayment)) {
+
             initForm(props.selectedPayment)
             setSingleSelections([props.selectedPayment.studentNicNo])
         }
-    },[props.type,props.selectedPayment])
+    }, [props.type, props.selectedPayment])
 
-    function statusUpdate(status){
+    function statusUpdate(status) {
         values.status = status
         console.log(props.selectedPayment)
         console.log(props.selectedPayment._id)
 
         dispatch(toggleLoader(true))
         axios.put(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentId}/fees/${props.selectedPayment._id}`, values)
-        // router.route('/:instituteId/student/:studentId/fees/:id').put(editFees);
+            // router.route('/:instituteId/student/:studentId/fees/:id').put(editFees);
             .then((res) => {
                 console.log(res.data)
                 toast.success(`Successfully Updated`)
@@ -102,28 +97,28 @@ function StatepaymentForm(props) {
         }).finally(() => {
             dispatch(toggleLoader(false))
             setIsSubmit(false);
-          setIsSubmit(false)
+            setIsSubmit(false)
             resetForm()
             props.onHide()
         })
 
     }
-    
+
 
     useEffect(() => {
         if (!isSubmit || props.type !== "Add") {
             return
         }
         // http://localhost:5000/api/institute/:instituteId/student/:studentId/appointment
-        values.method= isInstituteAccount() ? "INSTITUTE" : "DIRECT_PAYMENT"
-        values.status=isInstituteAccount() ? "PAID" :"REQUESTED"
+        values.method = isInstituteAccount() ? "INSTITUTE" : "DIRECT_PAYMENT"
+        values.status = isInstituteAccount() ? "PAID" : "REQUESTED"
         let student
-        if(isParentAccount()){
+        if (isParentAccount()) {
             student = localStorage.getItem("STUDENT_ID")
         }
 
-        
-        axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${isParentAccount() ? student :studentId}/fees` , values)
+
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${isParentAccount() ? student : studentId}/fees`, values)
             .then((res) => {
                 console.log(res.data)
                 props.update()
@@ -132,7 +127,7 @@ function StatepaymentForm(props) {
                 let msg = values.name + " is successfully paid " + values.feesAmount + " for " + values.month + " month"
                 console.log(msg)
                 console.log(parentContact)
-                dispatch(setMqttDetail({"mobileNumber":parentContact,"body":msg,"type":"msg"}))
+                dispatch(setMqttDetail({"mobileNumber": parentContact, "body": msg, "type": "msg"}))
 
             }).catch((err) => {
             toast.error("Something went wrong")
@@ -165,11 +160,7 @@ function StatepaymentForm(props) {
                 setValue({[key]: res.data.url})
             }).finally(() => dispatch(toggleLoader(false)))
     }
-    
-   
 
-    
-    
 
     // useEffect(() => {
     //     // Initialize the form values when the modal is shown
@@ -193,28 +184,28 @@ function StatepaymentForm(props) {
         })
     }, [])
     useEffect(() => {
-        if(!isParentAccount()){
+        if (!isParentAccount()) {
             return
         }
         dispatch(toggleLoader(true))
         let studentID = localStorage.getItem("STUDENT_ID")
         axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentID}`)
-        .then((res) => {
-            
-            let userData = res.data
-            console.log(userData);
-            console.log(userData._id);
-            setValue({name:userData.name})
-            setValue({studentNicNo:userData.nicNo})
-            setSingleSelections([userData.nicNo])
+            .then((res) => {
+
+                let userData = res.data
+                console.log(userData);
+                console.log(userData._id);
+                setValue({name: userData.name})
+                setValue({studentNicNo: userData.nicNo})
+                setSingleSelections([userData.nicNo])
 
 
-        }).catch((err) => {
-        console.log(err)
-        toast.error("Something went wrong")
-    }).finally(() => {
-      dispatch(toggleLoader(false))
-    })
+            }).catch((err) => {
+            console.log(err)
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
     }, [])
     console.log(values);
 
@@ -232,7 +223,7 @@ function StatepaymentForm(props) {
                     initForm({});
                     setSingleSelections([])
                 }
-                if(!isInstituteAccount()) {
+                if (!isInstituteAccount()) {
                     setDirectPayment(false)
                 }
             }}>
@@ -246,44 +237,47 @@ function StatepaymentForm(props) {
             </Modal.Header>
             <Modal.Body scrollable>
 
-                {props.type === "Add" && !directPayment && !onlinePayment && <div className={"d-flex justify-content-around"}>
-                    <button type="button" className={"btn-payment-method"}
-                            onClick={() => {
-                                setDirectPayment(true)
-                            }}>
-                        {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
-                        Direct Payment
-                    </button>
-                    <button type="button" className={"btn-payment-method"}
-                            onClick={() => {
-                                setOnlinePayment(true)
-                            }}>
-                        {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
-                        Online Payment
-                    </button>
+                {props.type === "Add" && !directPayment && !onlinePayment &&
+                    <div className={"d-flex justify-content-around"}>
+                        <button type="button" className={"btn-payment-method"}
+                                onClick={() => {
+                                    setDirectPayment(true)
+                                }}>
+                            {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
+                            Direct Payment
+                        </button>
+                        <button type="button" className={"btn-payment-method"}
+                                onClick={() => {
+                                    setOnlinePayment(true)
+                                }}>
+                            {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"}/>*/}
+                            Online Payment
+                        </button>
 
-                </div>}
+                    </div>}
                 {(directPayment || (["View", "State",].includes(props.type))) && <form onSubmit={handleSubmit}>
                     <div>
                         <div className={"pop-up-form-container"}>
                             <div className={"row"}>
-                            <div className={"col-md-6"}>
+                                <div className={"col-md-6"}>
                                     <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student NIC No</label>
+                                        <label htmlFor="exampleInputEmail1"
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student
+                                            NIC No</label>
                                         <Typeahead
                                             id="basic-typeahead-single"
                                             labelKey="name"
                                             className={`disabled-white ${errors.regNO ? "border-red" : ""}`}
-                                            onChange={(res)=> {
+                                            onChange={(res) => {
                                                 console.log(res);
-                                                setValue({studentId:res[0]})
-                                                setValue({name:find(studentsList,{nicNo:res[0]})?.name})
-                                                setValue({studentNicNo:res[0]})
-                                                setParentContact(find(studentsList,{nicNo:res[0]})?.parentContact)
+                                                setValue({studentId: res[0]})
+                                                setValue({name: find(studentsList, {nicNo: res[0]})?.name})
+                                                setValue({studentNicNo: res[0]})
+                                                setParentContact(find(studentsList, {nicNo: res[0]})?.parentContact)
                                                 setSingleSelections(res)
-                                                setStudentId(find(studentsList,{nicNo:res[0]})?._id)
+                                                setStudentId(find(studentsList, {nicNo: res[0]})?._id)
                                             }}
-                                            options={pluck(studentsList,"nicNo")}
+                                            options={pluck(studentsList, "nicNo")}
                                             placeholder="Choose a state..."
                                             selected={singleSelections}
                                             disabled={["View", "State"].includes(props.type)}
@@ -292,15 +286,15 @@ function StatepaymentForm(props) {
 
                                     </div>
                                 </div>
-                                {(directPayment || (["View", "State",].includes(props.type))) &&<div
+                                {(directPayment || (["View", "State",].includes(props.type))) && <div
                                     className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student
                                             Name</label>
                                         <input name={"studentName"} placeholder={"Enter Student Name"}
-                                         className={`form-control  ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                              // className={`form-control ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
+                                               className={`form-control  ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                            // className={`form-control ${errors.name ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}`}
                                                id="exampleInputEmail5"
                                                onChange={handleChange}
                                                value={values.name || ""}
@@ -333,8 +327,9 @@ function StatepaymentForm(props) {
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
-                                            className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Month</label>
-                                        <select className={`form-control ${errors.month ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Month</label>
+                                        <select
+                                            className={`form-control ${errors.month ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
                                             onChange={handleChange}
                                             value={values.month || ""}
                                             name={"month"}
@@ -353,14 +348,14 @@ function StatepaymentForm(props) {
                                             <option value="OCTOBER">October</option>
                                             <option value="NOVEMBER">November</option>
                                             <option value="DECEMBER">December</option>
-                                            
+
                                         </select>
                                         {errors.month && <p className={"text-red"}>{errors.month}</p>}
                                     </div>
                                 </div>
 
                                 {<div
-                                     className={"col-md-6"}>
+                                    className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Amount</label>
@@ -376,30 +371,35 @@ function StatepaymentForm(props) {
                                     </div>
                                 </div>}
 
-                                {(isInstituteAccount()  && (directPayment || ([ "View"].includes(props.type))))|| (isParentAccount()  && (directPayment)) && <div className={"col-md-12"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>
-                                        <FileUploader handleChange={handleChangeSlip}>
-                                            <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
-                                                {!paymentSlip?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
-                                                    <div className={"fw-semibold my-2"}>{paymentSlip?.name}</div>
-                                                }
-                                            </div>
-                                        </FileUploader>
-                                    </div>
-                                </div>}
-                                {values.paymentSlip &&["View","State"].includes(props.type)&&
+                                {(isInstituteAccount() && (directPayment || (["View"].includes(props.type)))) || (isParentAccount() && (directPayment)) &&
                                     <div className={"col-md-12"}>
-                                        <label htmlFor="exampleInputEmail1" className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment Slip</label>     
-                                    <img src={values.paymentSlip} className='w-100' alt="Nature"/>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail1"
+                                                   className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment
+                                                Slip</label>
+                                            <FileUploader handleChange={handleChangeSlip}>
+                                                <div className={"file-uploader-container"}>
+                                                    <img src={uploadIcon} width={"27%"}/>
+                                                    {!paymentSlip?.name ? <div>
+                                                            <div className={"fw-semibold my-2"}>Drop or Select file
+                                                            </div>
+                                                            <div className={""}>Drop files here or click <span
+                                                                className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
+                                                                your machine
+                                                            </div>
+                                                        </div> :
+                                                        <div className={"fw-semibold my-2"}>{paymentSlip?.name}</div>
+                                                    }
+                                                </div>
+                                            </FileUploader>
+                                        </div>
+                                    </div>}
+                                {values.paymentSlip && ["View", "State"].includes(props.type) &&
+                                    <div className={"col-md-12"}>
+                                        <label htmlFor="exampleInputEmail1"
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Payment
+                                            Slip</label>
+                                        <img src={values.paymentSlip} className='w-100' alt="Nature"/>
                                     </div>
                                 }
 
@@ -408,13 +408,13 @@ function StatepaymentForm(props) {
                     </div>
 
                 </form>}
-                {onlinePayment &&<PaymentModal
+                {onlinePayment && <PaymentModal
                     orderId={45896588}
                     name="Just For You Mom Ribbon Cake"
                     amount="4500"
                 />}
             </Modal.Body>
-            { (directPayment || (["View", "State",].includes(props.type))) && <Modal.Footer>
+            {(directPayment || (["View", "State",].includes(props.type))) && <Modal.Footer>
 
 
                 <button
@@ -425,7 +425,7 @@ function StatepaymentForm(props) {
                             props.onHide();
                             initForm({});
                             setSingleSelections([])
-                            if(!isInstituteAccount()) {
+                            if (!isInstituteAccount()) {
                                 setDirectPayment(false)
                             }
                         }
@@ -439,20 +439,20 @@ function StatepaymentForm(props) {
                 {isInstituteAccount() && props.type === "State" && <button
                     type="button"
                     className={"btn btn-success"}
-                    onClick={()=>statusUpdate("PAID")}
+                    onClick={() => statusUpdate("PAID")}
                 >
                     Paid
                 </button>}
-                
-                {isInstituteAccount() &&props.type === "State" && <button
+
+                {isInstituteAccount() && props.type === "State" && <button
                     type="button"
                     className={"btn btn-danger"}
-                    onClick={()=>statusUpdate("DECLINE")}
+                    onClick={() => statusUpdate("DECLINE")}
                 >
                     Decline
                 </button>}
 
-                {props.type !== "State" && props.type !== "View" && directPayment&&<button
+                {props.type !== "State" && props.type !== "View" && directPayment && <button
                     type="button"
                     className={"btn btn-success"}
                     onClick={handleSubmit}

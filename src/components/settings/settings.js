@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import formHandler from "../../utils/FormHandler";
-import {validateInstituteSetting, validateParentSetting} from "../../utils/validation";
+import {validateInstituteSetting} from "../../utils/validation";
 import PasswordSetting from "../password-setting/password-setting";
 import {setUserDetail, toggleLoader} from "../../redux/actions";
 import axios from "axios";
@@ -19,13 +19,13 @@ function Settings(props) {
         initForm,
         values,
         errors,
-    } = formHandler(institutesetting,  validateInstituteSetting);
+    } = formHandler(institutesetting, validateInstituteSetting);
     const dispatch = useDispatch();
-const [userData, setUserData] = useState({})
+    const [userData, setUserData] = useState({})
 
 
     function institutesetting() {
-    setFormSubmitted(true)
+        setFormSubmitted(true)
     }
 
     useEffect(() => {
@@ -38,7 +38,7 @@ const [userData, setUserData] = useState({})
         }).finally(() => {
             dispatch(toggleLoader(false))
         })
-    },[])
+    }, [])
 
     useEffect(() => {
         initForm(userData);
@@ -46,7 +46,7 @@ const [userData, setUserData] = useState({})
 
 
     useEffect(() => {
-        if(!formSubmitted){
+        if (!formSubmitted) {
             return
         }
         dispatch(toggleLoader(true))
@@ -63,7 +63,7 @@ const [userData, setUserData] = useState({})
             setFormSubmitted(false)
         })
 
-    },[formSubmitted])
+    }, [formSubmitted])
 
 
     return (
@@ -74,7 +74,7 @@ const [userData, setUserData] = useState({})
                     <div><h3 className={"content-heading pb-4"}>Settings</h3></div>
 
                     <div className={"form-container"}>
-                        <form  onSubmit={handleSubmit} className={"row student-settings-form"}>
+                        <form onSubmit={handleSubmit} className={"row student-settings-form"}>
                             {!isInstituteAccount() && <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">
@@ -89,7 +89,7 @@ const [userData, setUserData] = useState({})
 
                                 </div>
                             </div>}
-                            {!isInstituteAccount() &&<div className={"col-md-6"}>
+                            {!isInstituteAccount() && <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
                                     <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Last
                                         Name</label></h6>
@@ -103,9 +103,10 @@ const [userData, setUserData] = useState({})
 
                                 </div>
                             </div>}
-                            {isInstituteAccount() &&<div className={"col-md-6"}>
+                            {isInstituteAccount() && <div className={"col-md-6"}>
                                 <div className={"mb-3"}>
-                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Name</label></h6>
+                                    <h6><label htmlFor="exampleInputEmail1" className="settings-form-text">Name</label>
+                                    </h6>
                                     <input name={"name"} placeholder={"Enter Last Name"}
                                            className={`form-control ${errors.name ? "border-red" : ""}`}
                                            id="exampleInputEmail1"
@@ -160,14 +161,15 @@ const [userData, setUserData] = useState({})
                             </div>
                             <div className={"modal-footer student-settings-btn"}>
 
-                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"} onClick={handleSubmit}>Update
+                                <button type="submit" className={"btn btn-secondary students-dropdown-btn"}
+                                        onClick={handleSubmit}>Update
                                 </button>
 
                             </div>
 
                         </form>
                     </div>
-                <PasswordSetting/>
+                    <PasswordSetting/>
                 </div>
             </div>
         </Layout>

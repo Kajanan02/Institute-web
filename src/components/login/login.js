@@ -7,7 +7,7 @@ import axios from "axios";
 import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {setUserDetail, toggleLoader} from "../../redux/actions";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {initialNavigate, loadCredential} from "../../utils/Authentication";
 
 function Login(props) {
@@ -20,8 +20,6 @@ function Login(props) {
     const {
         handleChange,
         handleSubmit,
-        setValue,
-        initForm,
         values,
         errors,
     } = formHandler(isLogin, validateLogin);
@@ -34,25 +32,25 @@ function Login(props) {
                 loadCredential(res.data)
                 dispatch(setUserDetail(res.data))
                 toast.success("Successfully Login");
-                localStorage.setItem("INSTITUTE_ID",res.data._id)
-                if(res.data.role === "3"){
+                localStorage.setItem("INSTITUTE_ID", res.data._id)
+                if (res.data.role === "3") {
                     console.log(res.data._id)
-                  localStorage.setItem("STUDENT_ID",res.data._id)
-                  localStorage.setItem("INSTITUTE_ID",res.data.instituteId)
+                    localStorage.setItem("STUDENT_ID", res.data._id)
+                    localStorage.setItem("INSTITUTE_ID", res.data.instituteId)
                 }
-                if(res.data.role === "4"){
-                    localStorage.setItem("STUDENT_ID",res.data.studentId)
-                    localStorage.setItem("INSTITUTE_ID",res.data.instituteId)
+                if (res.data.role === "4") {
+                    localStorage.setItem("STUDENT_ID", res.data.studentId)
+                    localStorage.setItem("INSTITUTE_ID", res.data.instituteId)
                 }
                 navigate(initialNavigate(res.data.role));
 
             }).catch((err) => {
             console.log(err?.response)
-                if(err?.response?.data?.message){
-                    toast.error(err?.response?.data?.message)
-                }else {
-                    toast.error("Something went wrong")
-                }
+            if (err?.response?.data?.message) {
+                toast.error(err?.response?.data?.message)
+            } else {
+                toast.error("Something went wrong")
+            }
         }).finally(() => {
             dispatch(toggleLoader(false))
         })
@@ -97,8 +95,9 @@ function Login(props) {
 
                             <div className="login-field login-btn">
                                 <div className="login-login-btn-layer">
-                                    <input type="submit" value="Login" onClick={handleSubmit} />
-                                </div><br/>
+                                    <input type="submit" value="Login" onClick={handleSubmit}/>
+                                </div>
+                                <br/>
                             </div>
                         </form>
                     </div>

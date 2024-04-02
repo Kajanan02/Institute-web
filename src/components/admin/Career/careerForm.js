@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Modal } from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {Modal} from "react-bootstrap";
 import formHandler from "../../../utils/FormHandler";
-import { validateCareer } from "../../../utils/validation";
-import { isEmpty } from 'underscore';import axios from 'axios';
+import {validateCareer} from "../../../utils/validation";
+import {isEmpty} from 'underscore';
+import axios from 'axios';
 import {toast} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
-import {togglæeConfirmationDialog, toggleLoader} from "../../../redux/actions";
+import {useDispatch} from "react-redux";
+import {toggleLoader} from "../../../redux/actions";
 
 
 function CareerForm(props) {
@@ -19,35 +20,36 @@ function CareerForm(props) {
         values,
         errors,
     } = formHandler(stateCareer, validateCareer);
-    
+
     const [isSubmit, setIsSubmit] = useState(false);
 
     function stateCareer() {
         setIsSubmit(true)
 
     }
-    function resetForm(){
-        
+
+    function resetForm() {
+
     }
 
 
-    useEffect(()=>{
-        if(["View", "Edit"].includes(props.type) && !isEmpty(props.selectedCareer)){
-           
+    useEffect(() => {
+        if (["View", "Edit"].includes(props.type) && !isEmpty(props.selectedCareer)) {
+
             initForm(props.selectedCareer)
         }
-    },[props.type,props.selectedCareer])
+    }, [props.type, props.selectedCareer])
 
     useEffect(() => {
         if (!isSubmit || props.type !== "Add") {
             return
         }
-        
+
         //http://localhost:5000/api/career
-        axios.post(`${process.env.REACT_APP_HOST}/career` , values)
+        axios.post(`${process.env.REACT_APP_HOST}/career`, values)
             .then((res) => {
                 console.log(res.data)
-                 props.update()
+                props.update()
                 props.onHide();
                 toast.success(`Successfully Career Created`)
             }).catch((err) => {
@@ -64,8 +66,8 @@ function CareerForm(props) {
         })
     }, [isSubmit]);
 
-    useEffect(()=>{
-        if(!isSubmit || props.type !== "Edit"){
+    useEffect(() => {
+        if (!isSubmit || props.type !== "Edit") {
             return
         }
         dispatch(toggleLoader(true))
@@ -85,11 +87,10 @@ function CareerForm(props) {
             props.onHide()
         })
 
-    },[isSubmit])
-    
+    }, [isSubmit])
+
     const dispatch = useDispatch();
 
-   
 
     console.log(errors)
     console.log(values)
@@ -128,15 +129,15 @@ function CareerForm(props) {
                                 {<div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                            className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Course </label>
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Course </label>
                                         <input name={"course"} placeholder={"Enter Course Name"}
-                                            className={`form-control ${errors.course ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail5"
-                                            onChange={handleChange}
-                                            value={values.course || ""}
-                                            aria-describedby="emailHelp"
+                                               className={`form-control ${errors.course ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail5"
+                                               onChange={handleChange}
+                                               value={values.course || ""}
+                                               aria-describedby="emailHelp"
 
-                                            disabled={["View", "State"].includes(props.type)} />
+                                               disabled={["View", "State"].includes(props.type)}/>
 
 
                                         {errors.course && <p className={"text-red"}>{errors.course}</p>}
@@ -146,51 +147,57 @@ function CareerForm(props) {
                                 {<div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                            className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Degree Programme </label>
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Degree
+                                            Programme </label>
                                         <input name={"degreeProgramme"} placeholder={"Enter Degree Programme"}
-                                            className={`form-control ${errors.degreeProgramme ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail5"
-                                            onChange={handleChange}
-                                            value={values.degreeProgramme || ""}
-                                            aria-describedby="emailHelp"
+                                               className={`form-control ${errors.degreeProgramme ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail5"
+                                               onChange={handleChange}
+                                               value={values.degreeProgramme || ""}
+                                               aria-describedby="emailHelp"
 
-                                            disabled={["View", "State"].includes(props.type)} />
+                                               disabled={["View", "State"].includes(props.type)}/>
 
 
-                                        {errors.degreeProgramme && <p className={"text-red"}>{errors.degreeProgramme}</p>}
+                                        {errors.degreeProgramme &&
+                                            <p className={"text-red"}>{errors.degreeProgramme}</p>}
                                     </div>
                                 </div>}
 
                                 {<div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                            className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Available Universities </label>
-                                        <input name={"availableUniversities"} placeholder={"Enter Available Universities"}
-                                            className={`form-control ${errors.availableUniversities ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail5"
-                                            onChange={handleChange}
-                                            value={values.availableUniversities || ""}
-                                            aria-describedby="emailHelp"
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Available
+                                            Universities </label>
+                                        <input name={"availableUniversities"}
+                                               placeholder={"Enter Available Universities"}
+                                               className={`form-control ${errors.availableUniversities ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail5"
+                                               onChange={handleChange}
+                                               value={values.availableUniversities || ""}
+                                               aria-describedby="emailHelp"
 
-                                            disabled={["View", "State"].includes(props.type)} />
+                                               disabled={["View", "State"].includes(props.type)}/>
 
 
-                                        {errors.availableUniversities && <p className={"text-red"}>{errors.availableUniversities}</p>}
+                                        {errors.availableUniversities &&
+                                            <p className={"text-red"}>{errors.availableUniversities}</p>}
                                     </div>
                                 </div>}
 
                                 {<div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                            className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Medium of Instructions </label>
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Medium
+                                            of Instructions </label>
                                         <input name={"medium"} placeholder={"Enter Medium of Instructions"}
-                                            className={`form-control ${errors.medium ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail5"
-                                            onChange={handleChange}
-                                            value={values.medium || ""}
-                                            aria-describedby="emailHelp"
+                                               className={`form-control ${errors.medium ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail5"
+                                               onChange={handleChange}
+                                               value={values.medium || ""}
+                                               aria-describedby="emailHelp"
 
-                                            disabled={["View", "State"].includes(props.type)} />
+                                               disabled={["View", "State"].includes(props.type)}/>
 
 
                                         {errors.medium && <p className={"text-red"}>{errors.medium}</p>}
@@ -200,22 +207,22 @@ function CareerForm(props) {
                                 {<div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
-                                            className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Duration </label>
+                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Duration </label>
                                         <input name={"duration"} placeholder={"Enter Duration"}
-                                            className={`form-control ${errors.duration ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail5"
-                                            onChange={handleChange}
-                                            value={values.duration || ""}
-                                            aria-describedby="emailHelp"
+                                               className={`form-control ${errors.duration ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail5"
+                                               onChange={handleChange}
+                                               value={values.duration || ""}
+                                               aria-describedby="emailHelp"
 
-                                            disabled={["View", "State"].includes(props.type)} />
+                                               disabled={["View", "State"].includes(props.type)}/>
 
 
                                         {errors.duration && <p className={"text-red"}>{errors.duration}</p>}
                                     </div>
                                 </div>}
 
-                                { <div className={"col-md-12"}>
+                                {<div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Description</label>
