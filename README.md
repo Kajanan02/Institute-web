@@ -1,5 +1,12 @@
 # This project representing the institute management system
 
+### Project Name: Institute Management System
+
+#### Project Demo Link: [Institute Management System](https://www.youtube.com/watch?v=qBvAAoWg6wE)
+#### FrontEnd Repository: [Institute Management System FrontEnd](https://github.com/Kajanan02/Institute-web)
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
