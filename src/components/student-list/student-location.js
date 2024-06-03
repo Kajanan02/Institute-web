@@ -7,9 +7,9 @@ const MyMapComponent = compose(
     withProps({
 
         googleMapURL: `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&v=3.exp&libraries=geometry,drawing,places`,
-        loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `332px` }} />,
-        mapElement: <div style={{ height: `100%` }} />
+        loadingElement: <div style={{height: `100%`}}/>,
+        containerElement: <div style={{height: `332px`}}/>,
+        mapElement: <div style={{height: `100%`}}/>
     }),
     withScriptjs,
     withGoogleMap
@@ -25,13 +25,11 @@ const MyMapComponent = compose(
             // setPosition({lat:lat,lng:lng})
 
 
-
-
             places.forEach((place) => {
                 console.log(place.geometry.location.lat())
                 console.log(place.geometry.location.lat())
 
-                props.markerChange({lat:place.geometry.location.lat(),lng:place.geometry.location.lng()})
+                props.markerChange({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()})
 
                 if (place.geometry.viewport) {
                     // Only geocodes have viewport.
@@ -47,7 +45,7 @@ const MyMapComponent = compose(
             setSearchBox(ref);
         };
 
-        return(
+        return (
 
             <div className={'position-relative'}>
                 <GoogleMap defaultZoom={8}
@@ -94,23 +92,23 @@ const MyMapComponent = compose(
 
 export default function StudentLocationAdd(props) {
 
-    const [position,setPosition] = useState({lat:6.927079,lng:79.861244})
+    const [position, setPosition] = useState({lat: 6.927079, lng: 79.861244})
 
-    useEffect(()=>{
-        if(!props.location){
+    useEffect(() => {
+        if (!props.location) {
             return
         }
         console.log(props.location)
         setPosition(props.location)
-    },[props.location])
+    }, [props.location])
 
-    function onMarkerDragEnd (coord, index)  {
+    function onMarkerDragEnd(coord, index) {
         console.log(coord)
-        const { latLng } = coord;
+        const {latLng} = coord;
         let lat = latLng.lat();
         let lng = latLng.lng();
-        setPosition({lat:lat,lng:lng})
-        props.onChange({lat:lat,lng:lng})
+        setPosition({lat: lat, lng: lng})
+        props.onChange({lat: lat, lng: lng})
     }
 
     function markerChange(data) {

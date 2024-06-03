@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Modal } from "react-bootstrap";
+import React, {useState} from 'react';
+import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
-import { FileUploader } from "react-drag-drop-files";
+import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
-import { validatePay } from "../../utils/validation";
+import {validatePay} from "../../utils/validation";
 
 function AddPaymentForm(props) {
     const [formSubmitted, setFormSubmitted] = useState(false);
@@ -41,7 +41,7 @@ function AddPaymentForm(props) {
                 }
             }}>
                 {<Modal.Title id="contained-modal-title-vcenter">
-                    {props.type === "Add" &&<div> Add Payment Details</div>}
+                    {props.type === "Add" && <div> Add Payment Details</div>}
 
                 </Modal.Title>}
             </Modal.Header>
@@ -72,10 +72,12 @@ function AddPaymentForm(props) {
 
                                 {props.type !== "View" && <div className={"col-md-12"}>
                                     <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className={`form-label d-block ${props.type !== "View" ? "" : ""}`}>Payment Slip</label>
+                                        <label htmlFor="exampleInputEmail1"
+                                               className={`form-label d-block ${props.type !== "View" ? "" : ""}`}>Payment
+                                            Slip</label>
                                         <FileUploader handleChange={handleChangeProfile}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"} />
+                                                <img src={uploadIcon} width={"27%"}/>
                                                 {!paymentPdf?.name ? <div>
                                                         <div className={"fw-semibold my-2"}>Drop or Select file
                                                         </div>

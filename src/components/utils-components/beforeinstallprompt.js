@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 
 const PWAInstallPrompt = () => {
@@ -10,6 +10,7 @@ const PWAInstallPrompt = () => {
     function handleWindowSizeChange() {
         setWidth(window.innerWidth);
     }
+
     useEffect(() => {
         const handleBeforeInstallPrompt = (e) => {
             // Prevent the default behavior
@@ -38,9 +39,9 @@ const PWAInstallPrompt = () => {
     }, []);
 
     useEffect(() => {
-        if(width <= 768){
+        if (width <= 768) {
             setIsModalVisible(true)
-        }else {
+        } else {
             setIsModalVisible(false)
         }
     }, [width]);
@@ -68,9 +69,6 @@ const PWAInstallPrompt = () => {
     }
 
 
-
-
-
     return (
         <>
             {deferredPrompt && isModalVisible && (
@@ -88,9 +86,9 @@ const PWAInstallPrompt = () => {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body className={"text-center"}>
-                    <button onClick={handleInstallClick} type="button px-5"
-                            className={"btn btn-secondary students-dropdown-btn"}>Install
-                    </button>
+                        <button onClick={handleInstallClick} type="button px-5"
+                                className={"btn btn-secondary students-dropdown-btn"}>Install
+                        </button>
                     </Modal.Body>
                 </Modal>
             )}

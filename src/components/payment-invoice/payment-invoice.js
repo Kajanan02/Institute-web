@@ -1,21 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
-import {paymentData} from "./damiData";
 import StatepaymentForm from "./paymentinvoiceForm";
 import {getInstituteId, isInstituteAccount, isParentAccount} from "../../utils/Authentication";
-import AddPaymentForm from "../student/add-payment-student";
-import {toggleConfirmationDialog,setUserDetail, toggleLoader} from "../../redux/actions";
+import {toggleLoader} from "../../redux/actions";
 import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
-import {values, pick, filter, pluck, uniq} from "underscore";
+import {filter, pick, pluck, uniq, values} from "underscore";
 import {toast} from "react-toastify";
-import {useLocation, useNavigate, useNavigation, useSearchParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Chart from "react-apexcharts";
 import {monthArray} from "../../utils/utils";
-
-
-
 
 
 function PaymentInvoice(props) {
@@ -42,7 +37,7 @@ function PaymentInvoice(props) {
     console.log(props)
 
     useEffect(() => {
-        if(params?.search && isParentAccount() && userData?.studentId?.name){
+        if (params?.search && isParentAccount() && userData?.studentId?.name) {
             let values = {}
             values.name = userData?.studentId?.name
             values.studentNicNo = userData?.studentId?.nicNo
@@ -51,7 +46,7 @@ function PaymentInvoice(props) {
             values.status = "PAID"
             values.method = "ONLINE"
 
-            axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentId}/fees` , values)
+            axios.post(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${studentId}/fees`, values)
                 .then((res) => {
                     toast.success(`Successfully Payment added`)
                     navigation("/payment")
@@ -68,41 +63,41 @@ function PaymentInvoice(props) {
         dispatch(toggleLoader(true))
         //router.route('/:instituteId/fees').get(getFeesAll);
         axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/fees`)
-        .then((res) => {
-            if(isParentAccount()){
-                setPaymentList(res.data.filter((data)=> data.studentId === studentId)) 
-                setPaymentAllList(res.data.filter((data)=> data.studentId === studentId)) 
-            }else{
-                setPaymentList(res.data)
-                setPaymentAllList(res.data)
-                let temp = []
-                let subList = uniq(pluck(res.data,"month"))
+            .then((res) => {
+                if (isParentAccount()) {
+                    setPaymentList(res.data.filter((data) => data.studentId === studentId))
+                    setPaymentAllList(res.data.filter((data) => data.studentId === studentId))
+                } else {
+                    setPaymentList(res.data)
+                    setPaymentAllList(res.data)
+                    let temp = []
+                    let subList = uniq(pluck(res.data, "month"))
 
-                console.log(subList)
-                for (const subListElement of monthArray) {
+                    console.log(subList)
+                    for (const subListElement of monthArray) {
 
-                    if(subList.includes(subListElement)){
-                        let data = {}
-                        // data.name = subListElement
-                        let totalArr = res.data.filter((item) => item.month === subListElement).map((item) => {
-                            return item.feesAmount
-                        })
-                        let total = totalArr.reduce((a, b) => a + Number(b), 0)
-                        data.x = subListElement
-                        data.y = total.toString()
+                        if (subList.includes(subListElement)) {
+                            let data = {}
+                            // data.name = subListElement
+                            let totalArr = res.data.filter((item) => item.month === subListElement).map((item) => {
+                                return item.feesAmount
+                            })
+                            let total = totalArr.reduce((a, b) => a + Number(b), 0)
+                            data.x = subListElement
+                            data.y = total.toString()
 
-                        console.log(data)
+                            console.log(data)
 
-                        temp.push(data)
+                            temp.push(data)
+                        }
                     }
+
+                    console.log(temp)
+                    setGraphData([{name: "Payment", data: temp}])
+
                 }
 
-                console.log(temp)
-                setGraphData([{name:"Payment",data:temp}])
-
-            }
-            
-        }).catch((err) => {
+            }).catch((err) => {
             console.log(err)
         }).finally(() => {
             dispatch(toggleLoader(false))
@@ -110,7 +105,7 @@ function PaymentInvoice(props) {
     }, [update])
 
     console.log(graphData)
-    
+
     const dispatch = useDispatch();
 
     console.log(selectedPayment);
@@ -118,7 +113,9 @@ function PaymentInvoice(props) {
     function handleSearch(e) {
         let val = e.target.value;
         if (val !== "") {
-            let res = filter(paymentAllList, function (item) { return values(pick(item, 'month',  'name', 'method', 'studentNicNo')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase()); });
+            let res = filter(paymentAllList, function (item) {
+                return values(pick(item, 'month', 'name', 'method', 'studentNicNo')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase());
+            });
             setPaymentList(res);
             console.log(res)
         } else {
@@ -126,16 +123,16 @@ function PaymentInvoice(props) {
         }
     }
 
-    function colorChange(status){
+    function colorChange(status) {
 
-        switch(status){
+        switch (status) {
             case "PAID":
                 return "bg-success text-white"
             case "DECLINE":
                 return "bg-danger text-white"
             default:
                 return ""
-            
+
         }
 
     }
@@ -148,7 +145,7 @@ function PaymentInvoice(props) {
         dataLabels: {
             enabled: true
         },
-        colors:['#00b957','#008ffb','#ad00b9'],
+        colors: ['#00b957', '#008ffb', '#ad00b9'],
         fill: {
             type: 'gradient',
             gradient: {
@@ -183,7 +180,8 @@ function PaymentInvoice(props) {
                                 <div className={"appointment-search"}>
                                     <div className="container-fluid">
                                         <form className="d-flex" role="search">
-                                            <input className="form-control me-2" onChange={handleSearch} type="search" placeholder="Search"
+                                            <input className="form-control me-2" onChange={handleSearch} type="search"
+                                                   placeholder="Search"
                                                    aria-label="Search"/>
                                         </form>
                                     </div>
@@ -195,19 +193,20 @@ function PaymentInvoice(props) {
                                             // if(isParentAccount()) {
                                             // setStudentModalShow(true)
                                             // }else {
-                                                setModalShow(true)
+                                            setModalShow(true)
                                             // }
                                         }}>
                                     <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                                     Add
                                 </button>
 
-                                {isInstituteAccount() &&<button type="button" className={"btn btn-secondary students-dropdown-btn "}
-                                    // data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                         onClick={() => setGraph(!graph)}>
-                                    {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"} />*/}
-                                    {graph ? "Table" : "Graph"}
-                                </button>}
+                                {isInstituteAccount() &&
+                                    <button type="button" className={"btn btn-secondary students-dropdown-btn "}
+                                        // data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                            onClick={() => setGraph(!graph)}>
+                                        {/*<FeatherIcon className={"action-icons text-white"} icon={"plus"} />*/}
+                                        {graph ? "Table" : "Graph"}
+                                    </button>}
 
                             </div>
                         </div>
@@ -291,7 +290,7 @@ function PaymentInvoice(props) {
                 type={modalType}
                 onHide={() => setModalShow(false)}
                 selectedPayment={selectedPayment}
-                update={()=> setUpdate(!update)}
+                update={() => setUpdate(!update)}
             />
             {/* <AddPaymentForm
                 show={studentModalShow}

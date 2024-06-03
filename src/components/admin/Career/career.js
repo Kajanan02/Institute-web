@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import Layout from "../../../layout/layout";
-import {careerData} from "./damiData";
 import FeatherIcon from 'feather-icons-react';
 import CareerForm from "./careerForm";
 import {isAdminAccount} from "../../../utils/Authentication";
 import {toggleConfirmationDialog, toggleLoader} from "../../../redux/actions";
 import axios from 'axios';
 import {useDispatch, useSelector} from "react-redux";
-import {values, pick, filter, pluck} from "underscore";
+import {filter, pick, values} from "underscore";
 import {toast} from "react-toastify";
 
 function Career(props) {
@@ -38,8 +37,9 @@ function Career(props) {
     }, [update])
     const confirmationDialog = useSelector(state => {
         return state.setting.confirmationDialog
-      });
-      function handleDelete(id) {
+    });
+
+    function handleDelete(id) {
         dispatch(toggleConfirmationDialog({
             isVisible: true,
             confirmationHeading: ('ARE YOU SURE YOU WANT TO DELETE THIS STUDENT DATA'),
@@ -49,35 +49,37 @@ function Career(props) {
         console.log("ads")
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         if (!confirmationDialog || !confirmationDialog.onSuccess || !deletedId) {
             console.log("asdf")
             return;
         }
         console.log("asdasd")
         dispatch(toggleLoader(true))
-        
+
         //http://localhost:5000/api/career/:id
         axios.delete(`${process.env.REACT_APP_HOST}/career/${deletedId}`)
             .then((res) => {
-              setUpdate(!update)
+                setUpdate(!update)
                 toast.success(`Successfully Deleted`)
-    
+
             }).catch((err) => {
             console.log(err)
         }).finally(() => {
             dispatch(toggleLoader(false))
             setDeletedId(null)
         })
-      },[confirmationDialog])
+    }, [confirmationDialog])
 
-   
 
     const dispatch = useDispatch();
+
     function handleSearch(e) {
         let val = e.target.value;
         if (val !== "") {
-            let res = filter(careerAllList, function (item) { return values(pick(item, 'course',  'degreeProgramme', 'duration','availableUniversities')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase()); });
+            let res = filter(careerAllList, function (item) {
+                return values(pick(item, 'course', 'degreeProgramme', 'duration', 'availableUniversities')).toString().toLocaleLowerCase().includes(val.toLocaleLowerCase());
+            });
             setCareerList(res);
             console.log(res)
         } else {
@@ -85,8 +87,6 @@ function Career(props) {
         }
     }
 
-    
-    
 
     console.log();
 
@@ -104,20 +104,22 @@ function Career(props) {
                                 <div className={"appointment-search"}>
                                     <div className="container-fluid">
                                         <form className="d-flex" role="search">
-                                            <input className="form-control me-2" onChange={handleSearch}  type="search" placeholder="Search"
+                                            <input className="form-control me-2" onChange={handleSearch} type="search"
+                                                   placeholder="Search"
                                                    aria-label="Search"/>
                                         </form>
                                     </div>
                                 </div>
                                 <div></div>
-                            { isAdminAccount()&&  <button type="button" className={"btn btn-secondary students-dropdown-btn"}
-                                        onClick={() => {
-                                            setModalType("Add");
-                                            setModalShow(true)
-                                        }}>
-                                    <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
-                                    Add
-                                </button>}
+                                {isAdminAccount() &&
+                                    <button type="button" className={"btn btn-secondary students-dropdown-btn"}
+                                            onClick={() => {
+                                                setModalType("Add");
+                                                setModalShow(true)
+                                            }}>
+                                        <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
+                                        Add
+                                    </button>}
                             </div>
                         </div>
                     </div>
@@ -126,14 +128,14 @@ function Career(props) {
                             <thead>
                             <tr className={"position-sticky top-0 pt-1 h-45"}>
                                 <th scope="col">No</th>
-                                <th scope="col">Course </th>
+                                <th scope="col">Course</th>
                                 <th scope="col">Degree Programme</th>
                                 <th scope="col">Available Universities</th>
                                 {/* <th scope="col">description</th>                                 */}
                                 <th scope="col">Duration</th>
-                                <th scope="col"> </th>
-                                
-                               
+                                <th scope="col"></th>
+
+
                             </tr>
                             </thead>
                             <tbody>
@@ -153,30 +155,33 @@ function Career(props) {
                                 </td> */}
                                 <td className={"table-action"}>
 
-                                <td>
-                                    <FeatherIcon className={"action-icons"} icon={"eye"}
-                                                    onClick={() => {
-                                                        setModalType("View");
-                                                        setSelectedCareer(data)
-                                                        setModalShow(true)
-                                                    }}/>
-                                   {isAdminAccount()&&  <FeatherIcon className={"action-icons"} icon={"edit"}
-                                                    onClick={() => {
-                                                        setSelectedCareer(data)
-                                                        setModalType("Edit");
-                                                        setModalShow(true)
-                                                    }}/>}
+                                    <td>
+                                        <FeatherIcon className={"action-icons"} icon={"eye"}
+                                                     onClick={() => {
+                                                         setModalType("View");
+                                                         setSelectedCareer(data)
+                                                         setModalShow(true)
+                                                     }}/>
+                                        {isAdminAccount() && <FeatherIcon className={"action-icons"} icon={"edit"}
+                                                                          onClick={() => {
+                                                                              setSelectedCareer(data)
+                                                                              setModalType("Edit");
+                                                                              setModalShow(true)
+                                                                          }}/>}
 
 
-                                    {isAdminAccount()&& <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} onClick={() => handleDelete(data._id)} />}
-                                </td>
+                                        {isAdminAccount() &&
+                                            <FeatherIcon className={"action-icons text-red"} icon={"trash-2"}
+                                                         onClick={() => handleDelete(data._id)}/>}
+                                    </td>
 
 
                                 </td>
                             </tr>))}
                             </tbody>
                         </table>
-                        {careerList.length === 0 && <div className={"text-center py-5 fw-bold"}>No Career Data Found,Please Add</div>}
+                        {careerList.length === 0 &&
+                            <div className={"text-center py-5 fw-bold"}>No Career Data Found,Please Add</div>}
                     </div>
                 </div>
             </div>
@@ -185,13 +190,13 @@ function Career(props) {
                 show={modalShow}
                 type={modalType}
                 selectedCareer={selectedCareer}
-                update={()=>setUpdate(!update)}
+                update={() => setUpdate(!update)}
                 onHide={() => {
                     setModalShow(false);
                     setSelectedCareer(null)
                 }}
-            />  
-               
+            />
+
             {/* </div> */}
         </Layout>
     );

@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import broadcasting from "../../assets/broadcasted (1).png";
 import FeatherIcon from "feather-icons-react";
-import { mapObject } from "underscore";
-import MultiSelect from "@khanacademy/react-multi-select";
-import { studentData, subjectData } from "../student-list/damiData";
+import {mapObject} from "underscore";
+import {subjectData} from "../student-list/damiData";
 import formHandler from "../../utils/FormHandler";
-import { validateBroadcast } from "../../utils/validation";
+import {validateBroadcast} from "../../utils/validation";
 import axios from 'axios';
-import { toast } from "react-toastify";
-import { togglæeConfirmationDialog, toggleLoader } from "../../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
+import {toast} from "react-toastify";
+import {toggleLoader} from "../../redux/actions";
+import {useDispatch} from "react-redux";
 
 function Broadcast(props) {
     const [selectedBuyer, setSelectedBuyer] = useState([]);
@@ -35,16 +34,18 @@ function Broadcast(props) {
     function isLoading() {
         console.log("All are done")
     }
-    
+
 
     function multiSelectOnChangeBuyer(selected) {
         setSelectedBuyer(selected);
         // setValue({previousBuyer: selected});
     }
+
     function stateBroadcast() {
         setIsSubmit(true)
     }
-    function resetForm(){
+
+    function resetForm() {
         initForm({});
     }
 
@@ -59,7 +60,7 @@ function Broadcast(props) {
     console.log(values)
     console.log(errors)
     useEffect(() => {
-        if (!isSubmit  ) {
+        if (!isSubmit) {
             return
         }
 
@@ -71,17 +72,17 @@ function Broadcast(props) {
                 //props.onHide();
                 toast.success(`Successfully Broadcast Created`)
             }).catch((err) => {
-                toast.error("Something went wrong")
-            }).finally(() => {
-                dispatch(toggleLoader(false))
-                setIsSubmit(false);
-                resetForm()
-                // if (parentSubmit) {
-                //     setStudentId(null);
-                //     props.onHide()
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            resetForm()
+            // if (parentSubmit) {
+            //     setStudentId(null);
+            //     props.onHide()
 
-                // }
-            })
+            // }
+        })
     }, [isSubmit]);
 
     return (
@@ -91,19 +92,19 @@ function Broadcast(props) {
                     <div className={"content-heading pt-3"}><h3>Broadcast Message</h3></div>
                     <div className={"broadcast_sub_container pt-5 mt-5"}>
                         <div className={"broadcast-image pt-2"}>
-                            <img src={broadcasting} alt={"broadcast_image"} />
+                            <img src={broadcasting} alt={"broadcast_image"}/>
                         </div>
                         <div className={"broadcast_msg_container p-3"}>
                             {<div className={"col-md-12"}>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputEmail5"
-                                        className={"form-label"}> Topic </label>
+                                           className={"form-label"}> Topic </label>
                                     <input name={"messageTopic"} placeholder={"Enter Topic"}
-                                        className={`form-control ${errors.messageTopic ? "border-red" : ""}  `}
-                                        id="exampleInputEmail5"
-                                        onChange={handleChange}
-                                        value={values.messageTopic || ""}
-                                        aria-describedby="emailHelp"
+                                           className={`form-control ${errors.messageTopic ? "border-red" : ""}  `}
+                                           id="exampleInputEmail5"
+                                           onChange={handleChange}
+                                           value={values.messageTopic || ""}
+                                           aria-describedby="emailHelp"
 
 
                                     />
@@ -116,13 +117,13 @@ function Broadcast(props) {
                             {<div className={"col-md-12"}>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputEmail5"
-                                        className={"form-label"}>Message</label>
+                                           className={"form-label"}>Message</label>
                                     <textarea name={"message"} placeholder={"Enter Message"} rows="5"
-                                        className={`form-control ${errors.message ? "border-red" : ""} `}
-                                        id="exampleInputEmail5"
-                                        onChange={handleChange}
-                                        value={values.message || ""}
-                                        aria-describedby="emailHelp"
+                                              className={`form-control ${errors.message ? "border-red" : ""} `}
+                                              id="exampleInputEmail5"
+                                              onChange={handleChange}
+                                              value={values.message || ""}
+                                              aria-describedby="emailHelp"
                                     />
                                     {errors.message && <p className={"text-red"}>{errors.message}</p>}
                                 </div>
@@ -130,10 +131,10 @@ function Broadcast(props) {
 
                             <div className={"dropdown-center pb-3"}>
                                 <select className={`form-control ${errors.sender ? "border-red" : ""}`}
-                                    onChange={handleChange}
-                                    value={values.sender || ""}
-                                    name={"sender"}
-                                    aria-label="Default select example">
+                                        onChange={handleChange}
+                                        value={values.sender || ""}
+                                        name={"sender"}
+                                        aria-label="Default select example">
                                     <option hidden>Sent To</option>
                                     <option value="COMBINED_MATHEMATICS">Combined Mathematics</option>
                                     <option value="PHYSICS">Physics</option>
@@ -145,9 +146,9 @@ function Broadcast(props) {
                             </div>
                             <div className={"d-grid gap-2 d-md-block broadcast-send"}>
                                 <button className={"btn btn-primary broadcast-send-btn"} type={"button"}
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                    onClick={() => setModalType("Add")}>
-                                    <FeatherIcon className={"action-icons text-white"} icon={"send"} />
+                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                        onClick={() => setModalType("Add")}>
+                                    <FeatherIcon className={"action-icons text-white"} icon={"send"}/>
                                     Send
                                 </button>
                             </div>
@@ -155,7 +156,7 @@ function Broadcast(props) {
                     </div>
                 </div>
                 <div className={"modal fade"} id={"exampleModal"} aria-labelledby={"exampleModalLabel"}
-                    aria-hidden="true">
+                     aria-hidden="true">
                     <div className={"modal-dialog modal-dialog-centered box-popup modal-lg modal-dialog-scrollable"}>
                         <div className={"modal-content"}>
                             <div className={"modal-header"}>
@@ -165,8 +166,8 @@ function Broadcast(props) {
                                         return val = '';
                                     }))
                                 }}
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close">
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close">
                                 </button>
                             </div>
                             <form className="modal-body" onSubmit={handleSubmit}>
@@ -186,7 +187,7 @@ function Broadcast(props) {
                                         Cancel
                                     </button>
 
-                                   <button
+                                    <button
                                         type="button"
                                         className={"btn btn-secondary students-dropdown-btn"}
                                         onClick={handleSubmit}

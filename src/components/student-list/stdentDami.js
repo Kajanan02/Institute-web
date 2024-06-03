@@ -1,13 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { Checkbox, FormControl, Grid, InputLabel, ListItemText, OutlinedInput, Select, useTheme } from "@mui/material";
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
+import {Checkbox, FormControl, Grid, InputLabel, ListItemText, OutlinedInput, Select, useTheme} from "@mui/material";
 // import Stack from '@mui/material/Stack';
 // import {DemoContainer} from "@mui/x-date-pickers/internals/demo";
 
@@ -52,7 +52,7 @@ export default function StdentDami(props) {
 
     const handleChange = useCallback((event) => {
         const {
-            target: { value },
+            target: {value},
         } = event;
         setPersonName(
             typeof value === 'string' ? value.split(',') : value,
@@ -68,25 +68,25 @@ export default function StdentDami(props) {
         stream: "Physical Science",
         joindate: "15 June 2023"
     },
-    { No: 0o2, Reg: 200012345679, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o3, Reg: 200012345680, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o5, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o6, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o6, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" },
-    { No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023" }])
+        {No: 0o2, Reg: 200012345679, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o3, Reg: 200012345680, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o5, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o6, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o6, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o7, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"},
+        {No: 0o4, Reg: 200012345681, name: "Harsh Kadyan", stream: "Physical Science", joindate: "15 June 2023"}])
     console.log(studentsList)
     console.log(studentsList[0])
 
@@ -208,20 +208,20 @@ export default function StdentDami(props) {
 
 
                                 <button type="button" className={"btn btn-secondary students-dropdown-btn"}
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                    onClick={() => setModalType("Add")}>
-                                    <FeatherIcon className={"action-icons text-white"} icon={"plus"} />
+                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                        onClick={() => setModalType("Add")}>
+                                    <FeatherIcon className={"action-icons text-white"} icon={"plus"}/>
                                     Add
                                 </button>
 
 
                                 <button className={"btn btn-secondary students-dropdown-btn"} type="button"
-                                    aria-expanded="false">
-                                    <FeatherIcon className={"action-icons text-white"} icon={"download"} />
+                                        aria-expanded="false">
+                                    <FeatherIcon className={"action-icons text-white"} icon={"download"}/>
                                     Import Data
                                 </button>
                                 <button className={"btn btn-secondary students-dropdown-btn"} type="button"
-                                    aria-expanded="false">
+                                        aria-expanded="false">
                                     Export Data
                                 </button>
                             </div>
@@ -230,32 +230,32 @@ export default function StdentDami(props) {
                     <div className={"table-container p-2"}>
                         <table className={"table table-hover table-striped"}>
                             <thead>
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Reg.No</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Stream</th>
-                                    <th scope="col">Join Date</th>
-                                    <th scope="col"></th>
-                                </tr>
+                            <tr>
+                                <th scope="col">No</th>
+                                <th scope="col">Reg.No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Stream</th>
+                                <th scope="col">Join Date</th>
+                                <th scope="col"></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                {studentsList.map((data, index) => (<tr>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{data.Reg}</td>
-                                    <td>{data.name}</td>
-                                    <td>{data.stream}</td>
-                                    <td>{data.joindate}</td>
-                                    <td>
+                            {studentsList.map((data, index) => (<tr>
+                                <th scope="row">{index + 1}</th>
+                                <td>{data.Reg}</td>
+                                <td>{data.name}</td>
+                                <td>{data.stream}</td>
+                                <td>{data.joindate}</td>
+                                <td>
 
 
-                                        <FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal" onClick={() => setModalType("View")} />
-                                        <FeatherIcon className={"action-icons"} icon={"edit"} data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal" onClick={() => setModalType("Edit")} />
-                                        <FeatherIcon className={"action-icons text-red"} icon={"trash-2"} />
-                                    </td>
-                                </tr>))}
+                                    <FeatherIcon className={"action-icons"} icon={"eye"} data-bs-toggle="modal"
+                                                 data-bs-target="#exampleModal" onClick={() => setModalType("View")}/>
+                                    <FeatherIcon className={"action-icons"} icon={"edit"} data-bs-toggle="modal"
+                                                 data-bs-target="#exampleModal" onClick={() => setModalType("Edit")}/>
+                                    <FeatherIcon className={"action-icons text-red"} icon={"trash-2"}/>
+                                </td>
+                            </tr>))}
                             </tbody>
                         </table>
                     </div>
@@ -263,20 +263,20 @@ export default function StdentDami(props) {
             </div>
 
             <div className={"modal fade"} id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+                 aria-hidden="true">
                 <div className={"modal-dialog modal-dialog-centered box-popup modal-lg"}>
                     <div className={"modal-content"}>
                         <div className={"modal-header"}>
                             <h1 className={"modal-title fs-5"} id="exampleModalLabel">{modalType} Students Details</h1>
                             <button type="button" className={"btn-close"} data-bs-dismiss="modal"
-                                aria-label="Close"></button>
+                                    aria-label="Close"></button>
                         </div>
 
 
-                        <Grid container spacing={3} sx={{ p: 2 }}>
+                        <Grid container spacing={3} sx={{p: 2}}>
                             <Grid item xs={12} sm={4}>
                                 <TextField
-                                    sx={{ m: 1 }}
+                                    sx={{m: 1}}
                                     required
                                     id="outlined-required"
                                     label="Name"
@@ -285,7 +285,7 @@ export default function StdentDami(props) {
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <TextField
-                                    sx={{ m: 1 }}
+                                    sx={{m: 1}}
                                     required
                                     id="outlined-required"
                                     label="NIC No"
@@ -294,7 +294,7 @@ export default function StdentDami(props) {
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <TextField
-                                    sx={{ m: 1 }}
+                                    sx={{m: 1}}
                                     required
                                     id="outlined-required"
                                     label="Home Address"
@@ -303,7 +303,7 @@ export default function StdentDami(props) {
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <TextField
-                                    sx={{ m: 1 }}
+                                    sx={{m: 1}}
                                     required
                                     id="outlined-required"
                                     label="Contact no"
@@ -312,14 +312,14 @@ export default function StdentDami(props) {
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <FormControl fullWidth={true}>
-                                    <InputLabel id="demo-simple-select-label" sx={{ m: 1 }}>Gender</InputLabel>
+                                    <InputLabel id="demo-simple-select-label" sx={{m: 1}}>Gender</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
                                         // value={age}
-                                        sx={{ m: 1 }}
+                                        sx={{m: 1}}
                                         label="Gender"
-                                    // onChange={handleChange}
+                                        // onChange={handleChange}
                                     >
                                         <MenuItem value={"Male"}>Male</MenuItem>
                                         <MenuItem value={"Female"}>Female</MenuItem>
@@ -329,30 +329,30 @@ export default function StdentDami(props) {
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DemoContainer components={['DatePicker']} sx={{ marginX: 1 }}>
-                                        <DatePicker label="Date of Birth" />
+                                    <DemoContainer components={['DatePicker']} sx={{marginX: 1}}>
+                                        <DatePicker label="Date of Birth"/>
                                     </DemoContainer>
                                 </LocalizationProvider>
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <FormControl fullWidth={true}>
-                                    <InputLabel id="demo-multiple-checkbox-label" sx={{ m: 1 }}>Subjects</InputLabel>
+                                    <InputLabel id="demo-multiple-checkbox-label" sx={{m: 1}}>Subjects</InputLabel>
                                     <Select
                                         labelId="demo-multiple-checkbox-label"
                                         id="demo-multiple-checkbox"
                                         multiple
-                                        sx={{ m: 1 }}
+                                        sx={{m: 1}}
                                         disablePortal
                                         value={personName}
                                         onChange={handleChange}
-                                        input={<OutlinedInput disablePortal label="Tag" />}
+                                        input={<OutlinedInput disablePortal label="Tag"/>}
                                         renderValue={(selected) => selected.join(', ')}
                                         MenuProps={MenuProps}
                                     >
                                         {names.map((name) => (
                                             <MenuItem disablePortal key={name} value={name}>
-                                                <Checkbox checked={personName.indexOf(name) > -1} />
-                                                <ListItemText primary={name} />
+                                                <Checkbox checked={personName.indexOf(name) > -1}/>
+                                                <ListItemText primary={name}/>
                                             </MenuItem>
                                         ))}
                                     </Select>
