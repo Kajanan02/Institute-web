@@ -2,11 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
 import {validatemarks} from "../../utils/validation";
-import MultiSelect from "@khanacademy/react-multi-select";
-import {marksData , subjectData} from "./marksDamiData";
-import {toggleLoader} from "../../redux/actions";
+import {subjectData} from "./marksDamiData";
+import {setMqttDetail, toggleLoader} from "../../redux/actions";
 import axios from "axios";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Typeahead} from "react-bootstrap-typeahead";
 import {find, pluck} from "underscore";
 import {toast} from "react-toastify";
@@ -22,7 +21,6 @@ function MarksForm(props) {
     const [isSubmit, setIsSubmit] = useState(false);
 
 
-
     const {
         handleChange,
         handleSubmit,
@@ -32,14 +30,20 @@ function MarksForm(props) {
         errors,
     } = formHandler(ismarks, validatemarks);
 
+    const mqtt = useSelector(state => {
+        return state.mqttDetail.data
+    });
+
     function ismarks() {
         setIsSubmit(true)
 
     }
+
     function multiSelectOnChangeBuyer(selected) {
-          setSelectedBuyer(selected);
-           setValue({previousBuyer: selected});
-        }
+        setSelectedBuyer(selected);
+        setValue({previousBuyer: selected});
+    }
+
     function multiSelectOnChangeSubjects(selected) {
         setSelectedBuyer(selected);
         setValue({subjects: selected});
@@ -67,10 +71,10 @@ function MarksForm(props) {
 
 
     useEffect(() => {
-        if(!props.selectedMarks){
-            return 
+        if (!props.selectedMarks) {
+            return
         }
-        props.selectedMarks.date = props.selectedMarks.date.slice(0,10)
+        props.selectedMarks.date = props.selectedMarks.date.slice(0, 10)
         initForm(props.selectedMarks)
         setSingleSelections([props.selectedMarks?.nicNo])
 
@@ -87,9 +91,13 @@ function MarksForm(props) {
                 props.update()
                 props.onHide();
                 toast.success(`Successfully Marks created`)
-            }).catch((err) => {
-            toast.error("Something went wrong")
-        }).finally(() => {
+
+            }).then(() => {
+            dispatch(setMqttDetail({"mobileNumber": "0765471338", "body": values.marks, "type": "msg"}))
+        })
+            .catch((err) => {
+                toast.error("Something went wrong")
+            }).finally(() => {
             dispatch(toggleLoader(false))
             setIsSubmit(false);
             resetForm()
@@ -101,8 +109,8 @@ function MarksForm(props) {
         })
     }, [isSubmit]);
 
-    useEffect(()=>{
-        if(!isSubmit || props.type !== "Edit"){
+    useEffect(() => {
+        if (!isSubmit || props.type !== "Edit") {
             return
         }
         dispatch(toggleLoader(true))
@@ -116,12 +124,12 @@ function MarksForm(props) {
         }).finally(() => {
             dispatch(toggleLoader(false))
             setIsSubmit(false);
-          setIsSubmit(false)
+            setIsSubmit(false)
             resetForm()
             props.onHide()
         })
 
-    },[isSubmit])
+    }, [isSubmit])
 
     return (
         <Modal
@@ -138,8 +146,8 @@ function MarksForm(props) {
                 }
             }}>
                 {<Modal.Title id="contained-modal-title-vcenter">
-                    {props.type === "Add" &&<div> Add Marks Details</div>}
-                    {props.type === "Edit" &&<div> Edit Marks Details</div>}
+                    {props.type === "Add" && <div> Add Marks Details</div>}
+                    {props.type === "Edit" && <div> Edit Marks Details</div>}
 
                 </Modal.Title>}
             </Modal.Header>
@@ -155,13 +163,13 @@ function MarksForm(props) {
                                             id="basic-typeahead-single"
                                             labelKey="name"
                                             className={`disabled-white ${errors.regNO ? "border-red" : ""}`}
-                                            onChange={(res)=> {
-                                               setValue({nicNo:res[0]})
-                                                setValue({name:find(studentsList,{nicNo:res[0]})?.name})
-                                                setValue({studentId:find(studentsList,{nicNo:res[0]})?._id})
+                                            onChange={(res) => {
+                                                setValue({nicNo: res[0]})
+                                                setValue({name: find(studentsList, {nicNo: res[0]})?.name})
+                                                setValue({studentId: find(studentsList, {nicNo: res[0]})?._id})
                                                 setSingleSelections(res)
                                             }}
-                                            options={pluck(studentsList,"nicNo")}
+                                            options={pluck(studentsList, "nicNo")}
                                             placeholder="Choose a state..."
                                             selected={singleSelections}
                                         />
@@ -202,23 +210,23 @@ function MarksForm(props) {
                                         {errors.subjects && <p className={"text-red"}>{errors.subjects}</p>}
                                     </div>
                                 </div>
-                                    {/*<div className={"col-md-6"}>*/}
-                                    {/*    <div className="mb-3">*/}
-                                    {/*        <label htmlFor="exampleInputEmail1"*/}
-                                    {/*               className="form-label">Subjects</label>*/}
-                                    {/*        <div className={`form-control p-0`}>*/}
-                                    {/*            <MultiSelect*/}
-                                    {/*                className={"multi-select test"}*/}
-                                    {/*                options={buyerOption}*/}
-                                    {/*                selected={selectedBuyer}*/}
-                                    {/*                onSelectedChanged={multiSelectOnChangeBuyer}*/}
+                                {/*<div className={"col-md-6"}>*/}
+                                {/*    <div className="mb-3">*/}
+                                {/*        <label htmlFor="exampleInputEmail1"*/}
+                                {/*               className="form-label">Subjects</label>*/}
+                                {/*        <div className={`form-control p-0`}>*/}
+                                {/*            <MultiSelect*/}
+                                {/*                className={"multi-select test"}*/}
+                                {/*                options={buyerOption}*/}
+                                {/*                selected={selectedBuyer}*/}
+                                {/*                onSelectedChanged={multiSelectOnChangeBuyer}*/}
 
-                                    {/*            />*/}
+                                {/*            />*/}
 
-                                    {/*        </div>*/}
-                                    {/*        {errors.Subjects && selectedBuyer=='Select some items...' && <p className={"text-red"}>{errors.Subjects}</p>}*/}
-                                    {/*    </div>*/}
-                                    {/*</div>*/}
+                                {/*        </div>*/}
+                                {/*        {errors.Subjects && selectedBuyer=='Select some items...' && <p className={"text-red"}>{errors.Subjects}</p>}*/}
+                                {/*    </div>*/}
+                                {/*</div>*/}
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Marks</label>
@@ -267,7 +275,7 @@ function MarksForm(props) {
                     Cancel
                 </button>
 
-                {props.type === "Add" &&<button
+                {props.type === "Add" && <button
                     type="button"
                     className={"btn btn-secondary students-dropdown-btn"}
                     onClick={handleSubmit}

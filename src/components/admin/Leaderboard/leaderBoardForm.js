@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { Modal } from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {Modal} from "react-bootstrap";
 import formHandler from "../../../utils/FormHandler";
-import { validateLeaderBoard } from "../../../utils/validation";
-import MultiSelect from "@khanacademy/react-multi-select";
+import {validateLeaderBoard} from "../../../utils/validation";
 // import {marksData , subjectData} from "./marksDamiData";
-import { toggleLoader } from "../../../redux/actions";
+import {toggleLoader} from "../../../redux/actions";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { Typeahead } from "react-bootstrap-typeahead";
-import { find, pluck } from "underscore";
-import { toast } from "react-toastify";
-import { isEmpty } from 'underscore';
+import {useDispatch} from "react-redux";
+import {Typeahead} from "react-bootstrap-typeahead";
+import {find, isEmpty, pluck} from "underscore";
+import {toast} from "react-toastify";
 
 function LeaderBoardForm(props) {
     // const buyerOption = subjectData;
@@ -19,9 +17,8 @@ function LeaderBoardForm(props) {
     const instituteId = localStorage.getItem("USER_ID");
     const [singleSelections, setSingleSelections] = useState([]);
     const [isSubmit, setIsSubmit] = useState(false);
-    
-    
-    
+
+
     const {
         handleChange,
         handleSubmit,
@@ -32,7 +29,7 @@ function LeaderBoardForm(props) {
     } = formHandler(stateLeaderBoard, validateLeaderBoard);
 
     const [formSubmitted, setFormSubmitted] = useState(false);
-    
+
     function stateLeaderBoard() {
         setIsSubmit(true)
 
@@ -44,12 +41,12 @@ function LeaderBoardForm(props) {
 
     function multiSelectOnChangeBuyer(selected) {
         setSelectedBuyer(selected);
-        setValue({ previousBuyer: selected });
+        setValue({previousBuyer: selected});
     }
 
     function multiSelectOnChangeSubjects(selected) {
         setSelectedBuyer(selected);
-        setValue({ subjects: selected });
+        setValue({subjects: selected});
     }
 
     useEffect(() => {
@@ -59,10 +56,10 @@ function LeaderBoardForm(props) {
             .then((res) => {
                 setStudentsList(res.data)
             }).catch((err) => {
-                console.log(err)
-            }).finally(() => {
-                dispatch(toggleLoader(false))
-            })
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
     }, [])
 
     useEffect(() => {
@@ -86,17 +83,17 @@ function LeaderBoardForm(props) {
                 props.onHide();
                 toast.success(`Successfully Leader Board Created`)
             }).catch((err) => {
-                toast.error("Something went wrong")
-            }).finally(() => {
-                dispatch(toggleLoader(false))
-                setIsSubmit(false);
-                resetForm()
-                // if (parentSubmit) {
-                //     setStudentId(null);
-                //     props.onHide()
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            resetForm()
+            // if (parentSubmit) {
+            //     setStudentId(null);
+            //     props.onHide()
 
-                // }
-            })
+            // }
+        })
     }, [isSubmit]);
 
     useEffect(() => {
@@ -112,14 +109,14 @@ function LeaderBoardForm(props) {
                 toast.success(`Successfully Updated`)
                 props.update()
             }).catch((err) => {
-                toast.error("Something went wrong")
-            }).finally(() => {
-                dispatch(toggleLoader(false))
-                setIsSubmit(false);
-                setIsSubmit(false)
-                resetForm()
-                props.onHide()
-            })
+            toast.error("Something went wrong")
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+            setIsSubmit(false);
+            setIsSubmit(false)
+            resetForm()
+            props.onHide()
+        })
 
     }, [isSubmit])
 
@@ -160,15 +157,16 @@ function LeaderBoardForm(props) {
                                             id="basic-typeahead-single"
                                             labelKey="name"
                                             className={`disabled-white ${errors.regNo ? "border-red" : ""}`}
-                                            onChange={(res)=> {
-                                               setValue({regNo:res[0]})
-                                                setValue({instituteName:find(studentsList,{nicNo:res[0]})?.instituteId?.name
-                                            })
-                                                setValue({name:find(studentsList,{nicNo:res[0]})?.name})
-                                                setValue({studentId:find(studentsList,{nicNo:res[0]})?._id})
+                                            onChange={(res) => {
+                                                setValue({regNo: res[0]})
+                                                setValue({
+                                                    instituteName: find(studentsList, {nicNo: res[0]})?.instituteId?.name
+                                                })
+                                                setValue({name: find(studentsList, {nicNo: res[0]})?.name})
+                                                setValue({studentId: find(studentsList, {nicNo: res[0]})?._id})
                                                 setSingleSelections(res)
                                             }}
-                                            options={pluck(studentsList,"nicNo")}
+                                            options={pluck(studentsList, "nicNo")}
                                             placeholder="Choose a state..."
                                             selected={singleSelections}
                                         />
@@ -180,11 +178,11 @@ function LeaderBoardForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Name</label>
                                         <input name={"name"} placeholder={"Enter Name"}
-                                            className={`form-control disabled-white ${errors.course ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail1"
-                                            onChange={handleChange}
-                                            value={values.name || ""}
-                                            disabled={true}
+                                               className={`form-control disabled-white ${errors.course ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail1"
+                                               onChange={handleChange}
+                                               value={values.name || ""}
+                                               disabled={true}
                                         />
                                         {errors.name && <p className={"text-red"}>{errors.name}</p>}
 
@@ -192,24 +190,26 @@ function LeaderBoardForm(props) {
                                 </div>
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className="form-label">Institute Name</label>
+                                        <label htmlFor="exampleInputEmail1" className="form-label">Institute
+                                            Name</label>
                                         <input name={"name"} placeholder={"Enter Name"}
-                                            className={`form-control disabled-white ${errors.instituteName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail1"
-                                            onChange={handleChange}
-                                            value={values.instituteName || ""}
-                                            disabled={true}
+                                               className={`form-control disabled-white ${errors.instituteName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail1"
+                                               onChange={handleChange}
+                                               value={values.instituteName || ""}
+                                               disabled={true}
                                         />
                                         {errors.instituteName && <p className={"text-red"}>{errors.instituteName}</p>}
 
                                     </div>
                                 </div>
-                                
+
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
-                                            className="form-label">Subject</label>
-                                        <select className={`form-control ${errors.subject ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               className="form-label">Subject</label>
+                                        <select
+                                            className={`form-control ${errors.subject ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
                                             onChange={handleChange}
                                             value={values.subject || ""}
                                             name={"subject"}
@@ -245,10 +245,10 @@ function LeaderBoardForm(props) {
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1" className="form-label">Marks</label>
                                         <input name={"marks"} placeholder={"Enter Marks"}
-                                            className={`form-control ${errors.course ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                            id="exampleInputEmail1"
-                                            onChange={handleChange}
-                                            value={values.marks || ""}
+                                               className={`form-control ${errors.course ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                               id="exampleInputEmail1"
+                                               onChange={handleChange}
+                                               value={values.marks || ""}
                                         />
                                         {errors.marks && <p className={"text-red"}>{errors.marks}</p>}
 

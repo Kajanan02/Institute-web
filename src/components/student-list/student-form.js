@@ -4,13 +4,12 @@ import MultiSelect from "@khanacademy/react-multi-select";
 import {FileUploader} from "react-drag-drop-files";
 import uploadIcon from "../../assets/uplod-icon.svg";
 import formHandler from "../../utils/FormHandler";
-import {validateStudent} from "../../utils/validation";
-import {validateParent} from "../../utils/validation";
+import {validateParent, validateStudent} from "../../utils/validation";
 import {subjectData} from "./damiData";
 import FormStepper from "./FormStepper";
 import axios from "axios";
 import {useDispatch} from "react-redux";
-import {toggleLoader} from "../../redux/actions";
+import {setMqttDetail, toggleLoader} from "../../redux/actions";
 import {toast} from "react-toastify";
 import StudentLocationAdd from "./student-location";
 
@@ -61,11 +60,11 @@ function StudentForm(props) {
     console.log(values);
 
     useEffect(() => {
-if(props.from === "studentProfile"){
-setCurrentStep(2)
-setParentMode(true)
-}
-    },[props.from]);
+        if (props.from === "studentProfile") {
+            setCurrentStep(2)
+            setParentMode(true)
+        }
+    }, [props.from]);
 
     function imageUpload(file, key) {
         console.log("Fille")
@@ -117,12 +116,12 @@ setParentMode(true)
         if (!isSubmit) {
             return
         }
-        
+
         values.password = "123456"
         console.log(values)
         dispatch(toggleLoader(true))
         if (currentStep === 2) {
-            values.studentId = props.studentId ? props.studentId :studentId
+            values.studentId = props.studentId ? props.studentId : studentId
         }
         axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/${parentSubmit ? 'createParent' : 'createStudent'}`, values)
             .then((res) => {
@@ -131,14 +130,27 @@ setParentMode(true)
                 if (!parentSubmit) {
                     setStudentId(res.data._id)
                 }
+                if (parentSubmit) {
+                    let msg = `Parent Account Successfully created your username is ${values.nicNo} and password is 123456`
+                    console.log(msg)
+                    console.log(values.phoneNumber)
+                    dispatch(setMqttDetail({"mobileNumber": values.phoneNumber, "body": msg, "type": "msg"}))
+                } else {
+                    let msg = `Student Account Successfully created your username is ${values.nicNo} and password is 123456`
+                    console.log(msg)
+                    console.log(values.phoneNumber)
+                    dispatch(setMqttDetail({"mobileNumber": values.phoneNumber, "body": msg, "type": "msg"}))
+                }
                 toast.success(`Successfully ${parentSubmit ? 'Parent' : 'Student'} created`)
             }).catch((err) => {
+            console.log(err)
             toast.error("Something went wrong")
         }).finally(() => {
             dispatch(toggleLoader(false))
             setIsSubmit(false);
             setParentSubmit(false)
             resetForm()
+
             if (parentSubmit) {
                 setStudentId(null);
                 props.onHide()
@@ -149,12 +161,12 @@ setParentMode(true)
 
     function studentGeoLocation(position) {
         let data = {}
-        data.gpscoordinates= position
+        data.gpscoordinates = position
         setValue({location: position});
     }
 
-    useEffect(()=>{
-        if(!updateStudent){
+    useEffect(() => {
+        if (!updateStudent) {
             return
         }
         dispatch(toggleLoader(true))
@@ -168,12 +180,12 @@ setParentMode(true)
         }).finally(() => {
             dispatch(toggleLoader(false))
             setIsSubmit(false);
-          setUpdateStudent(false)
+            setUpdateStudent(false)
             resetForm()
             props.onHide()
         })
 
-    },[updateStudent])
+    }, [updateStudent])
 
 
     useEffect(() => {
@@ -184,7 +196,7 @@ setParentMode(true)
             setCurrentStep(1); // Reset step to 1
             setFormSubmitted(false);
         }
-    }, [props.type,props.selectedStudent]);
+    }, [props.type, props.selectedStudent]);
 
     return (
         <Modal
@@ -198,6 +210,7 @@ setParentMode(true)
             <Modal.Header closeButton onHide={() => {
                 if (!formSubmitted) {
                     initForm({});
+                    resetForm()
                 }
             }}>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -206,7 +219,7 @@ setParentMode(true)
             </Modal.Header>
             <Modal.Body scrollable>
 
-                {(props.type !== "Edit" && !parentMode ) && <FormStepper currentStep={currentStep}/>}
+                {(props.type !== "Edit" && !parentMode) && <FormStepper currentStep={currentStep}/>}
 
                 <form>
                     <div>
@@ -279,6 +292,18 @@ setParentMode(true)
                                         {errors.email && <p className={"text-red"}>{errors.email}</p>}
                                     </div>
                                 </div>
+                                {currentStep === 1 && <div className={"col-md-6"}>
+                                    <div className="mb-3">
+                                        <label htmlFor="exampleInputEmail1" className="form-label">Parent
+                                            Contact</label>
+                                        <input type="email" name={"parentContact"} placeholder={"Enter parent Contact"}
+                                               value={values.parentContact || ""} onChange={handleChange}
+                                               className={`form-control ${errors.parentContact ? "border-red" : ""}`}
+                                               id="exampleInputEmail1"
+                                               aria-describedby="emailHelp"/>
+                                        {errors.parentContact && <p className={"text-red"}>{errors.parentContact}</p>}
+                                    </div>
+                                </div>}
                                 <div className={"col-md-6"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail1"
@@ -348,7 +373,7 @@ setParentMode(true)
                                         </div>
                                     </div>
                                 }
-                                {currentStep === 1&&<div className="col-md-12 mb-3">
+                                {currentStep === 1 && <div className="col-md-12 mb-3">
                                     <StudentLocationAdd onChange={studentGeoLocation} location={values?.location}/>
                                 </div>}
                                 <div className={"col-md-12"}>
@@ -372,7 +397,6 @@ setParentMode(true)
                                         </FileUploader>
                                     </div>
                                 </div>
-
 
 
                                 <div className={"col-md-12"}>
@@ -403,7 +427,7 @@ setParentMode(true)
                                             Back</label>
                                         <FileUploader handleChange={handleChangeNicBack}>
                                             <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
+                                                <img src={uploadIcon} width={"27%"} alt={"uploadIcon"}/>
                                                 {!nicBack?.name ? <div>
                                                         <div className={"fw-semibold my-2"}>Drop or Select file
                                                         </div>
@@ -433,6 +457,7 @@ setParentMode(true)
                         if (!formSubmitted) { // Prevent hiding the modal if the form is submitted
                             props.onHide();
                             initForm({});
+                            resetForm()
                         }
                     }}
                 >

@@ -31,4 +31,10 @@ export const setUserDetail = (userDetail) => {
         payload: userDetail
     };
 }
+export const setMqttDetail = (mqttDetail) => {
+    return {
+        type: "MQTT_DETAIL",
+        payload: mqttDetail
+    };
+}
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Layout from "../../layout/layout";
 import FeatherIcon from 'feather-icons-react';
 import studentSlider1 from "../../assets/studentSlider1.png";
@@ -6,11 +6,36 @@ import studentSlider2 from "../../assets/studentSlider2.png"
 import studentSlider3 from "../../assets/studentSlider3.png"
 import homeimage from "../../assets/homeimage.svg"
 import Carousel from 'react-bootstrap/Carousel';
-import {getName} from "../../utils/Authentication";
+import {getInstituteId, getName, isParentAccount, isStudentAccount} from "../../utils/Authentication";
 import Chart from 'react-apexcharts'
+import {useNavigate} from "react-router-dom";
+import {toggleLoader} from "../../redux/actions";
+import axios from "axios";
+import {useDispatch} from "react-redux";
+import {monthArray} from "../../utils/utils";
+import {pluck, uniq} from "underscore";
 
 
 function Home(props) {
+
+    const navigate = useNavigate();
+
+    const [totalStudents, setTotalStudents] = useState([]);
+    const [todayPayment, setTodayPayment] = useState(0);
+    const [monthPayment, setMonthPayment] = useState(0);
+    const [todayAttendance, setTodayAttendance] = useState(0);
+    const [attendanceSeries, setAttendanceSeries] = useState([]);
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+        if (isParentAccount()) {
+            navigate("/student")
+        }
+        if (isStudentAccount()) {
+            navigate("/student")
+        }
+    }, []);
 
     var options = {
         series: [{
@@ -22,9 +47,9 @@ function Home(props) {
             // type: 'area'
         },
         dataLabels: {
-            enabled: false
+            enabled: true
         },
-        colors:['#00b957'],
+        colors: ['#00b957'],
         fill: {
             type: "gradient",
             gradient: {
@@ -59,6 +84,72 @@ function Home(props) {
         },
     };
 
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/getAllStudents`)
+            .then((res) => {
+                setTotalStudents(res.data)
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [])
+
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/fees`)
+            .then((res) => {
+                let data = res.data
+                let filteredData = data.filter((item) => item.month === monthArray[new Date().getMonth()])
+                let date = new Date().toISOString().slice(0, 10)
+                let filterByToday = data.filter((item) => item.createdAt.slice(0, 10) === date)
+                console.log(filterByToday)
+                let total = filteredData.reduce((a, b) => a + Number(b.feesAmount), 0)
+                let totalToday = filterByToday.reduce((a, b) => a + Number(b.feesAmount), 0)
+                setTodayPayment(totalToday)
+                setMonthPayment(total)
+                console.log(monthArray[new Date().getMonth()])
+
+
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [])
+
+    useEffect(() => {
+        dispatch(toggleLoader(true))
+
+        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/attendance`)
+            .then((res) => {
+                console.log(res.data)
+                let date = new Date().toISOString().slice(0, 10)
+                let filterByToday = res.data.filter((item) => item.date.slice(0, 10) === date)
+                let filterByMonth = res.data.filter((item) => item.date.slice(5, 7) === (new Date().getMonth() + 1).toString())
+                let mapData = filterByMonth.map((item) => ({...item, date: item.date.slice(0, 10)}))
+                let datas = []
+                let dateArr = uniq(pluck(mapData, "date"))
+                for (const dateArrElement of dateArr) {
+                    let subItem = mapData.filter((item) => item.date === dateArrElement)
+                    let item = {}
+                    item.x = dateArrElement
+                    item.y = subItem.length.toString()
+                    datas.push(item)
+                }
+                console.log(datas)
+                setAttendanceSeries([{data: datas, name: "Attendance"}])
+                console.log(filterByToday)
+                setTodayAttendance(filterByToday.length)
+
+            }).catch((err) => {
+            console.log(err)
+        }).finally(() => {
+            dispatch(toggleLoader(false))
+        })
+    }, [])
+
 
     return (
         <Layout>
@@ -69,12 +160,14 @@ function Home(props) {
                         <div className={"studentCard-container"}>
                             <div className={"row p-2"}>
                                 <div className={"col-md-6 card-image studentCard-image align-items-center"}>
-                                    <img src={homeimage} alt="Home Image" className={" img-fluid img-responsive"} />
+                                    <img src={homeimage} alt="Home Image" className={" img-fluid img-responsive"}/>
                                 </div>
                                 <div className={"col-md-6"}>
-                                    <div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br /> {getName()}</h4></div>
+                                    <div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br/> {getName()}
+                                    </h4></div>
                                     {/*<div className={"card-title studentCard-title"}><h4>Welcome back 👋 <br /> {getName()}</h4></div>*/}
-                                    <div className={"card-subtitle studentCard-text"}><p>Empowering your educational journey with tools, insights, and resources. Let's excel together!</p></div>
+                                    <div className={"card-subtitle studentCard-text"}><p>Empowering your educational
+                                        journey with tools, insights, and resources. Let's excel together!</p></div>
                                 </div>
 
                             </div>
@@ -122,15 +215,14 @@ function Home(props) {
                 </div>
 
 
-
                 <div className={"row  mt-4"}>
                     <div className={"col-sm-3 mb-3 mb-sm-0"}>
                         <div className={"card home_card"}>
                             <div className={"card-body p-3"}>
                                 <div className={"card-text"}>Total Admissions</div>
                                 <div className={"d-flex align-items-center"}>
-                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"user-plus"} /></div>
-                                    <div className={"card-text_total"}>1,200</div>
+                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"user-plus"}/></div>
+                                    <div className={"card-text_total"}>{totalStudents.length}</div>
                                 </div>
 
                             </div>
@@ -142,8 +234,8 @@ function Home(props) {
                             <div className={"card-body p-3"}>
                                 <div className={"card-text"}>Today's Attendance</div>
                                 <div className={"d-flex align-items-center"}>
-                                <div><FeatherIcon className={"home-action-icons me-3"} icon={"user-check"} /></div>
-                                <div className={"card-text_total"}>1,191</div>
+                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"user-check"}/></div>
+                                    <div className={"card-text_total"}>{todayAttendance}</div>
                                 </div>
 
                             </div>
@@ -153,10 +245,11 @@ function Home(props) {
                         <div className={"card home_card"}>
                             <div className={"card-body "}>
 
-                                <div className={"card-text"}>Total Pending Income</div>
+                                <div className={"card-text"}>Today Income</div>
                                 <div className={"d-flex align-items-center"}>
-                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"dollar-sign"} /></div>
-                                    <div className={"card-text_total"}>20,000</div>
+                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"dollar-sign"}/></div>
+                                    <div
+                                        className={"card-text_total"}>{new Intl.NumberFormat().format(todayPayment)}</div>
                                 </div>
 
                             </div>
@@ -166,10 +259,11 @@ function Home(props) {
                         <div className={"card home_card"}>
                             <div className={"card-body "}>
 
-                                <div className={"card-text"}>Total Income</div>
+                                <div className={"card-text"}>Current Month Income</div>
                                 <div className={"d-flex align-items-center"}>
-                                <div><FeatherIcon className={"home-action-icons me-3"} icon={"dollar-sign"} /></div>
-                                <div className={"card-text_total"}>228,000</div>
+                                    <div><FeatherIcon className={"home-action-icons me-3"} icon={"dollar-sign"}/></div>
+                                    <div
+                                        className={"card-text_total"}>{new Intl.NumberFormat().format(monthPayment)}</div>
                                 </div>
 
                             </div>
@@ -179,12 +273,14 @@ function Home(props) {
                 <div className={"row m-1 p-2 mt-4"}>
                     <div className={"default-container"}>
 
-                        <Chart options={options} series={options.series} type="area"  width={"100%"} height={320} />
+                        {attendanceSeries.length > 0 &&
+                            <Chart options={options} series={attendanceSeries} type="area" width={"100%"}
+                                   height={320}/>}
                     </div>
                 </div>
             </div>
 
-        </Layout >
+        </Layout>
     );
 }
 

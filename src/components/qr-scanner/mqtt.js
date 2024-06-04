@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import mqtt from "mqtt";
+
 function Mqtt(props) {
 
 
@@ -33,9 +34,9 @@ function Mqtt(props) {
     // }, []);
 
 
-
     const mqttPublish = (context) => {
         if (client) {
+            console.log(client)
             // const { topic, qos, payload } = context;
             // client.publish(topic, payload, { qos }, error => {
             //     if (error) {
@@ -57,7 +58,6 @@ function Mqtt(props) {
             client.publish("device-ins/led", "0");
         }
     }
-
 
 
     console.log(connectStatus)
@@ -137,7 +137,7 @@ function Mqtt(props) {
 
 
     useEffect(() => {
-        if(props.led){
+        if (props.led) {
             mqttPublish()
         }
 
@@ -146,8 +146,11 @@ function Mqtt(props) {
 
     return (
         <div>
-            <button className={"btn btn-secondary marks-dropdown-btn mt-4 px-5 py-2"} onClick={mqttPublish}>Light On</button>
-            <button className={"btn btn-secondary marks-dropdown-btn mt-4 px-5 py-2"} onClick={mqttPublishOff}>Light Off</button>
+            <button className={"btn btn-secondary marks-dropdown-btn mt-4 px-5 py-2"} onClick={mqttPublish}>Light On
+            </button>
+            <button className={"btn btn-secondary marks-dropdown-btn mt-4 px-5 py-2"} onClick={mqttPublishOff}>Light
+                Off
+            </button>
         </div>
     );
 }

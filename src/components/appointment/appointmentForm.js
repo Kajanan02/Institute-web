@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {Modal} from "react-bootstrap";
 import formHandler from "../../utils/FormHandler";
 import {validateStateappointment} from "../../utils/validation";
-import {togglæeConfirmationDialog, toggleLoader} from "../../redux/actions";
+import {toggleLoader} from "../../redux/actions";
 import axios from 'axios';
 import {toast} from "react-toastify";
-import {useDispatch, useSelector} from "react-redux";
-import { isEmpty } from 'underscore';
+import {useDispatch} from "react-redux";
+import {isEmpty} from 'underscore';
 import {getUserName} from "../../utils/Authentication";
 
 function AppointmentForm(props) {
@@ -33,25 +33,26 @@ function AppointmentForm(props) {
     function stateAppoint() {
         setIsSubmit(true)
     }
-    function resetForm(){
-        
+
+    function resetForm() {
+
     }
 
-    useEffect(()=>{
-        if(["View", "State"].includes(props.type) && !isEmpty(props.selectedAppointment)){
-           
+    useEffect(() => {
+        if (["View", "State"].includes(props.type) && !isEmpty(props.selectedAppointment)) {
+
             initForm(props.selectedAppointment)
         }
-    },[props.type,props.selectedAppointment])
+    }, [props.type, props.selectedAppointment])
 
-    function statusUpdate(status){
+    function statusUpdate(status) {
         values.status = status
         console.log(props.selectedAppointment)
         console.log(props.selectedAppointment._id)
 
         dispatch(toggleLoader(true))
         axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/Appointment/${props.selectedAppointment._id}`, values)
-        // axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/marks/${props.selectedMarks._id}`, values)
+            // axios.put(`${process.env.REACT_APP_HOST}/institute/${instituteId}/marks/${props.selectedMarks._id}`, values)
             .then((res) => {
                 console.log(res.data)
                 toast.success(`Successfully Updated`)
@@ -61,20 +62,20 @@ function AppointmentForm(props) {
         }).finally(() => {
             dispatch(toggleLoader(false))
             setIsSubmit(false);
-          setIsSubmit(false)
+            setIsSubmit(false)
             resetForm()
             props.onHide()
         })
 
     }
-   
+
     useEffect(() => {
         if (!isSubmit || props.type !== "Add") {
             return
         }
         // http://localhost:5000/api/institute/:instituteId/student/:studentId/appointment
         values.parentName = getUserName()
-        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/Appointment` , values)
+        axios.post(`${process.env.REACT_APP_HOST}/institute/${instituteId}/student/${studentId}/Appointment`, values)
             .then((res) => {
                 console.log(res.data)
                 props.update()
@@ -94,8 +95,6 @@ function AppointmentForm(props) {
         })
     }, [isSubmit]);
 
-  
-
 
     return (
         <Modal
@@ -112,9 +111,9 @@ function AppointmentForm(props) {
                 }
             }}>
                 {<Modal.Title id="contained-modal-title-vcenter">
-                    {props.type === "Add" &&<div> Add Appointment Details</div>}
-                    {props.type === "View" &&<div> View Appointment Details</div>}
-                    {props.type === "State" &&<div> Reply Appointment Details</div>}
+                    {props.type === "Add" && <div> Add Appointment Details</div>}
+                    {props.type === "View" && <div> View Appointment Details</div>}
+                    {props.type === "State" && <div> Reply Appointment Details</div>}
                 </Modal.Title>}
             </Modal.Header>
             <Modal.Body scrollable>
@@ -122,42 +121,44 @@ function AppointmentForm(props) {
                     <div>
                         <div className={"pop-up-form-container"}>
                             <div className={"row"}>
-                                {(["View", "State"].includes(props.type)) && (localStorage.getItem('ROLE') === "2") && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : ""}`}>Parent
-                                            Name</label>
-                                        <input name={"parentName"} placeholder={"Enter Parent Name"}
-                                               className={` form-control  ${errors.parentName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}  `}
+                                {(["View", "State"].includes(props.type)) && (localStorage.getItem('ROLE') === "2") &&
+                                    <div className={"col-md-6"}>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail5"
+                                                   className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : ""}`}>Parent
+                                                Name</label>
+                                            <input name={"parentName"} placeholder={"Enter Parent Name"}
+                                                   className={` form-control  ${errors.parentName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled" : ""}  `}
 
-                                               id="exampleInputEmail5"
-                                               onChange={handleChange}
-                                            value={values.parentName || ""}
+                                                   id="exampleInputEmail5"
+                                                   onChange={handleChange}
+                                                   value={values.parentName || ""}
 
 
-                                               disabled={["View", "State"].includes(props.type)}
-                                        />
-                                        {errors.parentName && <p className={"text-red"}>{errors.parentName}</p>}
+                                                   disabled={["View", "State"].includes(props.type)}
+                                            />
+                                            {errors.parentName && <p className={"text-red"}>{errors.parentName}</p>}
 
-                                    </div>
-                                </div>}
-                                {(["View", "State"].includes(props.type)) && (localStorage.getItem('ROLE') === "2") && <div className={"col-md-6"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail5"
-                                               className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student
-                                            Name</label>
-                                        <input name={"studentName"} placeholder={"Enter Parent Name"}
-                                               className={`form-control ${errors.studentName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
-                                               id="exampleInputEmail5"
-                                               onChange={handleChange}
-                                               value={values?.studentId?.name || ""}
+                                        </div>
+                                    </div>}
+                                {(["View", "State"].includes(props.type)) && (localStorage.getItem('ROLE') === "2") &&
+                                    <div className={"col-md-6"}>
+                                        <div className="mb-3">
+                                            <label htmlFor="exampleInputEmail5"
+                                                   className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Student
+                                                Name</label>
+                                            <input name={"studentName"} placeholder={"Enter Parent Name"}
+                                                   className={`form-control ${errors.studentName ? "border-red" : ""} ${["View", "State"].includes(props.type) ? " form-control:disabled " : ""} `}
+                                                   id="exampleInputEmail5"
+                                                   onChange={handleChange}
+                                                   value={values?.studentId?.name || ""}
 
-                                               disabled={["View", "State"].includes(props.type)}
-                                        />
-                                        {errors.studentName && <p className={"text-red"}>{errors.studentName}</p>}
+                                                   disabled={["View", "State"].includes(props.type)}
+                                            />
+                                            {errors.studentName && <p className={"text-red"}>{errors.studentName}</p>}
 
-                                    </div>
-                                </div>}
+                                        </div>
+                                    </div>}
                                 {<div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
@@ -207,7 +208,7 @@ function AppointmentForm(props) {
                                     </div>
                                 </div>}
 
-                                {["Add", "State","View"].includes(props.type) && <div className={"col-md-12"}>
+                                {["Add", "State", "View"].includes(props.type) && <div className={"col-md-12"}>
                                     <div className="mb-3">
                                         <label htmlFor="exampleInputEmail5"
                                                className={`form-label ${["View", "State"].includes(props.type) ? " profile-view-text " : "form-label"}`}>Description</label>
@@ -243,29 +244,29 @@ function AppointmentForm(props) {
                 </button>
                 {/*["View","Add"].includes(props.type) &&*/}
                 {props.type === "State" && <div className='d-flex gap-2'>
-                <button
-                    type="button"
-                    className={"btn btn-success"}
-                    onClick={()=>statusUpdate("ACCEPTED")}
-                >
-                    Accepeted
-                </button>
-               <button
-                    type="button"
-                    className={"btn btn-danger"}
-                    onClick={()=>statusUpdate("DECLINE")}
-                >
-                    Decline
-                </button>
-                {/* <button*/}
-                {/*    type="button"*/}
-                {/*    className={"btn btn-warning"}*/}
-                {/*    onClick={()=>statusUpdate("REQUESTED")}*/}
-                {/*>*/}
-                {/*    Request*/}
-                {/*</button>*/}
+                    <button
+                        type="button"
+                        className={"btn btn-success"}
+                        onClick={() => statusUpdate("ACCEPTED")}
+                    >
+                        Accepeted
+                    </button>
+                    <button
+                        type="button"
+                        className={"btn btn-danger"}
+                        onClick={() => statusUpdate("DECLINE")}
+                    >
+                        Decline
+                    </button>
+                    {/* <button*/}
+                    {/*    type="button"*/}
+                    {/*    className={"btn btn-warning"}*/}
+                    {/*    onClick={()=>statusUpdate("REQUESTED")}*/}
+                    {/*>*/}
+                    {/*    Request*/}
+                    {/*</button>*/}
                 </div>}
-                {props.type === "Add" &&<button
+                {props.type === "Add" && <button
                     type="button"
                     className={"btn btn-secondary students-dropdown-btn"}
                     onClick={handleSubmit}

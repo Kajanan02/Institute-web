@@ -54,7 +54,7 @@ export  const optionsGraph = {
         // type: 'area'
     },
     dataLabels: {
-        enabled: false
+        enabled: true
     },
     colors:['#00b957','#008ffb','#ad00b9'],
     fill: {
@@ -77,3 +77,5 @@ export  const optionsGraph = {
         },
     },
 };
+
+export const monthArray = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY","AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"]
