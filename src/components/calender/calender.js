@@ -4,7 +4,7 @@ import {Calendar, momentLocalizer} from 'react-big-calendar'
 import moment from 'moment'
 import formHandler from "../../utils/FormHandler";
 import {validateEvent} from "../../utils/validation";
-import DtPicker from 'react-calendar-datetime-picker'
+import {DtPicker} from 'react-calendar-datetime-picker'
 import FeatherIcon from "feather-icons-react";
 import {getInstituteId, isAdminAccount, isInstituteAccount} from "../../utils/Authentication";
 import axios from "axios";

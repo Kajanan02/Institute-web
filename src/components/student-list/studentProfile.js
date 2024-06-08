@@ -121,27 +121,6 @@ function StudentProfile() {
                                     <h4 className={"profile-name profile-view-text"}>Student</h4>
                                 </div>
                             </div>
-                            {/*<div className="row align-items-center">*/}
-                            {/*    <div className="col-12 col-md-2">*/}
-                            {/*        <div className="d-flex-start align-items-center justify-content-start">*/}
-                            {/*            <img*/}
-                            {/*                className="avatar profile-img float-start"*/}
-                            {/*                src={seletedStudent.profilePic ? seletedStudent.profilePic : layoutDefaultProfile}*/}
-                            {/*                alt={'Photo of ' + seletedStudent.name}*/}
-                            {/*                style={{*/}
-                            {/*                    width: seletedStudent.imageSize,*/}
-                            {/*                    height: seletedStudent.imageSize*/}
-                            {/*                }}*/}
-                            {/*            />*/}
-                            {/*        </div>*/}
-                            {/*    </div>*/}
-                            {/*    <div className="col-12 col-md-10">*/}
-                            {/*        <div className="d-flex-start flex-row align-items-center justify-content-center">*/}
-                            {/*            <h4 className={"profile-name"}>{seletedStudent.name}</h4>*/}
-                            {/*            <h4 className={"profile-name profile-view-text"}>Student</h4>*/}
-                            {/*        </div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
 
                             <div className={"pop-up-form-container"}>
                                 <div className={"row label-align mt-3"}>
@@ -212,47 +191,10 @@ function StudentProfile() {
                                                    className="form-label">{seletedStudent.subjects && seletedStudent.subjects.length > 0 ? seletedStudent.subjects.map(e => e.replace("_", " ").toUpperCase()).join(', ').toString() : 'No subjects available'}</label>
                                         </div>
                                     </div>
-                                    {seletedStudent.nicFront && <div className={"col-6"}>
-                                        <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC
-                                                Front:&nbsp;</label>
-                                            <img
-                                                className="avatar profile-img-display"
-                                                src={seletedStudent.nicFront}
-                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Front)'}
-                                                style={{
-                                                    width: 90,
-                                                    height: 90,
-                                                    borderRadius: 12,
-                                                    cursor: 'pointer',
-                                                }}
-                                                onClick={() => openModal(seletedStudent.nicFront, 'NIC Front Image')}
-                                            />
-
-                                        </div>
-                                    </div>}
 
 
-                                    {seletedStudent?.nicBack && <div className={"col-6"}>
-                                        <div className="mb-3">
-                                            <label htmlFor="exampleInputEmail1"
-                                                   className="form-label profile-view-text">NIC
-                                                Back:&nbsp;</label>
-                                            <img
-                                                className="avatar profile-img-display img-fluid"
-                                                src={seletedStudent.nicBack}
-                                                alt={'Photo of ' + seletedStudent.name + ' (NIC Back)'}
-                                                style={{
-                                                    width: 90,
-                                                    height: 90,
-                                                    borderRadius: 12,
-                                                    cursor: 'pointer',
-                                                }}
-                                                onClick={() => openModal(seletedStudent.nicBack, 'NIC Back Image')}
-                                            />
-                                        </div>
-                                    </div>}
+
+
                                     <div className={"col-6"}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputEmail1"
@@ -266,9 +208,6 @@ function StudentProfile() {
                                         </div>
                                     </div>
                                     <div>
-                                        {seletedStudent?.location && <div className={"mt-3"}>
-                                            <StudentLocationView location={seletedStudent?.location}/>
-                                        </div>}
                                         {modalOpen && (
                                             <div className="nic-expand-modal" onClick={closeModal}>
                                                 <div className="nic-modal-content"

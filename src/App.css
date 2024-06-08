@@ -1912,4 +1912,7 @@ form .login-btn input[type="submit"] {
 .card-text-motive{
     margin-top: -10px;
 }
+.h-320{
+    height: 320px;
+}
 

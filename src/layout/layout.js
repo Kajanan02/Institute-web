@@ -40,23 +40,23 @@ function Layout({children}) {
         
     ]);
 
-    useEffect(() => {
-        if (!isInstituteAccount)
-            dispatch(toggleLoader(true))
-        // router.route('/:instituteId/student/:studentId/broadcast').get(studentNotification);
-        axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getStudentId()}/broadcast`)
-            .then((res) => {
-                console.log(res.data)
-                setNotifications(res.data)
-                setNotificationsList(res.data)
-
-
-            }).catch((err) => {
-                console.log(err)
-            }).finally(() => {
-                dispatch(toggleLoader(false))
-            })
-    }, [update])
+    // useEffect(() => {
+    //     if (!isInstituteAccount)
+    //         dispatch(toggleLoader(true))
+    //     // router.route('/:instituteId/student/:studentId/broadcast').get(studentNotification);
+    //     axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/student/${getStudentId()}/broadcast`)
+    //         .then((res) => {
+    //             console.log(res.data)
+    //             setNotifications(res.data)
+    //             setNotificationsList(res.data)
+    //
+    //
+    //         }).catch((err) => {
+    //             console.log(err)
+    //         }).finally(() => {
+    //             dispatch(toggleLoader(false))
+    //         })
+    // }, [update])
     useEffect(() => {
         dispatch(toggleLoader(true))
         axios.get(`${process.env.REACT_APP_HOST}/institute/${getInstituteId()}/getAllStudents`)
@@ -337,12 +337,12 @@ function Layout({children}) {
                             <div className="collapse navbar-collapse " id="">
                                 <ul className="navbar-nav ms-auto align-items-center flex-row">
                                     <li className="nav-item">
-                                        <a className="nav-link active position-relative px-2" aria-current="page" href="#">
-                                            {notifications.some((notification) => !notification.read) && (
-                                                <div className="red-dot" />
-                                            )}
-                                            <img src={Bell} onClick={toggleNotification} />
-                                        </a>
+                                        {/*<a className="nav-link active position-relative px-2" aria-current="page" href="#">*/}
+                                        {/*    {notifications.some((notification) => !notification.read) && (*/}
+                                        {/*        <div className="red-dot" />*/}
+                                        {/*    )}*/}
+                                        {/*    <img src={Bell} onClick={toggleNotification} />*/}
+                                        {/*</a>*/}
                                     </li>
                                     {/*<li className="nav-item px-2">*/}
                                     {/*    <a className="nav-link  position-relative" aria-current="page" href="#">*/}

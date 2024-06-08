@@ -14,7 +14,7 @@ import Loader from "./components/utils-components/loader";
 import Usage from "./components/usage";
 import ConfirmationDialog from "./components/utils-components/confirmation-dialog";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import 'react-calendar-datetime-picker/dist/index.css'
+import 'react-calendar-datetime-picker/dist/style.css'
 import StudentProfile from "./components/student-list/studentProfile";
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'

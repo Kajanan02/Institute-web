@@ -373,75 +373,12 @@ function StudentForm(props) {
                                         </div>
                                     </div>
                                 }
-                                {currentStep === 1 && <div className="col-md-12 mb-3">
-                                    <StudentLocationAdd onChange={studentGeoLocation} location={values?.location}/>
-                                </div>}
-                                <div className={"col-md-12"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className="form-label d-block">Profile
-                                            Picture</label>
-                                        <FileUploader handleChange={handleChangeProfile}>
-                                            <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
-                                                {!profilePic?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
-                                                    <div className={"fw-semibold my-2"}>{profilePic?.name}</div>
-                                                }
-                                            </div>
-                                        </FileUploader>
-                                    </div>
-                                </div>
 
 
-                                <div className={"col-md-12"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className="form-label d-block">NIC
-                                            Front</label>
-                                        <FileUploader handleChange={handleChangeNicFront}>
-                                            <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"}/>
-                                                {!nicFront?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
-                                                    <div className={"fw-semibold my-2"}>{nicFront?.name}</div>
-                                                }
-                                            </div>
-                                        </FileUploader>
-                                    </div>
-                                </div>
 
-                                <div className={"col-md-12"}>
-                                    <div className="mb-3">
-                                        <label htmlFor="exampleInputEmail1" className="form-label d-block">NIC
-                                            Back</label>
-                                        <FileUploader handleChange={handleChangeNicBack}>
-                                            <div className={"file-uploader-container"}>
-                                                <img src={uploadIcon} width={"27%"} alt={"uploadIcon"}/>
-                                                {!nicBack?.name ? <div>
-                                                        <div className={"fw-semibold my-2"}>Drop or Select file
-                                                        </div>
-                                                        <div className={""}>Drop files here or click <span
-                                                            className={"text-success text-decoration-underline mt-3"}>browse</span> thorough
-                                                            your machine
-                                                        </div>
-                                                    </div> :
-                                                    <div className={"fw-semibold my-2"}>{nicBack?.name}</div>
-                                                }
-                                            </div>
-                                        </FileUploader>
-                                    </div>
-                                </div>
+
+
+
                             </div>
                         </div>
                     </div>

@@ -151,6 +151,7 @@ function Home(props) {
     }, [])
 
 
+
     return (
         <Layout>
 
@@ -273,9 +274,13 @@ function Home(props) {
                 <div className={"row m-1 p-2 mt-4"}>
                     <div className={"default-container"}>
 
-                        {attendanceSeries.length > 0 &&
+                        {attendanceSeries[0]?.data?.length > 0 ?
                             <Chart options={options} series={attendanceSeries} type="area" width={"100%"}
-                                   height={320}/>}
+                                   height={320}/>:
+                            <div>
+                                <div className={"h-320 text-black-50 d-flex fs-4 justify-content-center align-items-center"}>No Attendance Data Found</div>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

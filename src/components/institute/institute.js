@@ -29,7 +29,7 @@ function Institute(props) {
         dispatch(toggleLoader(true))
         axios.get(`${process.env.REACT_APP_HOST}/users/allprofile`)
             .then((res) => {
-                setInstituteList(res.data)
+                setInstituteList(res.data.filter((data) => data.role !== "1"))
             }).catch((err) => {
             console.log(err)
         }).finally(() => {
