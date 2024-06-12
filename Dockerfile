@@ -1,4 +1,15 @@
 FROM node:alpine3.19 as build
+
+# Declare variables
+ARG REACT_APP_GOOGLE_CLIENT_ID
+ARG REACT_APP_API_URL
+
+# Set environment variables
+ENV REACT_APP_GOOGLE_CLIENT_ID=$REACT_APP_GOOGLE_CLIENT_ID
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
+
+# Step 1: Build the app
+
 WORKDIR /app
 COPY package.json .
 RUN npm install --force
