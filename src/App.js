@@ -34,8 +34,9 @@ import MqttAuth from "./components/utils-components/mqtt-auth";
 import PWAInstallPrompt from "./components/utils-components/beforeinstallprompt";
 
 
-Payhere.init(process.env.REACT_APP_PAYHERE_MERCHANT_ID, AccountCategory.SANDBOX);
+// Payhere.init(process.env.REACT_APP_PAYHERE_MERCHANT_ID, AccountCategory.SANDBOX);
 
+console.log(process.env.REACT_APP_HOST)
 
 
 function App() {
